@@ -1,0 +1,231 @@
+@import "tailwindcss";
+
+:root {
+  --primary-dark: #0B124E;
+  --secondary-dark: #010035;
+  --light-text: #FEFEFE;
+  --accent-yellow: #FFC53A;
+  --gray-text: #807F9A;
+}
+
+
+.binary-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='200' viewBox='0 0 100 200' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3CradialGradient id='bgGradient' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%230b124e'/%3E%3Cstop offset='100%25' stop-color='%23070c36'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='200' fill='url(%23bgGradient)'/%3E%3C!-- Falling 0s and 1s on right side --%3E%3Ctext x='85' y='10' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='85' y='20' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.4'%3E1%3C/text%3E%3Ctext x='85' y='30' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.2'%3E0%3C/text%3E%3Ctext x='85' y='40' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E1%3C/text%3E%3Ctext x='85' y='50' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.4'%3E1%3C/text%3E%3Ctext x='85' y='60' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.2'%3E0%3C/text%3E%3Ctext x='85' y='70' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E1%3C/text%3E%3Ctext x='85' y='80' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.4'%3E0%3C/text%3E%3Ctext x='85' y='90' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='85' y='100' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='85' y='110' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.4'%3E1%3C/text%3E%3Ctext x='85' y='120' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.2'%3E0%3C/text%3E%3Ctext x='85' y='130' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E1%3C/text%3E%3Ctext x='85' y='140' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.4'%3E1%3C/text%3E%3Ctext x='85' y='150' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.2'%3E0%3C/text%3E%3Ctext x='85' y='160' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E1%3C/text%3E%3Ctext x='85' y='170' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.4'%3E0%3C/text%3E%3Ctext x='85' y='180' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='85' y='190' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.3'%3E0%3C/text%3E%3C!-- Additional columns for dense effect --%3E%3Ctext x='75' y='5' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='15' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='25' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='35' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='45' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='55' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='65' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='85' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='95' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='105' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='115' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='125' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='135' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='145' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='155' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='165' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='75' y='175' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.3'%3E0%3C/text%3E%3Ctext x='75' y='185' font-family='monospace' font-size='8' fill='%2300ffaa' fill-opacity='0.2'%3E1%3C/text%3E%3Ctext x='65' y='8' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='18' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='28' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='38' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='48' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='58' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='68' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='78' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='88' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='98' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='108' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='118' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='128' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='138' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='148' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='158' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='168' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3Ctext x='65' y='178' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.25'%3E1%3C/text%3E%3Ctext x='65' y='188' font-family='monospace' font-size='8' fill='%234876ff' fill-opacity='0.15'%3E0%3C/text%3E%3C!-- Center background binary pattern --%3E%3Ctext x='10' y='20' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01001101%3C/text%3E%3Ctext x='10' y='30' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01111001%3C/text%3E%3Ctext x='10' y='40' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01100001%3C/text%3E%3Ctext x='10' y='50' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01101110%3C/text%3E%3Ctext x='10' y='60' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01101101%3C/text%3E%3Ctext x='10' y='70' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01100001%3C/text%3E%3Ctext x='10' y='80' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01110010%3C/text%3E%3Ctext x='10' y='100' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01010011%3C/text%3E%3Ctext x='10' y='110' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01101011%3C/text%3E%3Ctext x='10' y='120' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01101001%3C/text%3E%3Ctext x='10' y='130' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01101100%3C/text%3E%3Ctext x='10' y='140' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01101100%3C/text%3E%3Ctext x='10' y='160' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01010100%3C/text%3E%3Ctext x='10' y='170' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01100101%3C/text%3E%3Ctext x='10' y='180' font-family='monospace' font-size='4' fill='%2300ffaa' fill-opacity='0.08'%3E01100011%3C/text%3E%3C/svg%3E");
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.star-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0l15 35 38 5-27 26 6 38-32-18-32 18 6-38L0 40l38-5z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+.binary-fall {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2; 
+    overflow: hidden;
+}
+
+
+@keyframes binaryFall {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+
+.binary-digit {
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #4876ff;
+    animation: binaryFall linear infinite;
+}
+
+canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  z-index: 0 !important;
+}
+
+
+/* Create multiple falling digits */
+.binary-digit:nth-child(1) { right: 15%; animation-duration: 8s; animation-delay: 0s; color: #4876ff; }
+.binary-digit:nth-child(2) { right: 25%; animation-duration: 10s; animation-delay: 1s; color: #00ffaa; }
+.binary-digit:nth-child(3) { right: 35%; animation-duration: 12s; animation-delay: 2s; color: #4876ff; }
+.binary-digit:nth-child(4) { right: 45%; animation-duration: 9s; animation-delay: 0.5s; color: #00ffaa; }
+.binary-digit:nth-child(5) { right: 55%; animation-duration: 11s; animation-delay: 1.5s; color: #4876ff; }
+.binary-digit:nth-child(6) { right: 65%; animation-duration: 13s; animation-delay: 2.5s; color: #00ffaa; }
+.binary-digit:nth-child(7) { right: 75%; animation-duration: 7s; animation-delay: 0.2s; color: #4876ff; }
+.binary-digit:nth-child(8) { right: 85%; animation-duration: 9.5s; animation-delay: 1.2s; color: #00ffaa; }
+
+
+
+@layer utilities {
+  /* Drop from above */
+  @keyframes dropIn {
+    0% {
+      transform: translateY(-100px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Rise from below */
+  @keyframes riseUp {
+    0% {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Slide from left */
+  @keyframes slideLeft {
+    0% {
+      transform: translateX(-100px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Slide from right */
+  @keyframes slideRight {
+    0% {
+      transform: translateX(100px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Fade in */
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  /* Scale in */
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Bounce in */
+  @keyframes bounceIn {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Custom animation classes */
+  .animate-drop-in {
+    animation: dropIn 0.6s ease-out forwards;
+  }
+  
+  .animate-rise-up {
+    animation: riseUp 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-left {
+    animation: slideLeft 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-right {
+    animation: slideRight 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+  
+  .animate-bounce-in {
+    animation: bounceIn 0.6s ease-out forwards;
+  }
+  
+  /* Staggered animations */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+  .animation-delay-800 { animation-delay: 800ms; }
+  .animation-delay-900 { animation-delay: 900ms; }
+  .animation-delay-1000 { animation-delay: 1000ms; }
+  
+  /* Animation fill mode */
+  .animation-fill-forwards {
+    animation-fill-mode: forwards;
+  }
+}
+
+
+/*  */
+
+
+.graduation-background {
+    background: url("assets/images/throwcap4.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #807F9A;
+}
+
+
+/* --------------------------------------------- */
+
