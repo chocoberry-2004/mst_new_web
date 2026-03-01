@@ -1,0 +1,57 @@
+{
+  "faculty": {
+    "id": "FAC-IT-001",
+    "name": "Faculty of Information Technology",
+    "description": "The Faculty of Information Technology offers industry-focused programs in computing, cybersecurity, data science, and international certifications.",
+    "courses": [
+      {
+        "id": "C-001",
+        "name": "NCC Education",
+        "type": "International Qualification",
+        "levels": ["Level 4", "Level 5", "Level 6"],
+        "duration": "1-3 Years",
+        "overview": "UK-based NCC qualification designed to prepare students for international degree programs in computing and business.",
+        "career_paths": ["Software Developer", "IT Support Engineer", "System Analyst"]
+      },
+      {
+        "id": "C-002",
+        "name": "ITPEC",
+        "type": "Professional Certification",
+        "levels": ["IP", "FE", "AP", "DB", "NW", "PM", "ST"],
+        "duration": "3-12 Months",
+        "overview": "Japanese IT Professional Examination Council certification recognized in Asia.",
+        "career_paths": ["IT Engineer", "Network Engineer", "Project Manager"]
+      },
+      {
+        "id": "C-003",
+        "name": "Data Science",
+        "type": "Degree / Diploma Program",
+        "levels": ["Foundation", "Diploma", "Advanced"],
+        "duration": "1-4 Years",
+        "overview": "Program focused on data analysis, machine learning, and artificial intelligence.",
+        "career_paths": ["Data Analyst", "Data Scientist", "AI Engineer"]
+      },
+      {
+        "id": "C-004",
+        "name": "Cyber Security",
+        "type": "Degree / Diploma Program",
+        "levels": ["Foundation", "Diploma", "Advanced"],
+        "duration": "1-4 Years",
+        "overview": "Program focused on network security, ethical hacking, and digital forensics.",
+        "career_paths": ["Cyber Security Analyst", "Ethical Hacker", "Security Engineer"]
+      },
+      {
+        "id": "C-005",
+        "name": "Computing",
+        "type": "Degree Program",
+        "levels": ["Foundation", "Bachelor", "Master"],
+        "duration": "2-4 Years",
+        "overview": "Core computing program covering software development, systems, and databases.",
+        "career_paths": ["Software Engineer", "Web Developer", "System Administrator"]
+      }
+    ]
+  }
+
+}
+
+

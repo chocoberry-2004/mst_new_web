@@ -1,7 +1,66 @@
 import React from 'react';
 import tchal from '../assets/images/tchal.png';
+import CampusTour from '../components/CampusTour';
+import { useContext } from 'react';
+import { AppContext } from '../providers/AppContextProvider';
+import { useQuery } from '@tanstack/react-query';
+import Award from "../assets/images/award1.png";
+import AwardDetailForm from '../components/AwardDetailForm';
+import { NavLink } from 'react-router-dom';
+
+const fetchAchiement = async () => {
+  const response = await fetch("/js/achievement.json");
+  return await response.json();
+}
+
+const fetchLecturer = async () => {
+  const response = await fetch ("/js/lecturer.json");
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+}
+
+
+const fetchTimeLine = async () => {
+  const response = await fetch ("/js/timeline.json");
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+}
 
 function About() {
+
+  let {CampusTourHandler,AwardDetailHandler} = useContext(AppContext);
+
+  const {data:awards, isPending, error} = useQuery({
+                        queryKey: ['achievement'],
+                        queryFn : fetchAchiement
+  });
+
+  const { data: lecturers, isPending: lecturerLoading, error: lecturerError } = useQuery({
+      queryKey: ["lecturers"],
+      queryFn: fetchLecturer,
+  });
+
+  const {data: timeLine, isPending: timeLineLoading, error: timeLineErr} = useQuery({
+      queryKey: ['timeLine'],
+      queryFn: fetchTimeLine,
+  })
+
+
+  const principal = lecturers?.find((lecturer) => lecturer.position == "principal");
+  const vice1     = lecturers?.find((lecturer) => lecturer.position == "vice-principal1");
+  const vice2     = lecturers?.find((lecturer) => lecturer.position == "vice-principal2");
+
+
+  const findAward = (id) => {
+    const award = awards?.find((award) => award.id === id);
+
+    if (award) {
+      localStorage.setItem("award-detail", JSON.stringify(award));
+      AwardDetailHandler();
+    }
+  };
+
+
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white">
 
@@ -51,16 +110,26 @@ function About() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <button className="group relative px-5 py-2.5 border-2 border-[var(--primary-dark)] text-white rounded-lg font-medium text-sm bg-gradient-to-r from-[var(--primary-dark)] to-blue-800 hover:from-white hover:to-white hover:text-[var(--primary-dark)] transition-all duration-300 overflow-hidden shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-                <i className="fas fa-play-circle mr-2 text-sm"></i>
-                Watch Campus Tour
-                <i className="fas fa-chevron-right ml-1 transform group-hover:translate-x-0.5 transition-transform duration-300"></i>
+              <button
+                onClick={CampusTourHandler}
+                className="group relative cursor-pointer w-full sm:w-50 lg:w-60 px-3 lg:px-5 py-2.5 border-2 border-[var(--primary-dark)] text-white rounded-lg font-medium text-sm bg-gradient-to-r from-[var(--primary-dark)] to-blue-800 hover:text-[var(--primary-dark)] transition-all duration-300 overflow-hidden shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <span className="absolute inset-0 bg-white translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+                <span className="relative z-10 flex items-center justify-center">
+                  <i className="fas fa-play-circle mr-2 text-sm"></i>
+                  Watch Campus Tour
+                  <i className="fas fa-chevron-right ml-1 transform group-hover:translate-x-1 transition-transform duration-300"></i>
+                </span>
               </button>
 
-              <button className="group relative px-5 py-2.5 bg-white text-[var(--primary-dark)] border-2 border-[var(--primary-dark)] rounded-lg font-medium text-sm hover:text-white transition-all duration-300 overflow-hidden shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+
+              <button className="cursor-pointer group relative w-full sm:w-50 lg:w-60 px-3 lg:px-5 py-2.5 bg-white text-[var(--primary-dark)] border-2 border-[var(--primary-dark)] rounded-lg font-medium text-sm hover:text-white transition-all duration-300 overflow-hidden shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                 <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary-dark)] to-blue-800 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
-                <span className="relative z-10">Explore Programs</span>
+                <span className="relative z-10">
+                  <NavLink to="/faculty">
+                        Explore Programs
+                  </NavLink>
+                </span>
                 <i className="fas fa-arrow-right ml-2 relative z-10 transform group-hover:translate-x-1 transition-transform duration-300"></i>
               </button>
             </div>
@@ -87,17 +156,17 @@ function About() {
 
       </section>
 
-
       {/* Mission & Vision */}
       <section className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                Our Mission & Vision
-                <div className="w-20 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
-              </h2>
-              
+              <div className="flex-col justify-center mb-5">
+                <h2 className="text-3xl lg:text-4xl text-center font-bold text-gray-900 mb-4">
+                  Our Mission & Vision
+                </h2>
+                <div className="w-20 h-1 m-auto bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
+              </div>
               <div className="space-y-8">
                 <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
                   <div className="flex items-start">
@@ -178,32 +247,37 @@ function About() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { number: '1st', text: 'Highest Enrollment Award', icon: 'fas fa-trophy', color: 'from-yellow-500 to-orange-500' },
-              { number: '500+', text: 'Industry Partnerships', icon: 'fas fa-handshake', color: 'from-green-500 to-emerald-500' },
-              { number: '95%', text: 'Placement Rate', icon: 'fas fa-briefcase', color: 'from-blue-500 to-cyan-500' },
-              { number: '50+', text: 'Patents & Innovations', icon: 'fas fa-lightbulb', color: 'from-purple-500 to-pink-500' },
-            ].map((achievement, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-r ${achievement.color} flex items-center justify-center`}>
-                  <i className={`${achievement.icon} text-white text-2xl`}></i>
+            {awards?.map((achievement, index) => (
+              <div key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex-col justify-between h-full">
+                <div className={`mx-auto mb-4 rounded-xl bg-gradient-to-r flex items-center justify-center`}>
+                  <img src={Award} alt={achievement?.title} className='w-30 h-30' />
                 </div>
+
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{achievement.number}</div>
-                  <p className="text-gray-700">{achievement.text}</p>
+                  <div className="text-xl font-bold text-gray-900 mb-2">{achievement.title}</div>
+                  <p className="text-gray-700">{achievement?.description}</p>
+                </div>
+
+                <div className="mt-4 flex justify-center">
+                  <button 
+                  onClick={() => findAward(achievement.id)} 
+                  // onClick={() => AwardDetailHandler()} 
+                  className='py-2 px-5 bg-white border-2 border-[var(--primary-dark)]  rounded-xl text-[var(--primary-dark)] cursor-pointer hover:bg-[var(--primary-dark)] hover:text-white'>
+                    View Details
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </section>   
 
       {/* Leadership Team */}
       <section className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Our BOD
+              Our BOD/P ?
               <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2 mx-auto"></div>
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
@@ -218,25 +292,22 @@ function About() {
                 position: 'Vice Principal',
                 bio: 'PhD in Computer Science, 25+ years experience',
                 expertise: 'AI & Research',
-                color: 'from-blue-500 to-cyan-500'
               },
               { 
                 name: 'U Aung Zaw Myint', 
                 position: 'Principal',
                 bio: 'Former Director at Tech Giant Inc.',
                 expertise: 'Curriculum Development',
-                color: 'from-purple-500 to-pink-500'
               },
               { 
                 name: 'U Myat Min Oo', 
                 position: 'Vice Principal',
                 bio: 'Industry liaison with 100+ company networks',
                 expertise: 'Corporate Relations',
-                color: 'from-green-500 to-emerald-500'
               },
             ].map((leader, index) => (
-              <div key={index} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className={`h-40 bg-gradient-to-r ${leader.color} relative`}>
+              <div key={index} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200">
+                <div className={`h-30 bg-gray-100 relative`}>
                   <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
                     <div className="w-24 h-24 rounded-full bg-white p-1">
                       <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-100 to-gray-100 flex items-center justify-center">
@@ -252,74 +323,6 @@ function About() {
                   <div className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-700">
                     <i className="fas fa-star mr-2 text-yellow-500"></i>
                     {leader.expertise}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Infrastructure */}
-      <section className="py-16 bg-gradient-to-r from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              World-Class Infrastructure
-              <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2 mx-auto"></div>
-            </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              State-of-the-art facilities for holistic learning and innovation
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { 
-                title: 'Advanced Labs', 
-                description: '15+ specialized labs including AI, IoT, and Cybersecurity',
-                icon: 'fas fa-flask',
-                color: 'bg-gradient-to-r from-blue-500 to-cyan-500'
-              },
-              { 
-                title: 'Digital Library', 
-                description: 'Access to 50,000+ e-books and research papers',
-                icon: 'fas fa-book',
-                color: 'bg-gradient-to-r from-purple-500 to-pink-500'
-              },
-              { 
-                title: 'Innovation Center', 
-                description: 'Dedicated space for startups and research projects',
-                icon: 'fas fa-lightbulb',
-                color: 'bg-gradient-to-r from-green-500 to-emerald-500'
-              },
-              { 
-                title: 'Smart Classrooms', 
-                description: 'Interactive learning with latest technology',
-                icon: 'fas fa-chalkboard-teacher',
-                color: 'bg-gradient-to-r from-orange-500 to-red-500'
-              },
-              { 
-                title: 'Sports Complex', 
-                description: 'Indoor and outdoor sports facilities',
-                icon: 'fas fa-running',
-                color: 'bg-gradient-to-r from-indigo-500 to-purple-500'
-              },
-              { 
-                title: 'Hostel Facilities', 
-                description: 'Modern accommodation with all amenities',
-                icon: 'fas fa-home',
-                color: 'bg-gradient-to-r from-teal-500 to-green-500'
-              },
-            ].map((facility, index) => (
-              <div key={index} className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                <div className="flex items-start">
-                  <div className={`w-14 h-14 rounded-xl ${facility.color} flex items-center justify-center mr-4`}>
-                    <i className={`${facility.icon} text-white text-xl`}></i>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{facility.title}</h3>
-                    <p className="text-gray-600">{facility.description}</p>
                   </div>
                 </div>
               </div>
@@ -344,17 +347,10 @@ function About() {
             
             {/* Timeline items */}
             <div className="space-y-12">
-              {[
-                { year: '1995', title: 'Foundation', description: 'College established with Computer Science department' },
-                { year: '2005', title: 'Expansion', description: 'New campus inaugurated with modern infrastructure' },
-                { year: '2010', title: 'Autonomy', description: 'Granted academic autonomy by UGC' },
-                { year: '2015', title: 'International Recognition', description: 'Ranked among top 10 IT colleges nationally' },
-                { year: '2020', title: 'Digital Transformation', description: 'Complete shift to smart campus infrastructure' },
-                { year: '2023', title: 'Global Partnerships', description: 'Collaboration with 20+ international universities' },
-              ].map((milestone, index) => (
+              {timeLine?.map((milestone, index) => (
                 <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
-                    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:bg-gray-200">
                       <div className="text-2xl font-bold text-blue-600 mb-2">{milestone.year}</div>
                       <h3 className="text-xl font-semibold text-gray-900 mb-2">{milestone.title}</h3>
                       <p className="text-gray-600">{milestone.description}</p>
@@ -373,29 +369,8 @@ function About() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-3xl p-8 lg:p-12 text-center text-white">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-              Ready to Shape Your Future in M.S.T ?
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join our community of innovators and start your journey towards excellence in technology.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <i className="fas fa-file-alt mr-2"></i>
-                Download Brochure
-              </button>
-              <button className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-white text-blue-900 hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <i className="fas fa-calendar-alt mr-2"></i>
-                Schedule Campus Tour
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CampusTour/>
+      <AwardDetailForm/>
     </div>
   );
 }

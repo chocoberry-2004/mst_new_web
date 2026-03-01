@@ -1,9 +1,46 @@
 import React from "react";
 import w4 from "../assets/images/w1.jpg";
+import { useQuery } from "@tanstack/react-query";
+import ApplicationForm from "../components/ApplicationForm";
+import { AppContext } from "../providers/AppContextProvider";
+import { useContext } from "react";
+import Loading from "./Loading";
+
+const fetchFaculty = async () => {
+  const response = await fetch("/js/faculty.json");
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+};
+
+const fetchLecturer = async () => {
+  const response = await fetch ("/js/lecturer.json");
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+}
+
 
 function Faculty() {
+
+  let {showModal, setShowModal, ApplicationFormHandler} = useContext(AppContext);
+
+  const { data: facultyList, isPending: facultyLoading, error: facultyError } = useQuery({
+    queryKey: ["faculty"],
+    queryFn: fetchFaculty,
+  });
+
+  const { data: lecturers, isPending: lecturerLoading, error: lecturerError } = useQuery({
+    queryKey: ["lecturers"],
+    queryFn: fetchLecturer,
+  });
+
+  if (facultyLoading || lecturerLoading) return <Loading/>;
+  if (facultyError) return <p className="text-center mt-20">Error: {facultyError.message}</p>;
+  if (lecturerError) return <p className="text-center mt-20">Error: {lecturerError.message}</p>;
+
+  const faculty = facultyList?.faculty;
+
   return (
-    <div className="bg-white">
+    <div className="bg-white relative">
 
       <section className="relative h-[100vh] flex items-center overflow-hidden">
         {/* Background Container */}
@@ -50,24 +87,24 @@ function Faculty() {
 
               {/* CTA Buttons - Responsive */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button className="group relative px-6 sm:px-8 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl active:scale-95">
+                <a href="#faculty" className="group relative px-6 sm:px-8 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl active:scale-95">
                   <span className="text-sm sm:text-base">Explore Faculty Profiles</span>
                   <svg className="inline-block ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
-                </button>
+                </a>
                 <button className="px-6 sm:px-8 py-3 bg-transparent border-2 border-white/40 text-white font-semibold rounded-lg hover:bg-white/10 hover:border-white/60 transition-all duration-300 active:scale-95 text-sm sm:text-base">
                   View Departments
                 </button>
               </div>
 
               {/* Stats Section - Responsive Grid */}
-              <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+              <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 ">
                 {[
-                  { value: "150+", label: "Expert Faculty" },
-                  { value: "95%", label: "PhD Holders" },
+                  { value: "50+", label: "Faculty" },
+                  { value: "150+", label: "Experienced Tutor" },
                   { value: "25+", label: "Countries" },
-                  { value: "50+", label: "Research Awards" }
+                  { value: "50+", label: "Awards" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
                     <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-400 mb-1">
@@ -85,99 +122,122 @@ function Faculty() {
 
       </section>
 
-      <section className="lecturer-section min-h-screen bg-gray-50 py-10">
+      {/* Lecturer Grid */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
-
-          {/* Section Title */}
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               Our Expert Lecturers
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Learn from experienced professionals with strong academic backgrounds and
-              real-world industry expertise.
+            <p className="text-gray-600 max-w-2xl mx-auto mt-3">
+              Learn from experienced professionals with strong academic backgrounds and real-world industry expertise.
             </p>
           </div>
 
-          {/* Lecturer Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-
-            {/* Lecturer Card */}
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center">
-              <img
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="Dr. Aung Min"
-                className="w-32 h-32 mx-auto rounded-full object-cover mb-5 border-4 border-yellow-400"
-              />
-              <h3 className="text-xl font-semibold text-gray-800">
-                Dr. Aung Min
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                PhD (Computer Science)
-              </p>
-              <p className="text-gray-600 mt-3 text-sm">
-                Artificial Intelligence, Machine Learning, Data Science
-              </p>
-            </div>
-
-            {/* Lecturer Card */}
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center">
-              <img
-                src="https://randomuser.me/api/portraits/women/44.jpg"
-                alt="Ms. Thandar Win"
-                className="w-32 h-32 mx-auto rounded-full object-cover mb-5 border-4 border-yellow-400"
-              />
-              <h3 className="text-xl font-semibold text-gray-800">
-                Ms. Thandar Win
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                MSc (Information Technology)
-              </p>
-              <p className="text-gray-600 mt-3 text-sm">
-                Web Development, UI/UX Design, Frontend Engineering
-              </p>
-            </div>
-
-            {/* Lecturer Card */}
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center">
-              <img
-                src="https://randomuser.me/api/portraits/men/75.jpg"
-                alt="U Kyaw Zaw"
-                className="w-32 h-32 mx-auto rounded-full object-cover mb-5 border-4 border-yellow-400"
-              />
-              <h3 className="text-xl font-semibold text-gray-800">
-                U Kyaw Zaw
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                BEng (Software Engineering)
-              </p>
-              <p className="text-gray-600 mt-3 text-sm">
-                Backend Development, Cloud Computing, System Architecture
-              </p>
-            </div>
-
-            {/* Lecturer Card */}
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center">
-              <img
-                src="https://randomuser.me/api/portraits/women/68.jpg"
-                alt="Daw May Zin Oo"
-                className="w-32 h-32 mx-auto rounded-full object-cover mb-5 border-4 border-yellow-400"
-              />
-              <h3 className="text-xl font-semibold text-gray-800">
-                Daw May Zin Oo
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                MBA, Dip (ICT Education)
-              </p>
-              <p className="text-gray-600 mt-3 text-sm">
-                Project Management, Business IT, Digital Transformation
-              </p>
-            </div>
-
+            {lecturers?.map((lecturer, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center"
+              >
+                <img
+                  src={lecturer.profileImage}
+                  alt={lecturer.name}
+                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-yellow-400"
+                />
+                <h3 className="text-xl font-semibold text-gray-800">{lecturer.name}</h3>
+                <p className="text-sm text-gray-500 mt-1">{lecturer.degree}</p>
+                <p className="text-gray-600 mt-2 text-sm">{lecturer.expertise}</p>
+                {lecturer.award && (
+                  <p className="mt-2 text-xs text-yellow-600 font-medium">{lecturer.award}</p>
+                )}
+                <button
+                  onClick={() => ApplicationFormHandler()}
+                  className="mt-4 px-4 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 cursor-pointer"
+                >
+                  Contact
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* Faculty section */}
+      <section id="faculty" className="min-h-screen py-10 px-6">
+      {/* Faculty Header */}
+      <div className="max-w-6xl mx-auto text-center mb-12 border-b border-[var(--accent-yellow)] py-5">
+        <h1 className="text-4xl font-bold text-[var(--primary-dark)]">
+          {faculty?.name}
+        </h1>
+        <p className="text-gray-600 mt-3 max-w-3xl mx-auto">
+          {faculty?.description}
+        </p>
+      </div>
+
+      {/* Courses Grid */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {faculty?.courses?.map((course) => (
+          <div
+            key={course.id}
+            className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition duration-300 border border-gray-200"
+          >
+            <h2 className="text-xl font-bold text-indigo-600">
+              {course.name}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">{course.type}</p>
+
+            <div className="mt-4">
+              <p className="text-sm text-gray-700">
+                <span className="font-semibold">Duration:</span>{" "}
+                {course.duration}
+              </p>
+            </div>
+
+            <p className="text-gray-600 text-sm mt-3">
+              {course.overview}
+            </p>
+
+            {/* Levels */}
+            <div className="mt-4">
+              <h3 className="text-sm font-semibold text-gray-700">
+                Levels:
+              </h3>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {course.levels.map((level, index) => (
+                  <span
+                    key={index}
+                    className="bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full border"
+                  >
+                    {level}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Career Paths */}
+            <div className="mt-4">
+              <h3 className="text-sm font-semibold text-gray-700">
+                Career Paths:
+              </h3>
+              <ul className="list-disc list-inside text-sm text-gray-600 mt-2">
+                {course.career_paths.map((career, index) => (
+                  <li key={index}>{career}</li>
+                ))}
+              </ul>
+            </div>
+
+            <button 
+            onClick={() => ApplicationFormHandler()}
+            className="mt-5 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition cursor-pointer" >
+              Contact
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <ApplicationForm/>
     </div>
   );
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "year": "1995",
+    "title": "Foundation",
+    "description": "College established with Computer Science department"
+  },
+  {
+    "year": "2005",
+    "title": "Expansion",
+    "description": "New campus inaugurated with modern infrastructure"
+  },
+  {
+    "year": "2010",
+    "title": "Autonomy",
+    "description": "Granted academic autonomy by UGC"
+  },
+  {
+    "year": "2015",
+    "title": "International Recognition",
+    "description": "Ranked among top 10 IT colleges nationally"
+  },
+  {
+    "year": "2020",
+    "title": "Digital Transformation",
+    "description": "Complete shift to smart campus infrastructure"
+  },
+  {
+    "year": "2023",
+    "title": "Global Partnerships",
+    "description": "Collaboration with 20+ international universities"
+  }
+]

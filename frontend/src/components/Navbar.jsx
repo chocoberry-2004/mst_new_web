@@ -15,7 +15,7 @@ function Navbar() {
      ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`;
 
   return (
-    <nav className="flex items-center gap-8">
+    <nav className="flex items-center gap-8 text-shadow-lg">
       <NavLink to="/" className={linkClass}>
         Home
       </NavLink>

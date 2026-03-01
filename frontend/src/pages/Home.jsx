@@ -2,20 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import w5 from "../assets/images/w5.png"
 import { NavLink } from "react-router-dom";
 
+const binaryDigits = Array.from({ length: 40 });
+
 function Home() {
-
-const linkClass = ({ isActive }) =>
-    `relative px-1 py-2 font-medium transition-all duration-300
-     ${
-       isActive
-         ? "text-[#FFC53A]"
-         : "text-[#FEFEFE] hover:text-[#FFC53A]"
-     }
-     after:absolute after:left-0 after:-bottom-1
-     after:h-[2px] after:bg-[#FFC53A]
-     after:transition-all after:duration-300
-     ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`;
-
 
   return (
     <div className="">
@@ -26,45 +15,42 @@ const linkClass = ({ isActive }) =>
         <div className="binary-bg"></div>
 
         <div className="binary-fall">
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>  {/* M: 01001101 */}
+        {binaryDigits.map((_, i) => {
+            const left = Math.random() * 100; // random horizontal position
+            const duration = 6 + Math.random() * 8; // random speed
+            const delay = Math.random() * 5; // random delay
+            const color = Math.random() > 0.5 ? "#4876ff" : "#00ffaa";
+            const value = Math.random() > 0.5 ? "0" : "1";
 
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">1</span>  {/* S: 01010011 */}
-
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">1</span>
-            <span className="binary-digit">0</span>
-            <span className="binary-digit">0</span>  {/* T: 01010100 */}
+            return (
+            <span
+                key={i}
+                className="binary-digit"
+                style={{
+                left: `${left}%`,
+                animationDuration: `${duration}s`,
+                animationDelay: `${delay}s`,
+                color,
+                }}
+            >
+                {value}
+            </span>
+            );
+        })}
         </div>
+
 
         {/* Main content */}
         <div className="w-full h-full relative z-10 px-4 flex justify-between items-end transition-transform duration-300 ease-in-out">
             <div className="lg:py-20 py-5 transition-all duration-300 ease-in-out">
                 <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white animate-drop-in transition-all duration-300 ease-in-out">
-                    Shaping Future IT Professionals
+                    Shaping Future IT Professionals in <span className="border-b-3"><span className="text-[var(--accent-yellow)]">M</span>.<span className="text-[var(--primary-dark)]">S</span>.<span>T</span> </span> 
                 </h2>
                 <p className="max-w-2xl mb-8 text-gray-300">
-                    Learn cutting-edge technologies, industry-ready skills, and real-world problem solving.
+                    Learn cutting-edge technologies, industry-ready skills, and real-world problem solving with us.
                 </p>
-                <button className="px-5 py-2 lg:px-8 lg:py-3 rounded-full lg:font-semibold border-2 border-[var(--accent-yellow)] text-[var(--accent-yellow)] transition-all duration-300 ease-in-out">
-                    <NavLink to="/faculty" className={linkClass}>
+                <button className="px-5 py-2 lg:px-8 lg:py-3 rounded-full lg:font-semibold border-2 border-[var(--accent-yellow)] text-[var(--accent-yellow)] hover:bg-[var(--accent-yellow)] hover:text-[var(--primary-dark)] transition-all duration-300 ease-in-out cursor-pointer">
+                    <NavLink to="/faculty">
                         Explore Now
                     </NavLink>
                 </button>
@@ -151,14 +137,11 @@ const linkClass = ({ isActive }) =>
         
        <section className="bg-[#807F9A] text-[var(--primary-dark)] py-16 px-6 graduation-background">
   
-        <div className="max-w-6xl mx-auto text-center mb-12 text-[var(--accent-yellow)]">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" 
-            style={{
-                WebkitTextStroke: "1.5px var(--primary-dark)",
-            }}>
-            Our Mission
+        <div className="max-w-6xl mx-auto text-center mb-12 text-white">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4" >
+            M.S.T Philosophy
             </h2>
-            <p className="max-w-2xl mx-auto text-lg opacity-90" >
+            <p className="max-w-2xl mx-auto text-lg " >
             We are driven by purpose, clarity, and commitment to creating meaningful impact.
             </p>
         </div>
