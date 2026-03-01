@@ -6,7 +6,7 @@ import App from './App.jsx';
 
 const queryClient = new QueryClient();
 
-const root = document.getElementById("root");
+const root =  document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
