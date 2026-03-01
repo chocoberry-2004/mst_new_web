@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import diamond2 from "../assets/images/diamond2.png";
+import technolympic from "../assets/images/technolympic.jpg"
 import bookundercap from "../assets/images/booksundercap.png";
 import { useQuery } from '@tanstack/react-query';
+import { useContext } from 'react';
+import { AppContext } from '../providers/AppContextProvider';
+import ApplicationForm from '../components/ApplicationForm';
+import Loading from "./Loading";
 
 const fetchEvent = async () => {
-  const response = await fetch("js/event.json");
+  const response = await fetch("/js/event.json");
   if (!response.ok) throw new Error("Failed to fetch events");
-  return response.json();
+  return await response.json();
 };
 
 
 function Events() {
   const [activeFilter, setActiveFilter] = useState('all');
+  let {showModal, setShowModal, ApplicationFormHandler} = useContext(AppContext);
   
   const { data: events, isPending, error } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvent
   });
-
-  console.log(events);
 
   const filters = [
     { id: 'all', name: 'All Events', icon: 'fas fa-calendar-alt' },
@@ -31,17 +35,19 @@ function Events() {
   ];
 
 
-  if (isPending) return "Loading...";
+  if (isPending) return <Loading/>;
   if (error) return "Error: " + error.message;
 
-  const filteredEvents = events?.filter(event =>
+  const eventList = Array.isArray(events) ? events : [];
+
+  const filteredEvents = eventList?.filter(event =>
     activeFilter === 'all' ||
     event.type === activeFilter ||
     (activeFilter === 'upcoming' && event.status === 'upcoming')
   );
 
-  const upcomingEvents = events?.filter(event => event.status === 'upcoming');
-  const pastEvents = events?.filter(event => event.status === 'past');
+  const upcomingEvents = eventList?.filter(event => event.status === 'upcoming');
+  const pastEvents = eventList?.filter(event => event.status === 'past');
 
 
   return (
@@ -122,16 +128,6 @@ function Events() {
               technical, cultural, and professional events.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <i className="fas fa-calendar-alt mr-2"></i>
-                View All Events
-              </button>
-              <button className="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 border border-blue-200 font-medium rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <i className="fas fa-gem mr-2"></i>
-                Featured Highlights
-              </button>
-            </div>
           </div>
         </div>
       </section>
@@ -161,9 +157,8 @@ function Events() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Filter Tabs */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            <h2 className="text-3xl font-bold text-gray-900 border-b border-gray-200 pb-5  mb-8 text-center">
               Browse Events by Category
-              <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2 mx-auto"></div>
             </h2>
             
             <div className="flex flex-wrap justify-center gap-4">
@@ -171,9 +166,9 @@ function Events() {
                 <button
                   key={filter.id}
                   onClick={() => setActiveFilter(filter.id)}
-                  className={`inline-flex items-center px-6 py-3 rounded-full transition-all duration-300 ${
+                  className={`inline-flex items-center px-6 py-2 rounded-full transition-all duration-300 cursor-pointer ${
                     activeFilter === filter.id
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
+                      ? 'bg-gradient-to-b from-cyan-500 to-[var(--primary-dark)] text-white shadow-lg'
                       : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                   }`}
                 >
@@ -229,41 +224,85 @@ function Events() {
                     {event.title}
                   </h3>
 
-                  <div className="space-y-2 mb-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <i className="fas fa-calendar text-blue-500"></i>
-                      <span>{event.date}</span>
+                  <div className="space-y-1 mb-5 text-sm">
+
+                    {/* Date */}
+                    <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition border border-gray-100">
+                      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                        <i className="fas fa-calendar-alt"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Date</p>
+                        <p className="font-medium text-gray-700">{event.date}</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <i className="fas fa-clock text-blue-500"></i>
-                      <span>{event.time}</span>
+
+                    {/* Time */}
+                    <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition border border-gray-100">
+                      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                        <i className="fas fa-clock"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Time</p>
+                        <p className="font-medium text-gray-700">{event.time}</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <i className="fas fa-map-marker-alt text-red-500"></i>
-                      <span>{event.venue}</span>
+
+                    {/* Venue */}
+                    <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition border border-gray-100">
+                      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 text-red-600">
+                        <i className="fas fa-map-marker-alt"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Venue</p>
+                        <p className="font-medium text-gray-700">{event.venue}</p>
+                      </div>
                     </div>
+
                   </div>
 
                   <p className="text-gray-600 mb-5 line-clamp-2">
                     {event.description}
                   </p>
 
-                  <div className="flex justify-between items-center text-sm mb-4">
-                    <span className="text-gray-500">
-                      👥 {event.participants} participants
-                    </span>
-                    <span className="text-gray-500">
-                      🎤 {event.speakers} speakers
-                    </span>
+                  <div className="flex justify-between items-center mb-5">
+
+                    {/* Participants */}
+                    <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
+                      <div className="w-9 h-9 flex items-center justify-center rounded-full bg-green-100 text-green-600">
+                        <i className="fas fa-users"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Participants</p>
+                        <p className="text-sm font-semibold text-gray-700">
+                          {event.participants}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Speakers */}
+                    <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
+                      <div className="w-9 h-9 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600">
+                        <i className="fas fa-microphone"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Speakers</p>
+                        <p className="text-sm font-semibold text-gray-700">
+                          {event.speakers}
+                        </p>
+                      </div>
+                    </div>
+
                   </div>
 
                   <button
-                    className={`w-full py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                    onClick={() => ApplicationFormHandler()}
+                    className={`w-full py-2.5 cursor-pointer rounded-lg font-medium transition-all duration-300 ${
                       event.registered
                         ? "bg-green-600 text-white"
                         : event.status === "upcoming"
                         ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "bg-gray-100 text-gray-600"
+                        : "bg-gray-400 text-gray-600"
                     }`}
                   >
                     {event.registered
@@ -284,61 +323,97 @@ function Events() {
           )}
 
 
-          {/* Upcoming Highlights */}
           {upcomingEvents?.length > 0 && (
-            <div className="mb-16">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                <i className="fas fa-fire text-orange-500 mr-3"></i>
-                Upcoming Highlights
-                <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
-              </h2>
-              
-              <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl overflow-hidden">
-                <div className="grid lg:grid-cols-2">
-                  <div className="p-8 lg:p-12 text-white">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-                      <i className="fas fa-crown mr-2"></i>
-                      <span className="text-sm font-medium">Featured Event</span>
+            <div className="mb-20">
+
+              {/* Section Title */}
+              <div className="mb-10">
+                <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                  <i className="fas fa-fire text-orange-500"></i>
+                  Upcoming Highlights
+                </h2>
+                <div className="w-28 h-1 mt-3 rounded-full bg-gradient-to-r from-cyan-500 to-[var(--primary-dark)]"></div>
+              </div>
+
+              {/* Highlight Card */}
+              <div className="relative rounded-3xl overflow-hidden shadow-xl">
+
+                {/* Background Image */}
+                <img
+                  src={technolympic}
+                  alt="Technolympic Event"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0B124E]/95 via-[#0B124E]/85 to-[#0B124E]/60"></div>
+
+                {/* Content */}
+                <div className="relative grid lg:grid-cols-2 gap-8 p-8 lg:p-14 text-white">
+
+                  {/* LEFT CONTENT */}
+                  <div>
+
+                    {/* Featured Badge */}
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
+                    bg-white/20 backdrop-blur-md mb-6">
+                      <i className="fas fa-crown text-yellow-300"></i>
+                      <span className="text-sm font-medium">
+                        Featured Event
+                      </span>
                     </div>
-                    
-                    <h3 className="text-3xl font-bold mb-4">Technolympic 2025</h3>
-                    <p className="text-gray-300 mb-6">
-                      The biggest tech fest of the year featuring 50+ events, 100+ speakers, 
-                      and opportunities to network with industry leaders and recruiters.
+
+                    {/* Title */}
+                    <h3 className="text-4xl font-bold mb-4">
+                      Technolympic 2025
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-gray-200 leading-relaxed mb-8">
+                      The biggest technology festival featuring competitions,
+                      workshops, innovation showcases, and networking opportunities
+                      with industry professionals and recruiters.
                     </p>
-                    
-                    <div className="grid grid-cols-2 gap-6 mb-8">
+
+                    {/* Event Stats */}
+                    <div className="flex gap-10 mb-10">
+
                       <div>
-                        <div className="text-2xl font-bold mb-2">15-17 Dec</div>
-                        <div className="text-gray-300">2023</div>
+                        <p className="text-3xl font-bold">15–17</p>
+                        <p className="text-gray-300 text-sm">December 2025</p>
                       </div>
+
                       <div>
-                        <div className="text-2xl font-bold mb-2">500+</div>
-                        <div className="text-gray-300">Expected Participants</div>
+                        <p className="text-3xl font-bold">500+</p>
+                        <p className="text-gray-300 text-sm">
+                          Participants Expected
+                        </p>
                       </div>
+
                     </div>
-                    
-                    <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                      <i className="fas fa-star mr-2"></i>
-                      Register Now - Early Bird Available
+
+                    {/* CTA */}
+                    <button
+                      onClick={ApplicationFormHandler}
+                      className="cursor-pointer inline-flex items-center gap-2 text-[var(--primary-dark)]
+                      px-7 py-3 rounded-full font-semibold
+                      bg-[var(--accent-yellow)]
+                      transition-all duration-300
+                      shadow-lg hover:shadow-2xl hover:scale-105"
+                    >
+                      <i className="fas fa-ticket-alt"></i>
+                      Register Now
                     </button>
+
                   </div>
-                  
-                  <div className="relative min-h-[300px] bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <i className="fas fa-robot text-8xl text-white/30"></i>
-                        <div className="mt-4 text-white/50">Featured Event Gallery</div>
-                      </div>
-                    </div>
-                  </div>
+
+                  {/* RIGHT SIDE SPACE (keeps balance) */}
+                  <div className="hidden lg:block"></div>
+
                 </div>
               </div>
             </div>
           )}
-
-
-          
 
           {/* Past Events Gallery */}
           {pastEvents.length > 0 && (
@@ -346,7 +421,7 @@ function Events() {
               <h2 className="text-3xl font-bold text-gray-900 mb-8">
                 <i className="fas fa-images text-purple-500 mr-3"></i>
                 Past Events Gallery
-                <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
+                <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-[var(--primary-dark)] mt-2"></div>
               </h2>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -390,11 +465,13 @@ function Events() {
               Student clubs and organizations can apply to host events on campus.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+              <button
+              className="cursor-pointer inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
                 <i className="fas fa-file-signature mr-2"></i>
                 Submit Event Proposal
               </button>
-              <button className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-white text-green-900 hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
+              <button 
+              className="cursor-pointer inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-white text-green-900 hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
                 <i className="fas fa-question-circle mr-2"></i>
                 Event Guidelines
               </button>
@@ -402,6 +479,8 @@ function Events() {
           </div>
         </div>
       </section>
+      
+      <ApplicationForm/>
     </div>
   );
 }

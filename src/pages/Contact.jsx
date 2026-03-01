@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../assets/images/mst_logo1.png';
 import diamond2 from "../assets/images/star.png";
+import { useQuery } from '@tanstack/react-query';
 
 const locationList =  [
   {
@@ -53,6 +54,12 @@ const locationList =  [
   },
 ];
 
+
+const fetchFAQ = async () => {
+  const response = await fetch("/js/faq.json");
+  return await response.json();
+}
+
 function Contact() {
   const [activeCampus, setActiveCampus] = useState(locationList[0]);
   const [formData, setFormData] = useState({
@@ -84,11 +91,16 @@ function Contact() {
     });
   };
 
+  const {data: FAQ, isPending: FAQLoading, error: FAQErr} = useQuery({
+        queryKey: ['faq'],
+        queryFn: fetchFAQ,
+  })
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white star-bg">
+    <div className="min-h-screen">
       
       {/* hero section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-[var(--gray-text)] overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-300 to-[var(--gray-text)] overflow-hidden">
 
         {/* Wave Shapes - Must be at bottom */}
         <div className="absolute inset-x-0 bottom-0 h-[45%] sm:h-[65%] bg-[var(--primary-dark)] rounded-t-[120%]"></div>
@@ -191,10 +203,10 @@ function Contact() {
               Send Message
             </a>
 
-            <button className="group px-6 py-2.5 rounded-lg border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] font-semibold hover:bg-[var(--primary-dark)] hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <a href='#contact-info' className="group px-6 py-2.5 rounded-lg border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] font-semibold hover:bg-[var(--primary-dark)] hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               <i className="fas fa-phone-alt mr-2 group-hover:rotate-12 transition-transform"></i>
               Contact Support
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -310,7 +322,7 @@ function Contact() {
             </div>
 
             {/* Contact Information */}
-            <div>
+            <div id='contact-info'>
               <div className="mb-12">
                 <h2 className="text-3xl font-bold text-gray-900 mb-8">
                   Contact Information
@@ -432,7 +444,6 @@ function Contact() {
               {/* Accordion */}
               <div className="p-6 bg-gradient-to-b from-[var(--primary-dark)] to-[var(--secondary-dark)] text-white overflow-y-auto">
                 <h3 className="text-2xl font-bold mb-6">Our Campus Locations</h3>
-
                 <div className="space-y-4">
                   {locationList.map((campus) => {
                     const isActive = activeCampus.id === campus.id;
@@ -544,24 +555,7 @@ function Contact() {
             </h2>
             
             <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  question: "What are the admission requirements?",
-                  answer: "Minimum 60% in 12th grade with Mathematics. Entrance exam followed by personal interview."
-                },
-                {
-                  question: "Do you offer scholarship programs?",
-                  answer: "Yes, we offer merit-based and need-based scholarships. Apply through our scholarship portal."
-                },
-                {
-                  question: "What is the campus placement rate?",
-                  answer: "Our placement rate is 95% with average package of ₹12 LPA."
-                },
-                {
-                  question: "Are hostel facilities available?",
-                  answer: "Yes, separate hostels for boys and girls with modern amenities."
-                },
-              ].map((faq, index) => (
+              {FAQ?.map((faq, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
@@ -577,7 +571,7 @@ function Contact() {
             </div>
             
             <div className="text-center mt-8">
-              <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300">
+              <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer">
                 View All FAQs <i className="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
