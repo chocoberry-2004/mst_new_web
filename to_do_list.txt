@@ -1,0 +1,135 @@
+1. login function
+2. event filter and register function
+3. contact send message function
+4. course enrollment function
+5. CRUD for admin dashboard
+6. gallery
+7. term and policy
+8. cookie
+9. 
+
+
+
+footer function new letters
+
+Newsletter Section (What You Should Do)
+
+This lets users subscribe to updates.
+
+Typical uses:
+
+Event announcements
+
+Articles
+
+College news
+
+Promotions
+
+What You Should Implement
+Option 1 (Simple – Best for student project)
+
+Just collect email and store it in database.
+
+Then show message:
+
+"Thank you for subscribing!"
+
+
+6. Terms of Service (What You Should Do)
+
+This should link to a Terms page.
+
+Example route:
+
+/terms
+
+Content should explain:
+
+Website usage rules
+
+User responsibilities
+
+Intellectual property
+
+Limitation of liability
+
+Example sections:
+
+1. Acceptance of Terms
+2. Use of Website
+3. Intellectual Property
+4. Limitation of Liability
+5. Changes to Terms
+
+Simple student project version is fine.
+
+Example React route:
+
+<Route path="/terms" element={<TermsPage />} />
+
+
+7. Privacy Policy (You should also create this)
+
+Route:
+
+/privacy
+
+Explain:
+
+What data you collect
+
+How you use it
+
+Cookies
+
+Contact info
+
+
+
+------------------------------------------------------------------------------------------
+
+
+8. Sitemap (What You Should Do)
+
+A sitemap helps users and search engines see all pages.
+
+Option 1 (Simple Page)
+
+Create a page:
+
+/sitemap
+
+Example content:
+
+Home
+Faculty
+Courses
+Articles
+Events
+Contact
+About
+Login
+Register
+
+Example layout:
+
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/courses">Courses</a></li>
+<li><a href="/articles">Articles</a></li>
+<li><a href="/events">Events</a></li>
+<li><a href="/contact">Contact</a></li>
+</ul>
+Option 2 (Advanced SEO sitemap.xml)
+
+Used for Google indexing.
+
+Example:
+
+/sitemap.xml
+<url>
+<loc>https://mstcollege.edu/</loc>
+</url>
+
+But for your project HTML sitemap page is enough.

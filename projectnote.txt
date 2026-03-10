@@ -1,0 +1,81 @@
+to do list
+
+1. dropdown menu in event pages for each event type or category
+
+2. course page for certificate class like database class, web development basic, network essential
+
+
+
+Principal Message
+
+<p className="text-gray-700 leading-relaxed mb-4">
+    At M.S.T, we are committed to shaping future IT professionals with 
+    strong technical expertise, ethical values, and real-world problem-solving skills. 
+    Our mission is to empower students with industry-ready knowledge 
+    and innovative thinking.
+</p>
+
+<p className="text-gray-700 leading-relaxed">
+    Together, we build not just careers, but futures filled with opportunity, 
+    integrity, and excellence.
+</p>
+
+Mission 
+
+
+Vission
+
+
+
+M.S.T philosophy
+
+
+<div className="max-w-6xl mx-auto text-center mb-12 text-white">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-shadow-lg">
+            M.S.T Philosophy
+            </h2>
+            <p className="max-w-2xl mx-auto text-lg">
+            For over two decades, we have been driven by purpose, clarity, and an unwavering commitment to shaping Myanmar's next generation of technology leaders.
+            </p>
+        </div>
+
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 
+                            shadow-[0_12px_30px_-10px_rgba(0,0,0,0.35)] 
+                            hover:-translate-y-2 transition">
+            <h3 className="text-xl font-semibold mb-4">
+                Purpose Driven
+            </h3>
+            <p className="opacity-80 leading-relaxed">
+                Every programme we offer, from NCC certifications to UK university degrees, is designed with a singular purpose: to equip students with industry-relevant skills that lead to meaningful careers in ICT and beyond.
+            </p>
+            </div>
+
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 
+                            shadow-[0_12px_30px_-10px_rgba(0,0,0,0.35)] 
+                            hover:-translate-y-2 transition">
+            <h3 className="text-xl font-semibold mb-4">
+                Thoughtful Design
+            </h3>
+            <p className="opacity-80 leading-relaxed">
+                Our curriculum bridges the gap between theory and practice, blending international standards with local context. From Cisco networking to cyber security, every course is crafted for hands-on, real-world application.
+            </p>
+            </div>
+
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 
+                            shadow-[0_12px_30px_-10px_rgba(0,0,0,0.35)] 
+                            hover:-translate-y-2 transition">
+            <h3 className="text-xl font-semibold mb-4">
+                Lasting Impact
+            </h3>
+            <p className="opacity-80 leading-relaxed">
+                Since 2005, our graduates have become engineers, innovators, and leaders across Myanmar and beyond. We measure our success not just in certifications, but in the enduring contributions our alumni make to the tech industry.
+            </p>
+            </div>
+
+        </div>
+
+
+
+        

@@ -9,6 +9,8 @@
 }
 
 
+
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -247,6 +249,19 @@ canvas {
     background-color: #807F9A;
 }
 
+.mission-vission {
+  background: url("assets/images/front_uni.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 /* --------------------------------------------- */
+
+/* course page  */
+
+/* https://9elements.github.io/fancy-border-radius/full-control.html#33.49.34.52-32.49.35.52-. */
+
+
+
+
 

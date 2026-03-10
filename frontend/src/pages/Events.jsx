@@ -14,6 +14,11 @@ const fetchEvent = async () => {
   return await response.json();
 };
 
+const fetchEventType = async () => {
+  const response = await fetch("/js/eventType.json");
+  return await response.json();
+}
+
 
 function Events() {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -22,6 +27,11 @@ function Events() {
   const { data: events, isPending, error } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvent
+  });
+
+  const { data: eventType, isPending: eventTypeLoading, error: eventTypeErr } = useQuery({
+        queryKey: ['eventType'],
+        queryFn: fetchEventType,
   });
 
   const filters = [
@@ -160,22 +170,38 @@ function Events() {
             <h2 className="text-3xl font-bold text-gray-900 border-b border-gray-200 pb-5  mb-8 text-center">
               Browse Events by Category
             </h2>
-            
-            <div className="flex flex-wrap justify-center gap-4">
-              {filters.map((filter) => (
-                <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
-                  className={`inline-flex items-center px-6 py-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    activeFilter === filter.id
-                      ? 'bg-gradient-to-b from-cyan-500 to-[var(--primary-dark)] text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                  }`}
-                >
-                  <i className={`${filter.icon} mr-2`}></i>
-                  {filter.name}
-                </button>
-              ))}
+
+            <div className="border-2 border-[var(--accent-yellow)] rounded-lg grid grid-cols-3 px-2">
+              <div className="relative col-span-1">
+                <input 
+                  type="search" 
+                  id="search" 
+                  className="p-3 pl-10 focus:outline-none rounded-lg  w-full" 
+                  placeholder='Search here ...'
+                />
+                <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+              </div>
+
+              <div className="col-span-1">
+                <select name="" id="" className="focus:outline-none p-3 w-full">
+                  <option value="">All Events</option>
+                  {
+                    eventType?.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.name}
+                      </option>
+                    ))
+                  }
+                </select>
+              </div>
+
+              <div className="col-span-1">
+                <select name="" id="" className="focus:outline-none p-3 w-full">
+                  <option value="all">All Status</option>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="past">Past</option>
+                </select>
+              </div>
             </div>
           </div>
 

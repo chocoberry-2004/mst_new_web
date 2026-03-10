@@ -62,7 +62,7 @@ function About() {
 
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white">
+    <div className="">
 
       {/* Hero Section */}
       <section className="h-[100vh] relative flex flex-col sm:flex-row items-center justify-between px-4 sm:px-8 lg:px-20 py-20 bg-gradient-to-br from-white to-[var(--gray-text)] relative overflow-hidden">
@@ -156,8 +156,12 @@ function About() {
 
       </section>
 
+      <section className='mission-vission w-full min-h-screen fixed bottom-0 -z-1'>
+
+      </section>
+
       {/* Mission & Vision */}
-      <section className="py-16 lg:py-24">
+      <section className="py-5 lg:py-16 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -167,43 +171,48 @@ function About() {
                 </h2>
                 <div className="w-20 h-1 m-auto bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
               </div>
+              
               <div className="space-y-8">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
+
+                {/* Mission */}
+                <div className="p-6 rounded-xl backdrop-blur-lg bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-300/30 shadow-lg">
                   <div className="flex items-start">
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
                       <i className="fas fa-bullseye text-white text-xl"></i>
                     </div>
                     <div className="ml-6">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Our Mission</h3>
-                      <p className="text-gray-700">
-                        To provide world-class IT education that combines theoretical knowledge 
-                        with practical skills, fostering innovation, entrepreneurship, and 
-                        social responsibility in our students.
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                        Our Mission
+                      </h3>
+                      <p className="text-gray-800">
+                        M.S.T College equips future successful professionals in IT to lead in their specialization fields. We fulfill the needs of students by providing superior undergraduate, graduate and lifelong experiences.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+                {/* Vision */}
+                <div className="p-6 rounded-xl backdrop-blur-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-300/30 shadow-lg">
                   <div className="flex items-start">
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
                       <i className="fas fa-eye text-white text-xl"></i>
                     </div>
                     <div className="ml-6">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Our Vision</h3>
-                      <p className="text-gray-700">
-                        To be recognized globally as a premier institution for IT education 
-                        and research, producing graduates who lead technological innovation 
-                        and drive digital transformation worldwide.
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                        Our Vision
+                      </h3>
+                      <p className="text-gray-800">
+                        To be a top College for youths who are interested in IT fields and are free to grow their skill sets and mindsets through: Integrity, Ethics, Inclusion i.e. valuing diversity, Intellectual resilience & Innovation.
                       </p>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-2xl p-8 text-white">
+              <div className="backdrop-blur-lg bg-gradient-to-br from-blue-900 to-indigo-900 rounded-2xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-6">Our Core Values</h3>
                 <div className="space-y-6">
                   {[
@@ -234,7 +243,7 @@ function About() {
       </section>
 
       {/* Achievements & Recognition */}
-      <section className="py-16 bg-gradient-to-r from-gray-50 to-blue-50">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -332,7 +341,7 @@ function About() {
       </section>
 
       {/* Timeline */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">

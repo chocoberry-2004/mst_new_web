@@ -1,0 +1,50 @@
+{
+  "mst_college_contact": {
+    "headquarters": {
+      "name": "MST College HQ",
+      "address": "No. 36/38, Alan Pya Pagoda Road, Mingalar Taung Nyunt Township, Yangon, Myanmar",
+      "phone": [
+        "+959422288106",
+        "+959422288601"
+      ],
+      "email": "info@mstinstitute.net"
+    },
+
+    "campuses": [
+      {
+        "id": "yangon-campus-1",
+        "name": "Yangon Campus - 1",
+        "address": "No.36 Alan Pya Pagoda Road, Mingalar Taung Nyunt Township, Yangon",
+        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796",
+        "phone": ["+959422288106"],
+        "email": "info@mstinstitute.net"
+      },
+      {
+        "id": "yangon-campus-2",
+        "name": "Yangon Campus - 2",
+        "address": "M.S.T College Campus-2, Yangon",
+        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796",
+        "phone": ["+959422288601"],
+        "email": "info@mstinstitute.net"
+      },
+      {
+        "id": "mandalay-campus-1",
+        "name": "Mandalay Campus - 1",
+        "address": "M.S.T College Mandalay Campus-1",
+        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59212.829389280756!2d96.01642404863283!3d21.9421683",
+        "phone": ["+959880007292"],
+        "email": "info@mstinstitute.net"
+      },
+      {
+        "id": "mandalay-campus-2",
+        "name": "Mandalay Campus - 2",
+        "address": "M.S.T College Mandalay Campus-2",
+        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59212.829389280756!2d96.01642404863283!3d21.9421683",
+        "phone": ["+959880007293"],
+        "email": "info@mstinstitute.net"
+      }
+    ]
+
+  }
+
+}

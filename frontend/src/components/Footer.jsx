@@ -1,8 +1,12 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import Mst_logo from "../assets/images/mst_logo1.png";
+import { useContactInfo } from '../providers/ContactInfoProvider';
 
 function Footer() {
+
+  const { contactInfo, contactInfoLoading } = useContactInfo();
+
   const linkClass = ({ isActive }) => 
     isActive 
       ? "text-[var(--accent-yellow)] font-medium" 
@@ -11,12 +15,11 @@ function Footer() {
   const quickLinks = [
     { name: "Home", path: "/" },
     { name: "Faculty", path: "/faculty" },
-    { name: "Events", path: "/events" },
+    { name: "Course", path: "/course" },
+    { name: "Article", path: "/article" },
+    { name: "Events", path: "/event" },
     { name: "Contact", path: "/contact" },
     { name: "About", path: "/about" },
-    { name: "Courses", path: "/courses" },
-    { name: "Admissions", path: "/admissions" },
-    { name: "Gallery", path: "/gallery" },
   ];
 
   return (
@@ -45,29 +48,36 @@ function Footer() {
             {/* Social Media */}
             <div className="flex gap-4 pt-4">
               <a
-                href="#"
+                href="https://www.facebook.com/share/18C3xyCbKu/"
                 aria-label="Facebook"
+                target='_blank'
                 className="h-10 w-10 rounded-full bg-[#1a1a4a] flex items-center justify-center text-white hover:bg-[var(--accent-yellow)] hover:text-[#010035] transition-all duration-300"
               >
                 <i className="fab fa-facebook-f text-lg"></i>
               </a>
+
               <a
-                href="#"
-                aria-label="Twitter"
+                href="https://www.tiktok.com/@m.s.t_college?_r=1&_t=ZS-94YzEASJQNc"
+                aria-label="TikTok"
+                target='_blank'
                 className="h-10 w-10 rounded-full bg-[#1a1a4a] flex items-center justify-center text-white hover:bg-[var(--accent-yellow)] hover:text-[#010035] transition-all duration-300"
               >
-                <i className="fab fa-twitter text-lg"></i>
+                <i className="fab fa-tiktok text-lg"></i>
               </a>
+
               <a
-                href="#"
-                aria-label="Instagram"
+                href="https://youtube.com/@m.s.tcollege?si=y_mrYdgQoGY-A664"
+                aria-label="YouTube"
+                target='_blank'
                 className="h-10 w-10 rounded-full bg-[#1a1a4a] flex items-center justify-center text-white hover:bg-[var(--accent-yellow)] hover:text-[#010035] transition-all duration-300"
               >
-                <i className="fab fa-instagram text-lg"></i>
+                <i className="fab fa-youtube text-lg"></i>
               </a>
+
               <a
-                href="#"
+                href="https://www.linkedin.com/company/mstcollege/"
                 aria-label="LinkedIn"
+                target='_blank'
                 className="h-10 w-10 rounded-full bg-[#1a1a4a] flex items-center justify-center text-white hover:bg-[var(--accent-yellow)] hover:text-[#010035] transition-all duration-300"
               >
                 <i className="fab fa-linkedin-in text-lg"></i>
@@ -92,26 +102,43 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* HQ Contact Info */}
           <div>
-            <h3 className="text-xl font-bold mb-6 pb-2 border-b border-[#2a2a4a]">Contact Us</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <i className="fas fa-map-marker-alt text-[var(--accent-yellow)] mt-1 flex-shrink-0 text-lg"></i>
-                <span className="text-[#B8B8CC]">
-                  123 Education Street,<br />
-                  Academic City, AC 12345
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <i className="fas fa-phone text-[var(--accent-yellow)] text-lg"></i>
-                <span className="text-[#B8B8CC]">+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <i className="fas fa-envelope text-[var(--accent-yellow)] text-lg"></i>
-                <span className="text-[#B8B8CC]">info@mstcollege.edu</span>
-              </li>
-            </ul>
+            <h3 className="text-xl font-bold mb-6 pb-2 border-b border-[#2a2a4a]">
+              Contact Us
+            </h3>
+
+            {contactInfoLoading ? (
+              <p className="text-[#B8B8CC]">Loading...</p>
+            ) : (
+              <ul className="space-y-4">
+                
+                {/* Address */}
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-map-marker-alt text-[var(--accent-yellow)] mt-1 flex-shrink-0 text-lg"></i>
+                  <span className="text-[#B8B8CC]">
+                    {contactInfo?.mst_college_contact?.headquarters?.address}
+                  </span>
+                </li>
+
+                {/* Phone */}
+                {contactInfo?.mst_college_contact?.headquarters?.phone?.map((phone, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <i className="fas fa-phone text-[var(--accent-yellow)] text-lg"></i>
+                    <span className="text-[#B8B8CC]">{phone}</span>
+                  </li>
+                ))}
+
+                {/* Email */}
+                <li className="flex items-center gap-3">
+                  <i className="fas fa-envelope text-[var(--accent-yellow)] text-lg"></i>
+                  <span className="text-[#B8B8CC]">
+                    {contactInfo?.mst_college_contact?.headquarters?.email}
+                  </span>
+                </li>
+
+              </ul>
+            )}
           </div>
 
           {/* Newsletter */}
@@ -150,10 +177,6 @@ function Footer() {
               <a href="#" className="text-[#B8B8CC] hover:text-[var(--accent-yellow)] transition-colors">
                 <i className="fas fa-shield-alt mr-1"></i>
                 Privacy Policy
-              </a>
-              <a href="#" className="text-[#B8B8CC] hover:text-[var(--accent-yellow)] transition-colors">
-                <i className="fas fa-file-contract mr-1"></i>
-                Terms of Service
               </a>
               <a href="#" className="text-[#B8B8CC] hover:text-[var(--accent-yellow)] transition-colors">
                 <i className="fas fa-sitemap mr-1"></i>
