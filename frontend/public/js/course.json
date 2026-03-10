@@ -1,0 +1,398 @@
+{
+  "courses": [
+    {
+      "id": "C-002",
+      "name": "Web Development Foundation",
+      "type": "Professional Certificate",
+      "level": "Beginner to Intermediate",
+      "duration": "12 weeks",
+      "hours_per_week": "4-6 hours",
+      "fees": {
+        "amount": 599,
+        "currency": "USD",
+        "payment_options": ["One-time payment", "3-month installment plan"]
+      },
+      "class_type": "Hybrid",
+      "delivery_methods": [
+        {
+          "mode": "In-person",
+          "location": "Tech Hub Downtown, Room 305",
+          "capacity": 15,
+          "schedule": {
+            "days": ["Tuesday", "Thursday"],
+            "time": "6:30 PM - 8:30 PM",
+            "timezone": "EST",
+            "type": "Weekday Evening"
+          }
+        },
+        {
+          "mode": "Live Online (Zoom)",
+          "platform": "Zoom",
+          "meeting_details": "Links provided 24h before class",
+          "recording_available": true,
+          "capacity": 25,
+          "schedule": {
+            "days": ["Monday", "Wednesday"],
+            "time": "7:00 PM - 9:00 PM",
+            "timezone": "EST",
+            "type": "Weekday Evening"
+          }
+        }
+      ],
+      "overview": "Comprehensive introduction to modern web development covering HTML5, CSS3, JavaScript, and responsive design principles. Students will build interactive websites from scratch.",
+      "learning_objectives": [
+        "Build responsive websites using HTML5 and CSS3",
+        "Implement interactive features with JavaScript",
+        "Understand DOM manipulation and event handling",
+        "Deploy websites to cloud platforms"
+      ],
+      "instructor": {
+        "name": "Dr. Sarah Chen",
+        "title": "Senior Web Developer & Educator",
+        "qualifications": ["PhD in Computer Science", "10+ years industry experience"],
+        "expertise": ["Front-end Development", "UX Design", "JavaScript Frameworks"],
+        "bio": "Former lead developer at TechGiant with passion for teaching web technologies"
+      },
+      "lecturer_assistants": [
+        {
+          "name": "Mike Johnson",
+          "role": "Teaching Assistant",
+          "expertise": ["HTML/CSS", "JavaScript Basics"]
+        }
+      ],
+      "prerequisites": ["Basic computer literacy", "No prior coding experience required"],
+      "class_size": "Maximum 25 students",
+      "certificate": "Web Development Foundation Certificate",
+      "career_paths": ["Junior Web Developer", "Front-end Developer", "UI/UX Designer"],
+      "assessment": ["Weekly projects", "Final portfolio website"],
+      "start_dates": [
+        {
+          "date": "2024-09-15",
+          "delivery_method": "Live Online",
+          "spots_available": 12
+        },
+        {
+          "date": "2024-11-01",
+          "delivery_method": "In-person",
+          "spots_available": 8
+        },
+        {
+          "date": "2025-01-10",
+          "delivery_method": "Live Online",
+          "spots_available": 20
+        }
+      ],
+      "modules": [
+        "HTML5 Fundamentals",
+        "CSS3 Styling and Layouts",
+        "Responsive Design with Flexbox and Grid",
+        "JavaScript Basics and DOM Manipulation",
+        "Introduction to Version Control (Git)",
+        "Web Deployment and Hosting"
+      ]
+    },
+    {
+      "id": "C-003",
+      "name": "Network Essential",
+      "type": "Professional Certification Prep",
+      "level": "Beginner",
+      "duration": "8 weeks",
+      "hours_per_week": "5-7 hours",
+      "fees": {
+        "amount": 699,
+        "currency": "USD",
+        "payment_options": ["One-time payment", "2-month installment plan"],
+        "early_bird_discount": "10% off if enrolled 30 days before start"
+      },
+      "class_type": "Hybrid",
+      "delivery_methods": [
+        {
+          "mode": "In-person (Lab-focused)",
+          "location": "Tech Campus, Networking Lab B",
+          "capacity": 12,
+          "schedule": {
+            "days": ["Saturday"],
+            "time": "9:00 AM - 3:00 PM",
+            "timezone": "EST",
+            "type": "Weekend Intensive"
+          }
+        },
+        {
+          "mode": "Live Online (Zoom) with Virtual Labs",
+          "platform": "Zoom + Remote Lab Access",
+          "virtual_lab_included": true,
+          "recording_available": true,
+          "capacity": 20,
+          "schedule": {
+            "days": ["Tuesday", "Thursday"],
+            "time": "7:00 PM - 9:30 PM",
+            "timezone": "EST",
+            "type": "Weekday Evening"
+          }
+        }
+      ],
+      "overview": "Foundation course covering networking fundamentals, protocols, and infrastructure. Ideal for those pursuing CompTIA Network+ certification.",
+      "learning_objectives": [
+        "Understand OSI and TCP/IP models",
+        "Configure basic network devices",
+        "Troubleshoot common network issues",
+        "Implement network security basics"
+      ],
+      "instructor": {
+        "name": "Prof. Robert Martinez",
+        "title": "Network Architecture Specialist",
+        "qualifications": ["Cisco CCIE Certified", "MSc in Network Engineering"],
+        "expertise": ["Routing & Switching", "Network Security", "Cloud Networking"],
+        "bio": "15+ years in enterprise network design and implementation"
+      },
+      "lecturer_assistants": [
+        {
+          "name": "Lisa Wang",
+          "role": "Lab Assistant",
+          "expertise": ["Network Configuration", "Troubleshooting"]
+        }
+      ],
+      "prerequisites": ["Basic understanding of computer operations"],
+      "class_size": "Maximum 20 students",
+      "certificate": "Networking Essentials Certificate",
+      "career_paths": ["Network Technician", "IT Support Specialist", "Network Administrator"],
+      "assessment": ["Quizzes", "Practical lab exams", "Final project"],
+      "start_dates": [
+        {
+          "date": "2024-10-01",
+          "delivery_method": "In-person",
+          "spots_available": 5
+        },
+        {
+          "date": "2024-12-05",
+          "delivery_method": "Live Online",
+          "spots_available": 15
+        }
+      ],
+      "modules": [
+        "Network Topologies and Models",
+        "IP Addressing and Subnetting",
+        "Network Protocols and Services",
+        "Routing and Switching Basics",
+        "Network Security Fundamentals",
+        "Troubleshooting Methodologies"
+      ]
+    },
+    {
+      "id": "C-004",
+      "name": "Linux Basic",
+      "type": "Technical Foundation",
+      "level": "Beginner",
+      "duration": "6 weeks",
+      "hours_per_week": "4-5 hours",
+      "fees": {
+        "amount": 449,
+        "currency": "USD",
+        "payment_options": ["One-time payment", "3-month installment plan"],
+        "material_fees": 25
+      },
+      "class_type": "Flexible",
+      "delivery_methods": [
+        {
+          "mode": "Self-paced Online",
+          "platform": "Learning Management System",
+          "features": ["Pre-recorded videos", "Practice labs", "Discussion forums"],
+          "schedule": {
+            "type": "Anytime Access",
+            "support_hours": "Live TA support Mon-Fri 2PM-6PM EST"
+          }
+        },
+        {
+          "mode": "Live Online (Zoom)",
+          "platform": "Zoom",
+          "recording_available": true,
+          "capacity": 30,
+          "schedule": {
+            "days": ["Wednesday"],
+            "time": "6:30 PM - 9:30 PM",
+            "timezone": "EST",
+            "type": "Weekday Evening"
+          }
+        },
+        {
+          "mode": "Weekend Bootcamp",
+          "platform": "Zoom + In-person optional",
+          "location": "Tech Campus, Room 110 (optional)",
+          "capacity": 20,
+          "schedule": {
+            "days": ["Saturday", "Sunday"],
+            "time": "10:00 AM - 2:00 PM",
+            "timezone": "EST",
+            "type": "Weekend"
+          }
+        }
+      ],
+      "overview": "Hands-on introduction to Linux operating system covering essential commands, file systems, and basic system administration.",
+      "learning_objectives": [
+        "Navigate Linux file system using command line",
+        "Manage files, directories, and permissions",
+        "Execute basic system administration tasks",
+        "Write simple shell scripts"
+      ],
+      "instructor": {
+        "name": "Alex Thompson",
+        "title": "Linux System Administrator",
+        "qualifications": ["Red Hat Certified Engineer (RHCE)", "LPIC-2 Certified"],
+        "expertise": ["Linux Administration", "Shell Scripting", "System Security"],
+        "bio": "Linux enthusiast with 12 years experience in enterprise environments"
+      },
+      "lecturer_assistants": [
+        {
+          "name": "Chris Lee",
+          "role": "Technical Assistant",
+          "expertise": ["Command Line", "System Configuration"]
+        }
+      ],
+      "prerequisites": ["Basic computer skills", "No Linux experience required"],
+      "class_size": "Unlimited self-paced, 30 for live sessions",
+      "certificate": "Linux Basics Certificate",
+      "career_paths": ["Junior Linux Administrator", "DevOps Assistant", "IT Support"],
+      "assessment": ["Hands-on exercises", "Final practical exam"],
+      "start_dates": [
+        {
+          "date": "Anytime",
+          "delivery_method": "Self-paced Online",
+          "spots_available": "Unlimited"
+        },
+        {
+          "date": "2024-09-20",
+          "delivery_method": "Live Online - Weekday",
+          "spots_available": 18
+        },
+        {
+          "date": "2024-10-12",
+          "delivery_method": "Weekend Bootcamp",
+          "spots_available": 12
+        }
+      ],
+      "modules": [
+        "Introduction to Linux and Installation",
+        "Command Line Essentials",
+        "File System Management",
+        "User and Permission Management",
+        "Process Management",
+        "Basic Shell Scripting"
+      ]
+    },
+    {
+      "id": "C-005",
+      "name": "SQL Database",
+      "type": "Technical Foundation",
+      "level": "Beginner to Intermediate",
+      "duration": "10 weeks",
+      "hours_per_week": "4-6 hours",
+      "fees": {
+        "amount": 649,
+        "currency": "USD",
+        "payment_options": ["One-time payment", "4-month installment plan"],
+        "group_discount": "15% off for groups of 3+"
+      },
+      "class_type": "Multiple Options",
+      "delivery_methods": [
+        {
+          "mode": "In-person",
+          "location": "Data Institute, Floor 3",
+          "capacity": 20,
+          "schedule": {
+            "days": ["Monday", "Wednesday"],
+            "time": "6:00 PM - 8:00 PM",
+            "timezone": "EST",
+            "type": "Weekday Evening"
+          }
+        },
+        {
+          "mode": "Live Online (Zoom)",
+          "platform": "Zoom",
+          "recording_available": true,
+          "breakout_rooms": true,
+          "capacity": 30,
+          "schedule": {
+            "days": ["Tuesday", "Thursday"],
+            "time": "7:30 PM - 9:30 PM",
+            "timezone": "EST",
+            "type": "Weekday Evening"
+          }
+        },
+        {
+          "mode": "Weekend Intensive",
+          "platform": "Zoom",
+          "recording_available": true,
+          "capacity": 25,
+          "schedule": {
+            "days": ["Saturday"],
+            "time": "10:00 AM - 2:00 PM",
+            "timezone": "EST",
+            "type": "Weekend"
+          }
+        }
+      ],
+      "overview": "Comprehensive database course covering SQL fundamentals, database design, and practical applications. Includes hands-on projects with real-world datasets.",
+      "learning_objectives": [
+        "Design normalized database schemas",
+        "Write complex SQL queries using joins and subqueries",
+        "Implement database security and performance optimization",
+        "Create and manage stored procedures and triggers"
+      ],
+      "instructor": {
+        "name": "Dr. Emily Rodriguez",
+        "title": "Database Specialist & Data Architect",
+        "qualifications": ["PhD in Information Systems", "Oracle Certified Professional"],
+        "expertise": ["Database Design", "SQL Optimization", "Data Warehousing"],
+        "bio": "20+ years experience in database management for Fortune 500 companies"
+      },
+      "lecturer_assistants": [
+        {
+          "name": "David Kim",
+          "role": "Senior Teaching Assistant",
+          "expertise": ["Advanced SQL", "Database Design"]
+        },
+        {
+          "name": "Maria Garcia",
+          "role": "Teaching Assistant",
+          "expertise": ["Basic SQL", "Query Writing"]
+        }
+      ],
+      "prerequisites": ["Basic computer skills", "Logical thinking ability"],
+      "class_size": "Maximum 30 students",
+      "certificate": "SQL Database Specialist Certificate",
+      "career_paths": ["Database Administrator", "Data Analyst", "Backend Developer"],
+      "assessment": ["Weekly assignments", "Midterm project", "Final database project"],
+      "start_dates": [
+        {
+          "date": "2024-09-10",
+          "delivery_method": "In-person",
+          "spots_available": 8
+        },
+        {
+          "date": "2024-10-15",
+          "delivery_method": "Live Online - Weekday",
+          "spots_available": 22
+        },
+        {
+          "date": "2024-11-20",
+          "delivery_method": "Weekend Intensive",
+          "spots_available": 15
+        }
+      ],
+      "modules": [
+        "Introduction to Relational Databases",
+        "SQL Basics: SELECT, INSERT, UPDATE, DELETE",
+        "Filtering and Sorting Data",
+        "Joins and Relationships",
+        "Subqueries and Set Operations",
+        "Database Design and Normalization",
+        "Indexes and Performance Optimization",
+        "Stored Procedures and Functions",
+        "Transactions and Concurrency Control",
+        "Database Security and Best Practices"
+      ],
+      "lab_environment": "Access to cloud-based SQL servers",
+      "materials_included": ["E-book", "Practice datasets", "SQL cheat sheets"]
+    }
+  ]
+}

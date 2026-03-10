@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import Mst_logo from "../assets/images/mst_logo1.png";
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
 function Login() {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -46,36 +50,45 @@ function Login() {
     return newErrors
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    // Validate form
-    const newErrors = validateForm()
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
-    }
-    
-    setIsLoading(true)
-    
-    try {
-      // Here you would typically make an API call to your backend
-      console.log('Login attempt with:', formData)
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      // Handle successful login
-      alert('Login successful!')
-      // Redirect or update app state here
-      
-    } catch (error) {
-      console.error('Login error:', error)
-      alert('Login failed. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const newErrors = validateForm();
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
   }
+
+  setIsLoading(true);
+
+  try {
+    const dummyUser = {
+      email: "admin@mst.com",
+      password: "123456"
+    };
+
+    // simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    if (
+      formData.email === dummyUser.email &&
+      formData.password === dummyUser.password
+    ) {
+      alert("Login successful!");
+
+      localStorage.setItem("adminAuth", "true");
+
+      navigate("/admin/dashboard");
+    } else {
+      alert("Invalid email or password");
+    }
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="bg-[var(--primary-dark)] backgrop-blur-sm trinsition-all duration-300 ease-in-out justify-center fixed inset-0 top-0 w-full h-screen z-[100] flex items-center justify-center p-4">
@@ -211,17 +224,6 @@ function Login() {
             )}
           </button>
         </form>
-
-        {/* Sign Up Link */}
-        {/* <p className="mt-6 text-center text-gray-600">
-          Don't have an account?{' '}
-          <a
-            href="/signup"
-            className="text-blue-600 hover:text-blue-800 hover:underline font-semibold transition duration-200"
-          >
-            Sign up
-          </a>
-        </p> */}
       </div>
     </div>
   )

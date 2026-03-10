@@ -1,15 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import w5 from "../assets/images/w5.png"
+import principal from "../assets/images/principal.png";
 import { NavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const binaryDigits = Array.from({ length: 40 });
 
+const fetchPartner = async () => {
+  const response = await fetch("/js/partners.json");
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+};
+
 function Home() {
+
+    const { data: partners, isPending: partnerLoading, error: partnerError } = useQuery({
+        queryKey: ["partners"],
+        queryFn: fetchPartner,
+    });
+
+    console.log(partners);
 
   return (
     <div className="">
         <section
-        className="min-h-[80vh] w-full flex items-end justify-center relative overflow-hidden transition-all duration-700 ease-in-out"
+        className="min-h-[80vh] bg-[#807F9A]  w-full flex items-end justify-center relative overflow-hidden transition-all duration-700 ease-in-out"
 
         >
         <div className="binary-bg"></div>
@@ -38,7 +53,6 @@ function Home() {
             );
         })}
         </div>
-
 
         {/* Main content */}
         <div className="w-full h-full relative z-10 px-4 flex justify-between items-end transition-transform duration-300 ease-in-out">
@@ -134,55 +148,143 @@ function Home() {
                 </div>
             </div>
         </section>
+
+        {/* Our principal message */}
         
-       <section className="bg-[#807F9A] text-[var(--primary-dark)] py-16 px-6 graduation-background">
-  
-        <div className="max-w-6xl mx-auto text-center mb-12 text-white">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4" >
-            M.S.T Philosophy
-            </h2>
-            <p className="max-w-2xl mx-auto text-lg " >
-            We are driven by purpose, clarity, and commitment to creating meaningful impact.
-            </p>
+        <div className="graduation-background w-full min-h-screen bg-[#807F9A] fixed bottom-0 -z-1">
+
         </div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 
-                            shadow-[0_12px_30px_-10px_rgba(0,0,0,0.35)] 
-                            hover:-translate-y-2 transition">
-                <h3 className="text-xl font-semibold mb-4">
-                    Purpose Driven
-                </h3>
-                <p className="opacity-80 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam eligendi nostrum corrupti impedit.
+        <section className=" text-[var(--primary-dark)] py-8 px-6">
+            <div className="max-w-6xl mx-auto">
+
+                {/* Section Header */}
+                <div className="text-center text-white mb-8">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-shadow-lg">
+                    Our Principal's Message
+                </h2>
+                <p className="max-w-2xl mx-auto text-lg opacity-80">
+                    A message from our leadership guiding the vision and future of M.S.T.
                 </p>
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col md:flex-row items-center gap-10 bg-white/60 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.35)]">
+
+                {/* Principal Image */}
+                <div className="w-full md:w-1/3 flex justify-center ">
+                    <img
+                    src={principal}
+                    alt="Principal"
+                    className="w-64 h-64 object-cover rounded-full border-4 border-[var(--accent-yellow)] shadow-lg bg-gradient-to-br from-[var(--primary-dark)] to-[var(--accent-yellow)] "
+                    />
+                </div>
+
+                {/* Message Content */}
+                <div className="w-full md:w-2/3 text-center md:text-left">
+                    <h3 className="text-2xl font-semibold mb-4 text-[var(--primary-dark)]">
+                    U Aung Zaw Myint
+                    </h3>
+
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                    “Education is the door to taste the sunlight of the brighter futures,which is not only for individuals but also for the entire nation.”
+                    </p>
+
+                    <p className="text-gray-700 leading-relaxed">
+                    Together, we build not just careers, but futures filled with opportunity, 
+                    integrity, and excellence.
+                    </p>
+
+                    <div className="mt-6">
+                    <span className="font-semibold text-[var(--primary-dark)]">
+                        — Principal, M.S.T
+                    </span>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        
+        </section>
+
+        {/* Our Partners */}
+        <section className=" py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+
+            {/* Section Header */}
+            <div className="text-center text-white mb-12">
+            <h2 className="text-4xl font-bold mb-4 text-shadow-lg">
+                {partners?.partnersSection?.title}
+            </h2>
+            <p className="text-lg opacity-90">
+                {partners?.partnersSection?.subtitle}
+            </p>
+            <p className="mt-3 max-w-2xl mx-auto opacity-75">
+                {partners?.partnersSection?.description}
+            </p>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 
-                            shadow-[0_12px_30px_-10px_rgba(0,0,0,0.35)] 
-                            hover:-translate-y-2 transition">
-                <h3 className="text-xl font-semibold mb-4">
-                    Thoughtful Design
-                </h3>
-                <p className="opacity-80 leading-relaxed">
-                    Nulla alias quidem cum nemo neque deleniti, creating experiences that feel natural and intentional.
-                </p>
-            </div>
+            {/* Loading */}
+            {partnerLoading && (
+            <p className="text-center text-white">Loading partners...</p>
+            )}
 
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 
-                            shadow-[0_12px_30px_-10px_rgba(0,0,0,0.35)] 
-                            hover:-translate-y-2 transition">
-                <h3 className="text-xl font-semibold mb-4">
-                    Lasting Impact
-                </h3>
-                <p className="opacity-80 leading-relaxed">
-                    We focus on solutions that endure, scale, and positively affect people over time.
-                </p>
-            </div>
+            {/* Error */}
+            {partnerError && (
+            <p className="text-center text-red-400">Failed to load partners</p>
+            )}
 
+            {/* Partners Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {partners?.partnersSection?.partners?.map((partner) => (
+                <div
+                key={partner.id}
+                className="bg-white rounded-2xl p-6 shadow-lg hover:-translate-y-2 transition duration-300"
+                >
+                <div className="flex justify-center mb-4">
+                    <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="h-16 object-contain"
+                    />
+                </div>
+
+                <h3 className="text-xl font-semibold text-center mb-2">
+                    {partner.name}
+                </h3>
+
+                <p className="text-sm text-gray-600 text-center mb-3">
+                    {partner.description}
+                </p>
+
+                <div className="space-y-2">
+                    {partner.categories.map((cat, index) => (
+                    <p
+                        key={index}
+                        className="text-xs bg-gray-200 px-2 py-1 rounded-full border border-gray-300"
+                    >
+                        {cat}
+                    </p>
+                    ))}
+                </div>
+
+                <div className="text-center mt-4">
+                    <a
+                    href={partner.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm font-medium text-blue-600 hover:underline block w-full p-2 bg-gray-200 border border-gray-300 rounded-full"
+                    >
+                    Visit Website
+                    </a>
+                </div>
+                </div>
+            ))}
+            </div>
         </div>
         </section>
+
+
 
     </div>
   );

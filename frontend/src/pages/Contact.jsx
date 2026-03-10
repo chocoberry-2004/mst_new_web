@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from '../assets/images/mst_logo1.png';
 import diamond2 from "../assets/images/star.png";
 import { useQuery } from '@tanstack/react-query';
+import { useContactInfo } from '../providers/ContactInfoProvider';
 
 const locationList =  [
   {
@@ -62,6 +63,8 @@ const fetchFAQ = async () => {
 
 function Contact() {
   const [activeCampus, setActiveCampus] = useState(locationList[0]);
+  const { contactInfo, contactInfoLoading } = useContactInfo();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -335,79 +338,72 @@ function Contact() {
 
               {/* Contact Cards */}
               <div className="space-y-8">
-                <div className="flex items-start p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-map-marker-alt text-white text-xl"></i>
-                  </div>
-                  <div className="ml-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Visit Our Campus</h3>
-                    <p className="text-gray-600 mb-2">
-                      Tech Education Park, Silicon Valley Road
-                      <br />
-                      Bengaluru, Karnataka 560001
-                    </p>
-                    <a href="#location" className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
-                      Get Directions <i className="fas fa-arrow-right ml-2"></i>
-                    </a>
-                  </div>
-                </div>
 
-                <div className="flex items-start p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-phone-alt text-white text-xl"></i>
-                  </div>
-                  <div className="ml-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
-                    <p className="text-gray-600 mb-2">
-                      <span className="font-semibold">Admissions:</span> +91 80 1234 5678
-                      <br />
-                      <span className="font-semibold">General Inquiries:</span> +91 80 9876 5432
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Mon-Fri: 9:00 AM - 6:00 PM | Sat: 10:00 AM - 4:00 PM
-                    </p>
-                  </div>
-                </div>
+                {
+                  contactInfoLoading ? (
+                    <p className="text-[#B8B8CC]">Loading...</p>
+                  ) : (
+                    <div className="space-y-8">
+                      <div className="flex items-start p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                          <i className="fas fa-map-marker-alt text-white text-xl"></i>
+                        </div>
+                        <div className="ml-6">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-2">Visit Our Campus</h3>
+                          <p className="text-gray-600 mb-2">
+                            {contactInfo?.mst_college_contact?.headquarters?.address}
+                          </p>
+                          <a href="#location" className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                            Get Directions <i className="fas fa-arrow-right ml-2"></i>
+                          </a>
+                        </div>
+                      </div>
 
-                <div className="flex items-start p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                    <i className="fas fa-envelope text-white text-xl"></i>
-                  </div>
-                  <div className="ml-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
-                    <div className="space-y-2">
-                      <div>
-                        <span className="font-semibold text-gray-700">Admissions:</span>
-                        <a href="mailto:admissions@itcollege.edu" className="text-blue-600 hover:text-blue-800 block">
-                          admissions@itcollege.edu
-                        </a>
+                      <div className="flex items-start p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                          <i className="fas fa-phone-alt text-white text-xl"></i>
+                        </div>
+                        <div className="ml-6">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
+                          {contactInfo?.mst_college_contact?.headquarters?.phone?.map((phone, index) => (
+                            <li key={index} className="flex items-center gap-3">
+                              <span className="text-[#B8B8CC]">{phone}</span>
+                            </li>
+                          ))}
+                          <p className="text-sm text-gray-500">
+                            Mon-Fri: 9:00 AM - 6:00 PM | Sat: 10:00 AM - 4:00 PM
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-semibold text-gray-700">Placement:</span>
-                        <a href="mailto:placement@itcollege.edu" className="text-blue-600 hover:text-blue-800 block">
-                          placement@itcollege.edu
-                        </a>
-                      </div>
-                      <div>
-                        <span className="font-semibold text-gray-700">General:</span>
-                        <a href="mailto:info@itcollege.edu" className="text-blue-600 hover:text-blue-800 block">
-                          info@itcollege.edu
-                        </a>
+
+                      <div className="flex items-start p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                          <i className="fas fa-envelope text-white text-xl"></i>
+                        </div>
+                        <div className="ml-6">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
+                          <div className="space-y-2">
+                            <div>
+                              <a href={contactInfo?.mst_college_contact?.headquarters?.email} className="text-blue-600 hover:text-blue-800 block">
+                                {contactInfo?.mst_college_contact?.headquarters?.email}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  )
+                }
 
                 {/* Social Media */}
                 <div className="p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Connect With Us</h3>
                   <div className="flex space-x-4">
                     {[
-                      { icon: 'fab fa-twitter', color: 'bg-blue-400 hover:bg-blue-500', link: '#' },
-                      { icon: 'fab fa-linkedin', color: 'bg-blue-600 hover:bg-blue-700', link: '#' },
-                      { icon: 'fab fa-facebook', color: 'bg-blue-800 hover:bg-blue-900', link: '#' },
-                      { icon: 'fab fa-instagram', color: 'bg-pink-500 hover:bg-pink-600', link: '#' },
-                      { icon: 'fab fa-youtube', color: 'bg-red-600 hover:bg-red-700', link: 'https://youtube.com/@m.s.tcollege?si=UcQrsrm29dCeujhQ' },
+                      { icon: 'fab fa-linkedin', color: 'bg-blue-600 hover:bg-white hover:text-blue-600', link: 'https://www.linkedin.com/company/mstcollege/' },
+                      { icon: 'fab fa-facebook', color: 'bg-blue-800 hover:bg-white hover:text-blue-800', link: 'https://www.facebook.com/share/18C3xyCbKu/' },
+                      { icon: 'fab fa-tiktok', color: 'bg-black hover:bg-white hover:text-black', link: 'https://www.tiktok.com/@m.s.t_college?_r=1&_t=ZS-94YzEASJQNc' },
+                      { icon: 'fab fa-youtube', color: 'bg-red-600 hover:bg-white hover:text-red-600', link: 'https://youtube.com/@m.s.tcollege?si=UcQrsrm29dCeujhQ' },
                     ].map((social, index) => (
                       <a
                         key={index}
@@ -426,126 +422,133 @@ function Contact() {
           </div>
 
           {/* Map Section */}
-          <div id="location" className="mt-16 rounded-2xl shadow-xl overflow-hidden bg-white">
-            <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[450px]">
-              {/* Map Display */}
-              <div className="relative w-full h-[300px] lg:h-auto lg:col-span-2">
-                <iframe
-                  key={activeCampus.id}
-                  className="absolute inset-0 w-full h-full border-0"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Campus Location Map"
-                  src={activeCampus.mapUrl}
-                />
-              </div>
+          {
+            contactInfoLoading ? (
+               <p className="text-[#B8B8CC]">Loading...</p>
+            ) : (
+              <div id="location" className="mt-16 rounded-2xl shadow-xl overflow-hidden bg-white border border-gray-300">
+                <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[450px]">
+                  {/* Map Display */}
+                  <div className="relative w-full h-[300px] lg:h-auto lg:col-span-2">
+                    <iframe
+                      key={activeCampus.id}
+                      className="absolute inset-0 w-full h-full border-0"
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Campus Location Map"
+                      src={activeCampus.mapUrl}
+                    />
+                  </div>
 
-              {/* Accordion */}
-              <div className="p-6 bg-gradient-to-b from-[var(--primary-dark)] to-[var(--secondary-dark)] text-white overflow-y-auto">
-                <h3 className="text-2xl font-bold mb-6">Our Campus Locations</h3>
-                <div className="space-y-4">
-                  {locationList.map((campus) => {
-                    const isActive = activeCampus.id === campus.id;
+                  {/* Accordion */}
+                  <div className="p-6 bg-gradient-to-b from-[var(--primary-dark)] to-[var(--secondary-dark)] text-white overflow-y-auto">
+                    <h3 className="text-2xl font-bold mb-6">Our Campus Locations</h3>
+                    <div className="space-y-4">
+                      {locationList.map((campus) => {
+                        const isActive = activeCampus.id === campus.id;
 
-                    return (
-                      <div
-                        key={campus.id}
-                        className={`border rounded-lg overflow-hidden transition-all duration-300 ${
-                          isActive
-                            ? "border-cyan-400 shadow-lg bg-white/5"
-                            : "border-white/20 hover:border-white/40"
-                        }`}
-                      >
-                        {/* Accordion Header */}
-                        <button
-                          onClick={() => setActiveCampus(campus)}
-                          className="w-full p-4 text-left flex justify-between items-center hover:bg-white/5 transition"
-                        >
-                          <div className="flex items-center">
-                            <div
-                              className={`w-10 h-10 rounded-lg flex items-center justify-center mr-4 ${
-                                isActive
-                                  ? "bg-gradient-to-r from-cyan-500 to-blue-500"
-                                  : "bg-white/10"
-                              }`}
+                        return (
+                          <div
+                            key={campus.id}
+                            className={`border rounded-lg overflow-hidden transition-all duration-300 ${
+                              isActive
+                                ? "border-cyan-400 shadow-lg bg-white/5"
+                                : "border-white/20 hover:border-white/40"
+                            }`}
+                          >
+                            {/* Accordion Header */}
+                            <button
+                              onClick={() => setActiveCampus(campus)}
+                              className="w-full p-4 text-left flex justify-between items-center hover:bg-white/5 transition"
                             >
+                              <div className="flex items-center">
+                                <div
+                                  className={`w-10 h-10 rounded-lg flex items-center justify-center mr-4 ${
+                                    isActive
+                                      ? "bg-gradient-to-r from-cyan-500 to-blue-500"
+                                      : "bg-white/10"
+                                  }`}
+                                >
+                                  <i
+                                    className={`fas fa-map-marker-alt ${
+                                      isActive ? "text-white" : "text-cyan-300"
+                                    }`}
+                                  ></i>
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold">{campus.name}</h4>
+                                  <p className="text-sm text-gray-300 mt-1">
+                                    {campus.address}
+                                  </p>
+                                </div>
+                              </div>
+
                               <i
-                                className={`fas fa-map-marker-alt ${
-                                  isActive ? "text-white" : "text-cyan-300"
+                                className={`fas fa-chevron-right transition-transform duration-300 ${
+                                  isActive ? "rotate-90 text-cyan-300" : "text-gray-400"
                                 }`}
                               ></i>
-                            </div>
-                            <div>
-                              <h4 className="font-semibold">{campus.name}</h4>
-                              <p className="text-sm text-gray-300 mt-1">
-                                {campus.address}
-                              </p>
-                            </div>
-                          </div>
+                            </button>
 
-                          <i
-                            className={`fas fa-chevron-right transition-transform duration-300 ${
-                              isActive ? "rotate-90 text-cyan-300" : "text-gray-400"
-                            }`}
-                          ></i>
-                        </button>
-
-                        {/* Accordion Content */}
-                        <div
-                          className={`grid transition-all duration-300 ease-in-out ${
-                            isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                          }`}
-                        >
-                          <div className="overflow-hidden px-4 pb-4">
-                            <ul className="space-y-3 mt-2">
-                              {campus.details.map((detail, index) => (
-                                <li key={index} className="flex items-center text-sm">
-                                  <i className={`${detail.icon} mr-3 text-cyan-300 w-5`}></i>
-                                  <span className="text-gray-200">{detail.text}</span>
-                                </li>
-                              ))}
-                            </ul>
-
-                            <a
-                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                                campus.address
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-4 inline-flex items-center justify-center w-full px-4 py-2 rounded-lg bg-cyan-500 text-blue-900 font-semibold hover:bg-cyan-400 transition text-sm"
+                            {/* Accordion Content */}
+                            <div
+                              className={`grid transition-all duration-300 ease-in-out ${
+                                isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                              }`}
                             >
-                              <i className="fas fa-directions mr-2"></i>
-                              Get Directions
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                              <div className="overflow-hidden px-4 pb-4">
+                                <ul className="space-y-3 mt-2">
+                                  {campus.details.map((detail, index) => (
+                                    <li key={index} className="flex items-center text-sm">
+                                      <i className={`${detail.icon} mr-3 text-cyan-300 w-5`}></i>
+                                      <span className="text-gray-200">{detail.text}</span>
+                                    </li>
+                                  ))}
+                                </ul>
 
-                {/* General Info */}
-                <div className="mt-8 pt-6 border-t border-white/20">
-                  <h4 className="font-semibold mb-4 text-cyan-100">General Information</h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-center text-sm">
-                      <i className="fas fa-clock mr-3 text-green-300 w-5"></i>
-                      Office Hours: 9 AM - 5 PM
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <i className="fas fa-phone mr-3 text-green-300 w-5"></i>
-                      Contact: +95 1 234 567
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <i className="fas fa-envelope mr-3 text-green-300 w-5"></i>
-                      Email: info@mstinstitute.net
-                    </li>
-                  </ul>
+                                <a
+                                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                    campus.address
+                                  )}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-2 rounded-lg bg-cyan-500 text-blue-900 font-semibold hover:bg-cyan-400 transition text-sm"
+                                >
+                                  <i className="fas fa-directions mr-2"></i>
+                                  Get Directions
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* General Info */}
+                    <div className="mt-8 pt-6 border-t border-white/20">
+                      <h4 className="font-semibold mb-4 text-cyan-100">General Information</h4>
+                      <ul className="space-y-3">
+                        <li className="flex items-center text-sm">
+                          <i className="fas fa-clock mr-3 text-green-300 w-5"></i>
+                          Office Hours: 9 AM - 5 PM
+                        </li>
+                        <li className="flex items-center text-sm">
+                          <i className="fas fa-phone mr-3 text-green-300 w-5"></i>
+                          Contact: +95 1 234 567
+                        </li>
+                        <li className="flex items-center text-sm">
+                          <i className="fas fa-envelope mr-3 text-green-300 w-5"></i>
+                          Email: info@mstinstitute.net
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            )
+          }
+          
 
           {/* FAQ Section */}
           <div className="mt-16">

@@ -103,7 +103,7 @@ function Faculty() {
                 {[
                   { value: "50+", label: "Faculty" },
                   { value: "150+", label: "Experienced Tutor" },
-                  { value: "25+", label: "Countries" },
+                  { value: "2500+", label: "Students" },
                   { value: "50+", label: "Awards" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
