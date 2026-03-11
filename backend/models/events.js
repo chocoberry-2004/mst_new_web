@@ -36,7 +36,7 @@ const eventSchema = new mongoose.Schema(
     },
     highlight: {
       type: Boolean,
-      default: false
+      default: false,
     },
     speakers: {
       type: Number,
@@ -50,11 +50,16 @@ const eventSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    imageURL: String,
+    imageURL: [
+      {
+        type: String,
+        unique: true,
+      },
+    ],
     videoURL: String,
   },
   { timestamps: true },
 );
 
-const Event = mongoose.model("Event", eventSchema)
+const Event = mongoose.model("Event", eventSchema);
 export default Event;
