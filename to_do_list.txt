@@ -3,7 +3,7 @@
 3. contact send message function
 4. course enrollment function
 5. CRUD for admin dashboard
-6. gallery
+6. gallery ???????
 7. term and policy
 8. cookie
 9. 

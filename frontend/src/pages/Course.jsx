@@ -19,6 +19,8 @@ import c_sharp from "../assets/images/c_sharp.png";
 
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 
 const fetchCourse = async () => {
   const response = await fetch("/js/course.json");
@@ -187,9 +189,11 @@ const formatCurrency = (amount, currency) => {
             Explore Courses
           </a>
 
+          <NavLink to="/contact">
           <button className="px-6 py-3 border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] rounded-lg hover:bg-[var(--primary-dark)] hover:text-white transition">
             Contact Us
           </button>
+          </NavLink>
         </div>
 
       </div>
