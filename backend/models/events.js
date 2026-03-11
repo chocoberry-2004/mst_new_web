@@ -34,6 +34,10 @@ const eventSchema = new mongoose.Schema(
       lowercase: true,
       default: "upcoming",
     },
+    highlight: {
+      type: Boolean,
+      default: false
+    },
     speakers: {
       type: Number,
       default: 1,
