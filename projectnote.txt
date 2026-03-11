@@ -78,4 +78,35 @@ M.S.T philosophy
 
 
 
-        
+Decorative Bottom Line
+            <div className="w-full h-20 sm:h-24 md:h-28 bg-[var(--primary-dark)] flex justify-center items-center relative overflow-hidden">
+
+            {/* Left lines */}
+            <div className="space-y-2 sm:space-y-3 w-1/2 pl-4 sm:pl-8">
+                <div className="w-[70%] sm:w-[80%] h-2 sm:h-3 md:h-4 bg-gradient-to-r from-white to-transparent"></div>
+                <div className="w-[80%] sm:w-[90%] h-2 sm:h-3 md:h-4 bg-gradient-to-r from-[var(--accent-yellow)] to-transparent"></div>
+                <div className="w-[90%] sm:w-[100%] h-2 sm:h-3 md:h-4 bg-gradient-to-r from-[var(--gray-text)] to-transparent"></div>
+            </div>
+
+            {/* Center image */}
+            <img 
+                src={bookundercap} 
+                alt="book" 
+                className="w-12 sm:w-16 md:w-20 h-auto relative z-10 mx-2 sm:mx-4" 
+            />
+
+            {/* Right lines */}
+            <div className="space-y-2 sm:space-y-3 w-1/2 flex flex-col items-end pr-4 sm:pr-8">
+                <div className="w-[90%] sm:w-[100%] h-2 sm:h-3 md:h-4 bg-gradient-to-l from-white to-transparent"></div>
+                <div className="w-[80%] sm:w-[90%] h-2 sm:h-3 md:h-4 bg-gradient-to-l from-[var(--accent-yellow)] to-transparent"></div>
+                <div className="w-[70%] sm:w-[80%] h-2 sm:h-3 md:h-4 bg-gradient-to-l from-[var(--gray-text)] to-transparent"></div>
+            </div>
+
+            </div>
+
+
+                        {/*<img 
+            src={event_bg} 
+            alt="event-bg" 
+            className="w-full h-full object-cover absolute top-0 -z-10"
+            /> */}

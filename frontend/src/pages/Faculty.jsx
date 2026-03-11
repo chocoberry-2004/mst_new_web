@@ -1,5 +1,7 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import w4 from "../assets/images/w1.jpg";
+import event_bg from "../assets/images/event_bg1.jpg";
 import { useQuery } from "@tanstack/react-query";
 import ApplicationForm from "../components/ApplicationForm";
 import { AppContext } from "../providers/AppContextProvider";
@@ -164,7 +166,7 @@ function Faculty() {
       </section>
 
       {/* Faculty section */}
-      <section id="faculty" className="min-h-screen py-10 px-6">
+      <section id="faculty" className="min-h-screen py-16 lg:py-24 px-6">
       {/* Faculty Header */}
       <div className="max-w-6xl mx-auto text-center mb-12 border-b border-[var(--accent-yellow)] py-5">
         <h1 className="text-4xl font-bold text-[var(--primary-dark)]">
@@ -235,7 +237,41 @@ function Faculty() {
           </div>
         ))}
       </div>
-    </section>
+      </section>
+
+      {/* Hero Section */}
+      <section 
+          className="w-full h-screen relative overflow-hidden"
+          style={{
+              backgroundImage: `url(${event_bg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              position: 'relative',
+              zIndex: 1
+          }}
+      >
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/50"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+                  Trusted by Over 6000+ Students
+              </h1>
+              <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+                  We have a fully qualified and very well educated teaching staff, 
+                  continuous student counseling, and a very effective and enthusiastic 
+                  student support staff.
+              </p>
+              
+              {/* Optional CTA Button */}
+              <NavLink to="/contact">
+                <button className="mt-8 px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                    Contact Us
+                </button>
+              </NavLink>
+          </div>
+      </section>
 
     <ApplicationForm/>
     </div>
