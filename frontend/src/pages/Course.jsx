@@ -20,18 +20,19 @@ import c_sharp from "../assets/images/c_sharp.png";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import ApplicationForm from "../components/ApplicationForm";
+import { AppContext } from "../providers/AppContextProvider";
+import { useContext } from "react";
+import { useCourse } from "../providers/CourseProvider";
+import Loading from "./Loading";
 
-
-const fetchCourse = async () => {
-  const response = await fetch("/js/course.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-};
 
 function Course() {
 
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [selectedCourse, setSelectedCourse] = useState(null);
+let {showModal, setShowModal, ApplicationFormHandler, openApplicationForm} = useContext(AppContext);
+const { course, courseLoading, courseError } = useCourse();
 
 const aboveLogos = [
   { src: html, alt: "HTML", delay: "0s", line: 120, color: "white" },
@@ -56,11 +57,6 @@ const belowLogos = [
 ];
 
 
-const { data: course, isPending: courseLoading, error: courseError } = useQuery({
-  queryKey: ["course"],
-  queryFn: fetchCourse,
-});
-
 const openModal = (course) => {
   setSelectedCourse(course);
   setIsModalOpen(true);
@@ -77,6 +73,9 @@ const formatCurrency = (amount, currency) => {
     currency: currency || "USD",
   }).format(amount);
 };
+
+
+  if (courseLoading) return <Loading/>;
 
   return (
 
@@ -190,7 +189,7 @@ const formatCurrency = (amount, currency) => {
           </a>
 
           <NavLink to="/contact">
-          <button className="px-6 py-3 border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] rounded-lg hover:bg-[var(--primary-dark)] hover:text-white transition">
+          <button className="cursor-pointer px-6 py-3 border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] rounded-lg hover:bg-[var(--primary-dark)] hover:text-white transition">
             Contact Us
           </button>
           </NavLink>
@@ -202,7 +201,6 @@ const formatCurrency = (amount, currency) => {
 
 
     {/* course section */}
-    
     <section className="py-20 px-2 lg:px-4 bg-gray-50" id="course-section">
         <div className="container mx-auto">
           <div className="">
@@ -228,9 +226,9 @@ const formatCurrency = (amount, currency) => {
             </div>
           )}
 
-          {course && course.courses && (
+          {course && course?.courses && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
-              {course.courses.map((course) => (
+              {course?.courses?.map((course) => (
                 <div
                   key={course.id}
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
@@ -244,7 +242,7 @@ const formatCurrency = (amount, currency) => {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-                        {course.level || course.type}
+                        For {course.level || course.type}
                       </span>
                       <span className="text-lg font-bold text-[var(--primary-dark)]">
                         {formatCurrency(course.fees.amount, course.fees.currency)}
@@ -283,12 +281,14 @@ const formatCurrency = (amount, currency) => {
                     <div className="flex space-x-3">
                       <button
                         onClick={() => openModal(course)}
-                        className="flex-1 bg-[var(--primary-dark)] text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors duration-300 font-semibold"
+                        className="cursor-pointer flex-1 bg-[var(--primary-dark)] text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors duration-300 font-semibold"
                       >
                         View Details
                       </button>
-                      <button className="flex-1 border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] py-2 px-4 rounded-lg hover:bg-[var(--primary-dark)] hover:text-white transition-colors duration-300 font-semibold">
-                        Enroll Now
+                      <button
+                      onClick={() => openApplicationForm('course')}
+                      className="cursor-pointer flex-1 border-2 border-[var(--primary-dark)] text-[var(--primary-dark)] py-2 px-4 rounded-lg hover:bg-[var(--primary-dark)] hover:text-white transition-colors duration-300 font-semibold">
+                        Contact Us
                       </button>
                     </div>
                   </div>
@@ -320,7 +320,7 @@ const formatCurrency = (amount, currency) => {
                     </h3>
                     <button
                       onClick={closeModal}
-                      className="text-white hover:text-gray-200 transition-colors"
+                      className="text-white hover:text-gray-200 transition-colors cursor-pointer"
                     >
                       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -494,14 +494,18 @@ const formatCurrency = (amount, currency) => {
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-3">
                 <button
                   type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[var(--primary-dark)] text-base font-medium text-white hover:bg-opacity-90 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={() => {
+                    closeModal();
+                    ApplicationFormHandler();
+                  }}
+                  className="cursor-pointer w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[var(--primary-dark)] text-base font-medium text-white hover:bg-opacity-90 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                 >
-                  Enroll Now
+                  Contact Us
                 </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
+                  className="cursor-pointer mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
                 >
                   Close
                 </button>
@@ -512,6 +516,7 @@ const formatCurrency = (amount, currency) => {
       )}
 
       
+      <ApplicationForm/>
 
     </>
   );

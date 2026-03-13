@@ -9,6 +9,13 @@ function AppContextProvider({children}) {
     let [showCampusTour, setShowCampusTour] = useState(false);
     let [showAwardDetail, setShowAwardDetail] = useState(false);
 
+    const [formType, setFormType] = useState("");
+
+    const openApplicationForm = (type = "general") => {
+      setFormType(type);
+      setShowModal(true);
+    };
+
     const ApplicationFormHandler = () => {
         if(showModal) {
           setShowModal(false);
@@ -34,7 +41,7 @@ function AppContextProvider({children}) {
     }
 
     return (
-        <AppContext.Provider value={{showModal, setShowModal,ApplicationFormHandler,showCampusTour, setShowCampusTour,CampusTourHandler,showAwardDetail, setShowAwardDetail,AwardDetailHandler}}>
+        <AppContext.Provider value={{showModal, setShowModal, openApplicationForm, formType,ApplicationFormHandler,showCampusTour, setShowCampusTour,CampusTourHandler,showAwardDetail, setShowAwardDetail,AwardDetailHandler}}>
             {children}
         </AppContext.Provider>
     )

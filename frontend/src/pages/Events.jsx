@@ -1,47 +1,67 @@
-import React, { useState, useContext } from 'react';
-import diamond2 from "../assets/images/diamond2.png";
-import technolympic from "../assets/images/technolympic.jpg";
-import bookundercap from "../assets/images/booksundercap.png";
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useContext,useEffect } from 'react';
 import { AppContext } from '../providers/AppContextProvider';
+import { useEventContext } from '../providers/EventProvider';
+import { useParams, useLocation } from "react-router-dom";
+
+// components
+import EventGallery from '../components/EventGallery';
 import ApplicationForm from '../components/ApplicationForm';
 import Loading from "./Loading";
-import event_bg from "../assets/images/event_bg1.jpg";
 
-const fetchEvent = async () => {
-  const response = await fetch("/js/event.json");
-  if (!response.ok) throw new Error("Failed to fetch events");
-  return await response.json();
-};
+// images
+import event1 from "../assets/images/event1.jpg";
+import event2 from "../assets/images/event2.jpg";
+import event3 from "../assets/images/event3.jpg";
+import event4 from "../assets/images/event4.jpg";
+import event5 from "../assets/images/event6.jpg";
 
-const fetchEventType = async () => {
-  const response = await fetch("/js/eventType.json");
-  if (!response.ok) throw new Error("Failed to fetch event types");
-  return await response.json();
-}
+
 
 function Events() {
+    const { typeSlug } = useParams();
     const [activeFilter, setActiveFilter] = useState('all');
-    const {showModal, setShowModal, ApplicationFormHandler} = useContext(AppContext);
+    const {showModal, setShowModal, ApplicationFormHandler, openApplicationForm} = useContext(AppContext);
+    const { events, eventType, loading, error } = useEventContext(); // from EventProvider
 
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
+
+
+    useEffect(() => {
+    if (typeSlug) {
+        setSelectedType(typeSlug);
+    } else {
+        setSelectedType("all");
+    }
+    }, [typeSlug]);
+
+    const location = useLocation();
+
+    useEffect(() => {
+    if (location.hash) {
+        const element = document.querySelector(location.hash);
+        if (element) {
+        element.scrollIntoView({
+            behavior: "smooth"
+        });
+        }
+    }
+    }, [location]);
   
-    const { data: events, isPending, error } = useQuery({
-        queryKey: ['events'],
-        queryFn: fetchEvent
-    });
-
-    const { data: eventType, isPending: eventTypeLoading, error: eventTypeErr } = useQuery({
-        queryKey: ['eventType'],
-        queryFn: fetchEventType,
-    });
-
-    if (isPending) return <Loading/>;
-    if (error) return <div>Error: {error.message}</div>;
+   
+    if (loading) return <Loading />;
+    if (error) return <div>Error loading events: {error.message}</div>;
+    if (!events || events.length === 0) return <div>No events found</div>;
 
     const eventList = Array.isArray(events) ? events : [];
+
+    // Statistics
+    const totalEvents = eventList.length;
+    const totalParticipants = eventList.reduce((sum, event) => sum + (event.participants || 0), 0);
+    const totalSpeakers = eventList.reduce((sum, event) => sum + (event.speakers || 0), 0);
+    const upcomingEvents = eventList.filter(event => event.status === "upcoming").length;
+
 
     const filteredEvents = eventList.filter((event) => {
         const matchesSearch =
@@ -70,60 +90,136 @@ function Events() {
     return (
         <div className="min-h-screen">
            
-            {/* Hero Section */}
-            <section className="relative min-h-[80vh] flex items-center justify-center text-center overflow-hidden px-4">
-            
-             {/* Background Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary-dark)] via-transparent to-transparent z-10"></div>
 
-            <div className="max-w-7xl mx-auto">
-
-                <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-800/10 border border-blue-500/20 mb-5 sm:mb-6 backdrop-blur-sm">
-                <i className="fas fa-bolt mr-2 text-blue-600"></i>
-                <span className="text-xs sm:text-sm font-medium text-blue-800">
-                    Dynamic Campus Life
-                </span>
-                </div>
-
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900 leading-tight">
-                Campus
-                <span className="block text-[var(--primary-dark)] mt-2">
-                    Events & Activities
-                </span>
-                </h1>
-
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                Experience innovation, creativity, and learning through our diverse range
-                of technical, cultural, and professional events.
-                </p>
-
-            </div>
-            </section>
-
-            
-
-            {/* Stats Section */}
-            <section className="lg:h-[20vh] bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {[
-                            { number: '50+', label: 'Events Yearly', icon: 'fas fa-calendar-check', color: 'text-blue-600' },
-                            { number: '5K+', label: 'Participants', icon: 'fas fa-user-graduate', color: 'text-green-600' },
-                            { number: '100+', label: 'Industry Speakers', icon: 'fas fa-microphone', color: 'text-purple-600' },
-                            { number: '25+', label: 'Clubs & Chapters', icon: 'fas fa-users', color: 'text-orange-600' },
-                        ].map((stat, index) => (
-                            <div key={index} className="text-center p-5 border-b-4 border-[var(--accent-yellow)] rounded-2xl bg-gradient-to-r from-gray-50 to-blue-50 animate-drop-in">
-                                <i className={`${stat.icon} ${stat.color} text-3xl mb-2`}></i>
-                                <div className="text-xl font-bold text-gray-900 mb-1">{stat.number}</div>
-                                <div className="text-gray-600">{stat.label}</div>
-                            </div>
-                        ))}
+            {/*  Hero Section */}
+            <section className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden px-4">
+                
+                {/* Background Images Grid - Curtain Effect */}
+                <div className="absolute inset-0 flex fixed top-0 -z-10 overflow-hidden">
+                {/* Event 1 - First curtain */}
+                <div className="relative h-full flex-1 -mr-12 last:mr-0 animate-dramatic-curtain" 
+                    style={{ animationDelay: '0.1s' }}>
+                    <div className="relative h-full overflow-hidden shadow-2xl">
+                    <img 
+                        src={event1} 
+                        alt="" 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>
                     </div>
                 </div>
+
+                {/* Event 2 - Second curtain */}
+                <div className="relative h-full flex-1 -mr-12 last:mr-0 animate-dramatic-curtain" 
+                    style={{ animationDelay: '0.3s' }}>
+                    <div className="relative h-full overflow-hidden shadow-2xl">
+                    <img 
+                        src={event2} 
+                        alt="" 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>
+                    </div>
+                </div>
+
+                {/* Event 3 - Third curtain */}
+                <div className="relative h-full flex-1 -mr-12 last:mr-0 animate-dramatic-curtain" 
+                    style={{ animationDelay: '0.5s' }}>
+                    <div className="relative h-full overflow-hidden shadow-2xl">
+                    <img 
+                        src={event3} 
+                        alt="" 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>
+                    </div>
+                </div>
+
+                {/* Event 4 - Fourth curtain */}
+                <div className="relative h-full flex-1 -mr-12 last:mr-0 animate-dramatic-curtain" 
+                    style={{ animationDelay: '0.7s' }}>
+                    <div className="relative h-full overflow-hidden shadow-2xl">
+                    <img 
+                        src={event4} 
+                        alt="" 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>
+                    </div>
+                </div>
+
+                {/* Event 5 - Fifth curtain */}
+                <div className="relative h-full flex-1 animate-dramatic-curtain" 
+                    style={{ animationDelay: '0.9s' }}>
+                    <div className="relative h-full overflow-hidden shadow-2xl">
+                    <img 
+                        src={event5} 
+                        alt="" 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>
+                    </div>
+                </div>
+                </div>
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary-dark)]/90 to-transparent z-10"></div>
+
+                {/* Hero Content */}
+                <div className="relative z-20 max-w-4xl mx-auto">
+
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-800/10 border border-blue-500/20 mb-6 backdrop-blur-sm">
+                        <span className="text-sm font-medium text-blue-800">
+                            Dynamic Campus Life
+                        </span>
+                    </div>
+
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-gray-300 leading-tight">
+                        Campus
+                        <span className="block text-[var(--primary-dark)] mt-2">
+                            Events & Activities
+                        </span>
+                    </h1>
+
+                    <p className="text-lg md:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+                        Experience innovation, creativity, and learning through our diverse range
+                        of technical, cultural, and professional events.
+                    </p>
+
+                </div>
+
+                {/* Stats (Bottom of Hero) */}
+                <div className="absolute bottom-10 left-0 w-full z-20">
+                    <div className="max-w-6xl mx-auto px-4">
+                        <div className="grid grid-cols-4 gap-4">
+
+                            {[
+                                { number: totalEvents, label: 'Total Events' },
+                                { number: totalParticipants, label: 'Participants' },
+                                { number: totalSpeakers, label: 'Industry Speakers' },
+                                { number: upcomingEvents, label: 'Upcoming Events'},
+                            ].map((stat, index) => (
+                                <div
+                                    key={index}
+                                    className="text-center p-5 bg-white/80 backdrop-blur-md rounded-2xl shadow-md border-b-4 border-[var(--accent-yellow)]"
+                                >
+                                    <div className="text-2xl font-bold text-gray-900 mb-1">
+                                        {stat.number}
+                                    </div>
+                                    <div className="text-gray-600 text-sm">
+                                        {stat.label}
+                                    </div>
+                                </div>
+                            ))}
+
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
             {/* Filter & Events Section */}
-            <section className="py-16 lg:py-24 bg-white">
+            <section id="event-grid" className="scroll-mt-0 py-16 lg:py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Filter Tabs */}
                     <div className="mb-12">
@@ -197,7 +293,7 @@ function Events() {
                                 {/* Image Header */}
                                 <div className="relative h-48 overflow-hidden">
                                     <img
-                                        src={event.image}
+                                        src={event?.images?.[0]}
                                         alt={event.title}
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
@@ -300,7 +396,7 @@ function Events() {
                                     </div>
 
                                     <button
-                                        onClick={() => ApplicationFormHandler()}
+                                        onClick={() => openApplicationForm("event")}
                                         className={`w-full py-2.5 cursor-pointer rounded-lg font-medium transition-all duration-300 ${
                                             event.registered
                                                 ? "bg-green-600 text-white"
@@ -338,13 +434,19 @@ function Events() {
                                 <div className="w-28 h-1 mt-3 rounded-full bg-gradient-to-r from-cyan-500 to-[var(--primary-dark)]"></div>
                             </div>
 
-                            <div className={`${highlightEvents.length > 1 ? `grid grid-cols-1 lg:grid-cols-2 gap-8` : ``}`}>
+                            <div
+                            className={`${
+                                highlightEvents.length > 1
+                                ? "grid grid-cols-1 lg:grid-cols-2 gap-8"
+                                : "max-w-4xl mx-auto"
+                            }`}
+                            >
 
                             {highlightEvents?.map((highlightEvent) => (
                                 <div key={highlightEvent.id} className="relative rounded-3xl overflow-hidden shadow-xl">
                                     {/* Background Image */}
                                     <img
-                                        src={highlightEvent.image}
+                                        src={highlightEvent?.images?.[0]}
                                         alt={highlightEvent.title}
                                         className="absolute inset-0 w-full h-full object-cover"
                                     />
@@ -353,9 +455,8 @@ function Events() {
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#0B124E]/95 via-[#0B124E]/85 to-[#0B124E]/60"></div>
 
                                     {/* Content */}
-                                    <div className="relative grid lg:grid-cols-2 gap-8 p-8 lg:p-14 text-white">
-                                        {/* LEFT CONTENT */}
-                                        <div>
+                                    <div className="relative flex flex-col lg:grid lg:grid-cols-2 gap-6 p-6 lg:p-10 text-white">                                        {/* LEFT CONTENT */}
+                                        <div className='space-y-2'>
                                             {/* Featured Badge */}
                                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
                                             bg-white/20 backdrop-blur-md mb-6">
@@ -384,7 +485,7 @@ function Events() {
                                             </p>
 
                                             {/* Event Stats */}
-                                            <div className="flex flex-wrap gap-6 mb-8">
+                                            <div className="space-y-3 mb-5 border-b pb-5">
                                                 <div className="flex items-center gap-2">
                                                     <i className="fas fa-calendar-alt text-yellow-400"></i>
                                                     <div>
@@ -410,42 +511,49 @@ function Events() {
                                                 </div>
                                             </div>
 
-                                            {/* CTA */}
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-4">
+                                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+                                                <div className="flex flex-wrap items-center gap-4">
                                                     <div className="flex items-center gap-1">
-                                                        <i className="fas fa-users text-yellow-400"></i>
-                                                        <span className="text-sm">{highlightEvent.participants}+ Participants</span>
+                                                    <i className="fas fa-users text-yellow-400"></i>
+                                                    <span className="text-sm">
+                                                        {highlightEvent.participants}+ Participants
+                                                    </span>
                                                     </div>
+
                                                     {highlightEvent.speakers > 0 && (
-                                                        <div className="flex items-center gap-1">
-                                                            <i className="fas fa-microphone text-yellow-400"></i>
-                                                            <span className="text-sm">{highlightEvent.speakers} Speakers</span>
-                                                        </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <i className="fas fa-microphone text-yellow-400"></i>
+                                                        <span className="text-sm">
+                                                        {highlightEvent.speakers} Speakers
+                                                        </span>
+                                                    </div>
                                                     )}
-                                                </div>
-                                                
-                                                <button
-                                                    onClick={ApplicationFormHandler}
-                                                    className="inline-flex items-center gap-2 text-[#0B124E]
-                                                    px-6 py-2.5 rounded-full font-semibold
-                                                    bg-[var(--accent-yellow)]
-                                                    transition-all duration-300
-                                                    shadow-lg hover:shadow-2xl hover:scale-105
-                                                    hover:bg-yellow-400"
-                                                >
-                                                    {highlightEvent.status === "upcoming" ? (
+
+                                                    <button
+                                                        onClick={() => openApplicationForm("event")}
+                                                        className="inline-flex items-center gap-2 text-[#0B124E]
+                                                        px-6 py-2.5 rounded-full font-semibold
+                                                        bg-[var(--accent-yellow)]
+                                                        transition-all duration-300
+                                                        shadow-lg hover:shadow-2xl hover:scale-105
+                                                        hover:bg-yellow-400 cursor-pointer"
+                                                    >
+                                                        {highlightEvent.status === "upcoming" ? (
                                                         <>
                                                             <i className="fas fa-ticket-alt"></i>
                                                             Register Now
                                                         </>
-                                                    ) : (
+                                                        ) : (
                                                         <>
                                                             <i className="fas fa-eye"></i>
                                                             View Details
                                                         </>
-                                                    )}
-                                                </button>
+                                                        )}
+                                                    </button>
+                                                </div>
+
+                                               
                                             </div>
 
                                         </div>
@@ -471,28 +579,8 @@ function Events() {
                                 <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-[var(--primary-dark)] mt-2"></div>
                             </h2>
                             
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {pastEvents.map((item) => (
-                                    <div 
-                                        key={item.id} 
-                                        className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer"
-                                    >
-                                        {/* Image with proper object-fit */}
-                                        <img 
-                                            src={item.image} 
-                                            alt={item.title} 
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                        />
-                                        
-                                        {/* Gradient overlay that appears on hover */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                                            <div className="text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                                <div className="font-semibold">{item.title}</div>
-                                                <div className="text-sm text-gray-300">{item.date}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="">
+                                <EventGallery/>
                             </div>
                             
                             <div className="text-center mt-8">
@@ -506,15 +594,21 @@ function Events() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-16">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-gradient-to-r from-green-900 to-emerald-900 rounded-3xl p-8 lg:p-12 text-center text-white">
+            <section className="relative py-16">
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-[var(--primary-dark)]/70"></div>
+
+                <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-3xl p-8 lg:p-12 text-center text-white">
                         <h2 className="text-3xl lg:text-4xl font-bold mb-6">
                             Want to Host an Event?
                         </h2>
+
                         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
                             Student clubs and organizations can apply to host events on campus.
                         </p>
+
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <button
                                 className="cursor-pointer inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -522,6 +616,7 @@ function Events() {
                                 <i className="fas fa-file-signature mr-2"></i>
                                 Submit Event Proposal
                             </button>
+
                             <button 
                                 className="cursor-pointer inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-white text-green-900 hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
                             >
@@ -534,6 +629,8 @@ function Events() {
             </section>
             
             <ApplicationForm/>
+
+            
         </div>
     );
 }

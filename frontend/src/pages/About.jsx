@@ -7,17 +7,14 @@ import { useQuery } from '@tanstack/react-query';
 import Award from "../assets/images/award1.png";
 import AwardDetailForm from '../components/AwardDetailForm';
 import { NavLink } from 'react-router-dom';
+import Loading from './Loading';
+import { useLecturer } from "../providers/LecturerProvider";
 
 const fetchAchiement = async () => {
-  const response = await fetch("/js/achievement.json");
+  const response = await fetch("/api/achievement/");
   return await response.json();
 }
 
-const fetchLecturer = async () => {
-  const response = await fetch ("/js/lecturer.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-}
 
 
 const fetchTimeLine = async () => {
@@ -29,27 +26,24 @@ const fetchTimeLine = async () => {
 function About() {
 
   let {CampusTourHandler,AwardDetailHandler} = useContext(AppContext);
+  const { lecturers, lecturerLoading, lecturerError } = useLecturer();
 
-  const {data:awards, isPending, error} = useQuery({
+  const {data:awards, isPending:awardLoading, error} = useQuery({
                         queryKey: ['achievement'],
                         queryFn : fetchAchiement
   });
 
-  const { data: lecturers, isPending: lecturerLoading, error: lecturerError } = useQuery({
-      queryKey: ["lecturers"],
-      queryFn: fetchLecturer,
-  });
 
   const {data: timeLine, isPending: timeLineLoading, error: timeLineErr} = useQuery({
       queryKey: ['timeLine'],
       queryFn: fetchTimeLine,
   })
 
-
-  const principal = lecturers?.find((lecturer) => lecturer.position == "principal");
-  const vice1     = lecturers?.find((lecturer) => lecturer.position == "vice-principal1");
-  const vice2     = lecturers?.find((lecturer) => lecturer.position == "vice-principal2");
-
+  const leadership = lecturers?.filter((lecturer) =>
+    lecturer.positions?.some((p) =>
+      ["Principal", "Vice Principal"].includes(p)
+    )
+  );
 
   const findAward = (id) => {
     const award = awards?.find((award) => award.id === id);
@@ -60,6 +54,7 @@ function About() {
     }
   };
 
+  if(awardLoading || timeLineLoading || lecturerLoading) return <Loading/>
 
   return (
     <div className="">
@@ -294,49 +289,45 @@ function About() {
             </p>
           </div>
 
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { 
-                name: 'Dr. Daw Su Nandar Aung', 
-                position: 'Vice Principal',
-                bio: 'PhD in Computer Science, 25+ years experience',
-                expertise: 'AI & Research',
-              },
-              { 
-                name: 'U Aung Zaw Myint', 
-                position: 'Principal',
-                bio: 'Former Director at Tech Giant Inc.',
-                expertise: 'Curriculum Development',
-              },
-              { 
-                name: 'U Myat Min Oo', 
-                position: 'Vice Principal',
-                bio: 'Industry liaison with 100+ company networks',
-                expertise: 'Corporate Relations',
-              },
-            ].map((leader, index) => (
-              <div key={index} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200">
-                <div className={`h-30 bg-gray-100 relative`}>
+            {leadership?.map((leader, index) => (
+              <div
+                key={index}
+                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200"
+              >
+                <div className="h-30 bg-gray-100 relative">
                   <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
                     <div className="w-24 h-24 rounded-full bg-white p-1">
-                      <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-100 to-gray-100 flex items-center justify-center">
-                        <i className="fas fa-user-tie text-4xl text-gray-600"></i>
-                      </div>
+                      <img
+                        src={leader.profileImage}
+                        alt={leader.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
                     </div>
                   </div>
                 </div>
+
                 <div className="pt-16 pb-8 px-6 text-center">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{leader.name}</h3>
-                  <p className="text-blue-600 font-semibold mb-3">{leader.position}</p>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {leader.name}
+                  </h3>
+
+                  <p className="text-blue-600 font-semibold mb-3">
+                    {leader.positions?.join(", ")}
+                  </p>
+
                   <p className="text-gray-600 mb-4">{leader.bio}</p>
+
                   <div className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-700">
                     <i className="fas fa-star mr-2 text-yellow-500"></i>
-                    {leader.expertise}
+                    {leader.expertise?.[0]}
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
