@@ -60,7 +60,7 @@ const locationList =  [
 
 
 const fetchFAQ = async () => {
-  const response = await fetch("localhost:8000/api/faqs/");
+  const response = await fetch("/api/faqs/");
   return await response.json();
 }
 
