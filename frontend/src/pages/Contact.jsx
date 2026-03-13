@@ -5,6 +5,7 @@ import library from "../assets/images/library.png";
 import diamond2 from "../assets/images/star.png";
 import { useQuery } from '@tanstack/react-query';
 import { useContactInfo } from '../providers/ContactInfoProvider';
+import Loading from './Loading';
 
 const locationList =  [
   {
@@ -59,7 +60,7 @@ const locationList =  [
 
 
 const fetchFAQ = async () => {
-  const response = await fetch("/js/faq.json");
+  const response = await fetch("localhost:8000/api/faqs/");
   return await response.json();
 }
 
@@ -100,6 +101,9 @@ function Contact() {
         queryKey: ['faq'],
         queryFn: fetchFAQ,
   })
+
+
+  if(contactInfoLoading || FAQLoading) return <Loading/>;
 
   return (
     <div className="min-h-screen">

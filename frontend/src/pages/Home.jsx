@@ -3,6 +3,7 @@ import w5 from "../assets/images/w5.png"
 import principal from "../assets/images/principal.png";
 import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import Loading from "./Loading";
 
 const binaryDigits = Array.from({ length: 40 });
 
@@ -20,6 +21,8 @@ function Home() {
     });
 
     console.log(partners);
+
+    if(partnerLoading) return <Loading/>;
 
   return (
     <div className="">
@@ -57,9 +60,11 @@ function Home() {
         {/* Main content */}
         <div className="w-full h-full relative z-10 px-4 flex justify-between items-end transition-transform duration-300 ease-in-out">
             <div className="lg:py-20 py-5 transition-all duration-300 ease-in-out">
-                <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white animate-drop-in transition-all duration-300 ease-in-out">
-                    Shaping Future IT Professionals in <span className="border-b-3"><span className="text-[var(--accent-yellow)]">M</span>.<span className="text-[var(--primary-dark)]">S</span>.<span>T</span> </span> 
+                <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white animate-drop-in transition-all duration-300 ease-in-out space-x-3">
+                    {/* Shaping Future IT Professionals in <span className="border-b-3"><span className="text-[var(--accent-yellow)]">M</span>.<span className="text-[var(--primary-dark)]">S</span>.<span>T</span> </span>  */}
+                    <span className="text-[var(--accent-yellow)]">MYANMAR </span> <span className="text-[var(--primary-dark)]">SKILL </span> <span>TECHNOLOGY</span>
                 </h2>
+                <p className="text-[var(--accent-yellow)] mb-3 text-lg font-bold">Your Success Our Destination</p>
                 <p className="max-w-2xl mb-8 text-gray-300">
                     Learn cutting-edge technologies, industry-ready skills, and real-world problem solving with us.
                 </p>

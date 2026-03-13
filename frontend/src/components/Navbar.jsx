@@ -1,36 +1,48 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-
-const fetchEventType = async () => {
-  const response = await fetch("/js/eventType.json");
-  return await response.json();
-}
+import React, { useState, useRef, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useEventContext } from '../providers/EventProvider';
 
 function Navbar() {
-    const [isEventsOpen, setIsEventsOpen] = useState(false);
-  
+  const [isEventsOpen, setIsEventsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const location = useLocation();
+  const { events, eventType, loading, error } = useEventContext();
+
   const linkClass = ({ isActive }) =>
     `relative px-1 py-2 font-medium transition-all duration-300
-     ${
-       isActive
-         ? "text-[#FFC53A]"
-         : "text-[#FEFEFE] hover:text-[#FFC53A]"
-     }
-     after:absolute after:left-0 after:-bottom-1
-     after:h-[2px] after:bg-[#FFC53A]
-     after:transition-all after:duration-300
-     ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`;
+    ${
+      isActive
+        ? "text-[#FFC53A]"
+        : "text-[#FEFEFE] hover:text-[#FFC53A]"
+    }
+    after:absolute after:left-0 after:-bottom-1
+    after:h-[2px] after:bg-[#FFC53A]
+    after:transition-all after:duration-300
+    ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`;
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsEventsOpen(false);
+      }
+    };
 
-    const { data: eventType, isPending: eventTypeLoading, error: eventTypeErr } = useQuery({
-      queryKey: ['eventType'],
-      queryFn: fetchEventType,
-    });
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-      // Toggle dropdown
+  // Close dropdown when route changes
+  useEffect(() => {
+    setIsEventsOpen(false);
+  }, [location.pathname]);
+
   const toggleEventsDropdown = () => {
     setIsEventsOpen(!isEventsOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsEventsOpen(false);
   };
 
   return (
@@ -51,75 +63,69 @@ function Navbar() {
         Article
       </NavLink>
 
-      <div className="flex flex-col relative">
+      <div className="relative" ref={dropdownRef}>
         <button
           onClick={toggleEventsDropdown}
-          className="flex justify-between items-center w-full px-3 py-2 text-[#FEFEFE] hover:text-[#FFC53A] transition-all duration-300 font-medium relative after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-[#FFC53A] after:transition-all after:duration-300 after:w-0 hover:after:w-full"
+          className="flex items-center px-3 py-2 text-[#FEFEFE] hover:text-[#FFC53A] transition-all duration-300 font-medium relative after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-[#FFC53A] after:transition-all after:duration-300 after:w-0 hover:after:w-full"
         >
           <span>Event</span>
-          <i className={`fa-solid fa-chevron-down transition-transform duration-300 ml-2 ${isEventsOpen ? 'rotate-180' : ''}`}></i>
+          <i className={`fa-solid fa-chevron-down transition-transform duration-300 ml-2 ${isEventsOpen ? 'rotate-180' : ''}`} />
         </button>
-      
-        {/* event type dropdown - conditionally rendered */}
-                  {isEventsOpen && (
-                    <div className="ml-4 mt-2 p-2 border-l-2 border-white/20 absolute bg-[var(--primary-dark)]/20 backdrop-blur-lg z-100 min-w-44 -left-5 top-10">
-                      {eventTypeLoading && (
-                        <p className="text-gray-300 text-sm py-1">Loading...</p>
-                      )}
-      
-                      {eventTypeErr && (
-                        <p className="text-red-400 text-sm py-1">Failed to load</p>
-                      )}
-      
-                      {eventType && eventType.length > 0 ? (
-                        <ul className="flex flex-col gap-1">
-                          {/* "All Events" option */}
-                          <li>
-                            <NavLink
-                              to="/event"
-                              className={({ isActive }) => 
-                                `block text-sm py-1.5 px-2 transition rounded font-bold
-                                 ${isActive 
-                                   ? "text-[#FFC53A] bg-white/10" 
-                                   : "text-white hover:text-[#FFC53A] hover:bg-white/5"}`
-                              }
-                              onClick={() => {
-                                onClose();
-                                setIsEventsOpen(false);
-                              }}
-                            >
-                              All Events
-                            </NavLink>
-                          </li>
-      
-                          {/* Event type options */}
-                          {eventType.map((type) => (
-                            <li key={type.id}>
-                              <NavLink
-                                to={`/events/type/${type.slug}`}
-                                className={({ isActive }) => 
-                                  `block text-sm py-1.5 px-2 transition rounded text-shadow-lg
-                                   ${isActive 
-                                     ? "text-[#FFC53A] bg-white/10" 
-                                     : "text-white hover:text-[#FFC53A] hover:bg-white/5"}`
-                                }
-                                onClick={() => {
-                                  onClose();
-                                  setIsEventsOpen(false);
-                                }}
-                              >
-                                {type.name}
-                              </NavLink>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        !eventTypeLoading && !eventTypeErr && (
-                          <p className="text-gray-300 text-sm py-1">No event types</p>
-                        )
-                      )}
-                    </div>
-                  )}
+
+        {/* Event type dropdown */}
+        {isEventsOpen && (
+          <div className="absolute left-0 top-10 mt-2 p-2 min-w-48 bg-[var(--primary-dark)]/20 backdrop-blur-lg rounded-md border border-white/10 z-50">
+            {loading && (
+              <p className="text-gray-300 text-sm py-2 px-2">Loading...</p>
+            )}
+
+            {error && (
+              <p className="text-red-400 text-sm py-2 px-2">Failed to load</p>
+            )}
+
+            {!loading && !error && (
+              <ul className="flex flex-col gap-1">
+                {/* All Events option */}
+                <li>
+                  <NavLink
+                    to="/event"
+                    className={({ isActive }) => 
+                      `block text-sm py-2 px-3 transition rounded-md
+                       ${isActive 
+                         ? "text-[#FFC53A] bg-white/10" 
+                         : "text-white hover:text-[#FFC53A] hover:bg-white/5"}`
+                    }
+                    onClick={closeDropdown}
+                  >
+                    All Events
+                  </NavLink>
+                </li>
+
+                {/* Event type options */}
+                {eventType && eventType.length > 0 ? (
+                  eventType.map((type) => (
+                    <li key={type.id}>
+                      <NavLink
+                        to={`/event/type/${type.slug}#event-grid`}
+                        className={({ isActive }) => 
+                          `block text-sm py-2 px-3 transition rounded-md
+                           ${isActive 
+                             ? "text-[#FFC53A] bg-white/10" 
+                             : "text-white hover:text-[#FFC53A] hover:bg-white/5"}`
+                        }
+                        onClick={closeDropdown}
+                      >
+                        {type.name}
+                      </NavLink>
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-300 text-sm py-2 px-3">No event types</p>
+                )}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
 
       <NavLink to="/contact" className={linkClass}>

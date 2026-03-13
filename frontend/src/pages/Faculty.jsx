@@ -7,39 +7,37 @@ import ApplicationForm from "../components/ApplicationForm";
 import { AppContext } from "../providers/AppContextProvider";
 import { useContext } from "react";
 import Loading from "./Loading";
-
-const fetchFaculty = async () => {
-  const response = await fetch("/js/faculty.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-};
-
-const fetchLecturer = async () => {
-  const response = await fetch ("/js/lecturer.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-}
+import { useLecturer } from "../providers/LecturerProvider";
+import { useFaculty } from "../providers/FacultyProvider";
 
 
 function Faculty() {
 
-  let {showModal, setShowModal, ApplicationFormHandler} = useContext(AppContext);
-
-  const { data: facultyList, isPending: facultyLoading, error: facultyError } = useQuery({
-    queryKey: ["faculty"],
-    queryFn: fetchFaculty,
-  });
-
-  const { data: lecturers, isPending: lecturerLoading, error: lecturerError } = useQuery({
-    queryKey: ["lecturers"],
-    queryFn: fetchLecturer,
-  });
+  let {showModal, setShowModal, ApplicationFormHandler, openApplicationForm} = useContext(AppContext);
+  const { lecturers, lecturerLoading, lecturerError } = useLecturer();
+  const { facultyList, facultyLoading, facultyError } = useFaculty();
 
   if (facultyLoading || lecturerLoading) return <Loading/>;
   if (facultyError) return <p className="text-center mt-20">Error: {facultyError.message}</p>;
   if (lecturerError) return <p className="text-center mt-20">Error: {lecturerError.message}</p>;
 
   const faculty = facultyList?.faculty;
+
+  // Dynamic Statistics
+  const totalCourses = faculty?.courses?.length || 0;
+  const totalLecturers = lecturers?.length || 0;
+
+  const totalCareerPaths =
+    faculty?.courses?.reduce(
+      (sum, course) => sum + (course.career_paths?.length || 0),
+      0
+    ) || 0;
+
+  const totalLevels =
+    faculty?.courses?.reduce(
+      (sum, course) => sum + (course.levels?.length || 0),
+      0
+    ) || 0;
 
   return (
     <div className="bg-white relative">
@@ -103,10 +101,10 @@ function Faculty() {
               {/* Stats Section - Responsive Grid */}
               <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 ">
                 {[
-                  { value: "50+", label: "Faculty" },
-                  { value: "150+", label: "Experienced Tutor" },
-                  { value: "2500+", label: "Students" },
-                  { value: "50+", label: "Awards" }
+                  { value: totalCourses, label: "Programs" },
+                  { value: totalLecturers, label: "Expert Lecturers" },
+                  { value: totalCareerPaths, label: "Career Paths" },
+                  { value: totalLevels, label: "Study Levels" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
                     <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-400 mb-1">
@@ -127,11 +125,11 @@ function Faculty() {
       {/* Lecturer Grid */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <div className="text-center mb-12 pb-8 border-b border-[var(--accent-yellow)]">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-dark)]">
               Our Expert Lecturers
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mt-3">
+            <p className="text-gray-600 max-w-3xl mx-auto mt-3">
               Learn from experienced professionals with strong academic backgrounds and real-world industry expertise.
             </p>
           </div>
@@ -140,25 +138,75 @@ function Faculty() {
             {lecturers?.map((lecturer, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center"
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center border border-gray-200"
               >
                 <img
                   src={lecturer.profileImage}
                   alt={lecturer.name}
-                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-yellow-400"
+                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[var(--primary-dark)]"
                 />
-                <h3 className="text-xl font-semibold text-gray-800">{lecturer.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{lecturer.degree}</p>
-                <p className="text-gray-600 mt-2 text-sm">{lecturer.expertise}</p>
-                {lecturer.award && (
-                  <p className="mt-2 text-xs text-yellow-600 font-medium">{lecturer.award}</p>
+
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {lecturer.name}
+                </h3>
+
+                {/* Positions */}
+                <p className="text-sm text-gray-500 mt-1">
+                  {lecturer.positions?.join(", ")}
+                </p>
+
+                {/* Degrees */}
+                <p className="text-xs text-gray-400 mt-1">
+                  {lecturer.degrees?.join(", ")}
+                </p>
+
+                <div className="flex flex-wrap gap-2 justify-center mt-2">
+            {lecturer.expertise?.map((skill, i) => (
+              <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                {skill}
+              </span>
+            ))}
+          </div>
+
+                {/* Awards */}
+                {lecturer.awards?.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2 justify-center">
+                    {lecturer.awards.map((award, i) => (
+                      <span
+                        key={i}
+                        className="text-xs text-yellow-700 font-medium border px-2 py-1 rounded-lg bg-yellow-100"
+                      >
+                        {award}
+                      </span>
+                    ))}
+                  </div>
                 )}
-                <button
-                  onClick={() => ApplicationFormHandler()}
-                  className="mt-4 px-4 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 cursor-pointer"
-                >
-                  Contact
-                </button>
+
+
+                {/* Social Links */}
+                <div className="flex gap-3 mt-4">
+                  {lecturer.social?.linkedin && (
+                    <a
+                      href={lecturer.social.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center justify-center w-10 h-10 text-blue-600 hover:text-white bg-blue-600/20 hover:bg-blue-600 rounded-full transition"
+                    >
+                      <i className="fab fa-linkedin text-lg"></i>
+                    </a>
+                  )}
+
+                  {lecturer.social?.facebook && (
+                    <a
+                      href={lecturer.social.facebook}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center justify-center w-10 h-10 text-blue-500 hover:text-white bg-blue-500/20 hover:bg-blue-500 rounded-full transition"
+                    >
+                      <i className="fab fa-facebook text-lg"></i>
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -230,7 +278,7 @@ function Faculty() {
             </div>
 
             <button 
-            onClick={() => ApplicationFormHandler()}
+            onClick={() => openApplicationForm("program")}
             className="mt-5 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition cursor-pointer" >
               Contact
             </button>
@@ -251,7 +299,7 @@ function Faculty() {
           }}
       >
           {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-[var(--primary-dark)]/60"></div>
           
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">

@@ -4,8 +4,15 @@ import article_bg from "../assets/images/article_bg.jpg";
 import outdoor_study_group from "../assets/images/outdoor-study-group.webp";
 import study_group from "../assets/images/study-group.png";
 import article_ai_bg from "../assets/images/article_ai_bg.png";
+import ApplicationForm from "../components/ApplicationForm";
+import { AppContext } from "../providers/AppContextProvider";
+import { useContext } from "react";
+import Loading from "./Loading";
 
 function Article() {
+
+  // if (courseLoading) return <Loading/>;
+  
   return (
     <div>
       
@@ -171,7 +178,7 @@ function Article() {
 
           </div>
 
-        </section>
+      </section>
 
     </div>
   )

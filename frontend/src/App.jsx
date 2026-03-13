@@ -52,6 +52,7 @@ function App() {
           <Route path="/course"  element={<Course/>}/>
           <Route path="/article" element={<Article/>}/>
           <Route path="/event" element={<Events />} />
+          <Route path="/event/type/:typeSlug" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>

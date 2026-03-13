@@ -1,129 +1,124 @@
 import React from "react";
+import privacy1 from "../assets/images/privacy1.jpg";
+import privacy2 from "../assets/images/privacy2.jpg";
+import privacy3 from "../assets/images/privacy3.png";
+import Mst_logo from "../assets/images/mst_logo1.png";
+import Loading from "./Loading";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchPrivacyPolicy = async () => {
+  const response = await fetch("/js/privacy_policy.json");
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json();
+};
+
 
 function PrivacyPolicy() {
-  return (
-    <div className="bg-gray-50 min-h-screen py-16 bg-gradient-to-b from-[var(--primary-dark)] via-transparent to-transparent">
-      <div className="max-w-5xl mx-auto px-6 bg-[var(--gray-text)]">
 
-        {/* Page Title */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-[var(--primary-dark)] mb-4">
-            Privacy Policy
-          </h1>
-          <p className="text-gray-600">
-            M.S.T College Myanmar is committed to protecting your privacy and
-            safeguarding your personal information.
-          </p>
+  const { data: privacyData, isPending: privacyLoading, error: privacyErr } = useQuery({
+    queryKey: ["privacy"],
+    queryFn: fetchPrivacyPolicy,
+  });
+
+
+  if(privacyLoading) return <Loading/>;
+
+  return (
+
+    <div className="min-h-screen py-5 ">
+
+    <img src={privacy3} alt="" className="w-full min-h-screen fixed top-0 -z-10" />
+      
+
+    <div className="max-w-5xl mx-auto px-6">
+        {/* Privacy Policy Header Card */}
+        <div className="relative w-full mt-10 overflow-hidden rounded-t-3xl shadow-2xl">
+          {/* Background Gradient with Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-dark)] via-[var(--primary-dark)] to-[var(--primary-dark)]/90">
+            {/* Decorative Grid Pattern */}
+            <div className="absolute inset-0 opacity-10" 
+                style={{ 
+                  backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                  backgroundSize: '40px 40px'
+                }} 
+            />
+          </div>
+          
+          {/* Animated Gradient Orbs */}
+          <div className="absolute top-0 -left-20 w-72 h-72 bg-[var(--accent-yellow)]/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 -right-20 w-96 h-96 bg-[#00ffaa]/20 rounded-full blur-3xl animate-pulse delay-1000" />
+
+          {/* Main Content */}
+          <div className="relative z-10 p-8 md:p-12">
+            {/* Logo and Tagline Section */}
+            <div className="flex flex-col items-center mb-10 md:mb-16">
+              <div className="relative group">
+                {/* Logo Glow Effect */}
+                <div className="absolute inset-0 bg-[var(--accent-yellow)]/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-300" />
+                <img 
+                  src={Mst_logo} 
+                  alt="M.S.T College Logo" 
+                  className="relative w-40 h-auto drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-300" 
+                />
+              </div>
+              <div className="relative mt-4">
+                <p className="text-xl md:text-2xl font-medium text-[var(--accent-yellow)] tracking-wider">
+                  Your Success, Our Destination
+                </p>
+                {/* Decorative Underline */}
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-0.5 bg-gradient-to-r from-transparent via-[var(--accent-yellow)] to-transparent" />
+              </div>
+            </div>
+
+            {/* Privacy Policy Content */}
+            <div className="max-w-4xl mx-auto">
+              {/* Title Section */}
+              <div className="text-center mb-10">
+                <div className="inline-block relative">
+                  {/* Decorative Elements */}
+                  <div className="absolute -top-4 -left-8 w-12 h-12 border-l-2 border-t-2 border-[var(--accent-yellow)]/30 rounded-tl-xl" />
+                  <div className="absolute -bottom-4 -right-8 w-12 h-12 border-r-2 border-b-2 border-[var(--accent-yellow)]/30 rounded-br-xl" />
+                  
+                  <h1 className="text-4xl md:text-6xl font-bold text-white relative">
+                    Privacy <span className="text-[var(--accent-yellow)]">Policy</span>
+                  </h1>
+                </div>
+              </div>
+
+              {/* Description Card */}
+              <div className="relative backdrop-blur-sm bg-white/5 rounded-2xl p-6 md:p-8 border border-white/10 shadow-xl">
+                {/* Quote Icon */}
+                <div className="absolute -top-3 -left-3 text-4xl text-[var(--accent-yellow)]/30 font-serif">"</div>
+                
+                <p className="text-gray-100 text-lg md:text-xl leading-relaxed text-center md:text-left relative z-10">
+                  <span className="font-semibold text-[var(--accent-yellow)]">M.S.T College Myanmar</span> is committed to protecting your privacy and 
+                  safeguarding your personal information. We respect your personal 
+                  data and ensure it is handled securely in compliance with applicable laws.
+                </p>
+              </div>
+
+            </div>
+          </div>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-8 space-y-8">
+        <div className="bg-white shadow-md rounded-b-xl p-8 space-y-8">
+          {privacyData.map((section, index) => (
+            <section key={index}>
+              <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">{index + 1}. {section.title}</h2>
 
-          {/* Introduction */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              1. Introduction
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              This Privacy Policy explains how M.S.T College Myanmar collects,
-              uses, and protects the personal information of students,
-              applicants, staff, and visitors who use our website and services.
-              By accessing our website, you agree to the practices described in
-              this policy.
-            </p>
-          </section>
+              {section.description.map((text, i) => (
+                <p className="text-gray-600 leading-relaxed" key={i}>{text}</p>
+              ))}
+            </section>
+          ))}
 
-          {/* Information Collection */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              2. Information We Collect
-            </h2>
-            <ul className="list-disc pl-6 text-gray-600 space-y-2">
-              <li>Personal information such as name, email address, and phone number.</li>
-              <li>Academic details submitted through admission or course applications.</li>
-              <li>Information provided when contacting us through forms or emails.</li>
-              <li>Website usage data such as IP address, browser type, and pages visited.</li>
-            </ul>
-          </section>
-
-          {/* Usage */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              3. How We Use Your Information
-            </h2>
-            <ul className="list-disc pl-6 text-gray-600 space-y-2">
-              <li>To process applications for courses and programs.</li>
-              <li>To communicate updates, announcements, and academic information.</li>
-              <li>To improve our website, services, and student experience.</li>
-              <li>To respond to inquiries or support requests.</li>
-            </ul>
-          </section>
-
-          {/* Security */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              4. Data Protection
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              M.S.T College implements appropriate technical and administrative
-              security measures to protect personal data from unauthorized
-              access, loss, misuse, or disclosure.
-            </p>
-          </section>
-
-          {/* Third Party */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              5. Third-Party Services
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              Our website may contain links to third-party services such as
-              social media platforms or external educational resources. We are
-              not responsible for the privacy practices of those websites.
-            </p>
-          </section>
-
-          {/* Cookies */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              6. Cookies
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              Our website may use cookies to enhance user experience, analyze
-              website traffic, and improve functionality. Users may choose to
-              disable cookies in their browser settings.
-            </p>
-          </section>
-
-          {/* Policy Updates */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              7. Policy Updates
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              M.S.T College reserves the right to update this Privacy Policy at
-              any time. Changes will be posted on this page and will take effect
-              immediately upon publication.
-            </p>
-          </section>
-
-          {/* Contact */}
-          <section>
-            <h2 className="text-xl font-semibold text-[var(--primary-dark)] mb-3">
-              8. Contact Us
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              If you have questions regarding this Privacy Policy or how your
-              information is handled, please contact M.S.T College through the
-              official contact information provided on our website.
-            </p>
-          </section>
 
           {/* Last Updated */}
           <div className="border-t pt-6 text-sm text-gray-500 text-center">
             Last Updated: {new Date().getFullYear()}
           </div>
-
         </div>
+        
       </div>
     </div>
   );
