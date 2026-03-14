@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 const AchievementContext = createContext();
 
 const fetchAchievement = async () => {
-  const response = await fetch("/api/achievements/");
+  const response = await fetch("https://mst-new-web-shiv.onrender.com/api/achievements/");
   if (!response.ok) throw new Error("Failed to fetch achievement data");
   return response.json();
 };
