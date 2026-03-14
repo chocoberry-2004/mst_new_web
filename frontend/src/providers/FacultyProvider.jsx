@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 const FacultyContext = createContext();
 
 const fetchFaculty = async () => {
-  const response = await fetch("/js/faculty.json");
+  const response = await fetch("/api/faculties/");
   if (!response.ok) throw new Error("Failed to fetch faculty data");
   return response.json();
 };

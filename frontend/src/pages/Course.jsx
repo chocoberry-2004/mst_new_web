@@ -25,7 +25,7 @@ import { AppContext } from "../providers/AppContextProvider";
 import { useContext } from "react";
 import { useCourse } from "../providers/CourseProvider";
 import Loading from "./Loading";
-
+import NotFound from "./NotFound";
 
 function Course() {
 
@@ -76,6 +76,7 @@ const formatCurrency = (amount, currency) => {
 
 
   if (courseLoading) return <Loading/>;
+  if (courseError) return <NotFound/>;
 
   return (
 

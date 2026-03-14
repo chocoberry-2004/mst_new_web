@@ -11,6 +11,9 @@ import { EventProvider } from "./providers/EventProvider.jsx";
 import LecturerProvider from "./providers/LecturerProvider.jsx";
 import { FacultyProvider } from "./providers/FacultyProvider.jsx";
 import { CourseProvider } from "./providers/CourseProvider.jsx";
+import { AchievementProvider } from "./providers/AchievemetProvider.jsx";
+import { TimeLineProvider } from "./providers/TimeLineProvider.jsx";
+import { FAQProvider } from "./providers/FAQprovider.jsx";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +28,13 @@ ReactDOM.createRoot(root).render(
             <LecturerProvider>
               <FacultyProvider>
                 <CourseProvider>
-                  <App />
+                  <AchievementProvider>
+                    <TimeLineProvider>
+                      <FAQProvider>
+                        <App />
+                      </FAQProvider>
+                    </TimeLineProvider>
+                  </AchievementProvider>
                 </CourseProvider>
               </FacultyProvider>
             </LecturerProvider>

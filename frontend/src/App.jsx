@@ -20,7 +20,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 
 // admin
-import Index from "./admin";
+import Index from "./admin/Index";
 import Dashboard from "./admin/dashboard";
 import ManageLecturer from "./admin/ManageLecturer";
 import ManageFaculty from "./admin/ManageFaculty";

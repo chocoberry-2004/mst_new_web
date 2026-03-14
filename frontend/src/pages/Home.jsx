@@ -4,11 +4,12 @@ import principal from "../assets/images/principal.png";
 import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "./Loading";
+import NotFound from "./NotFound";
 
 const binaryDigits = Array.from({ length: 40 });
 
 const fetchPartner = async () => {
-  const response = await fetch("/js/partners.json");
+  const response = await fetch("/api/partners/");
   if (!response.ok) throw new Error("Failed to fetch");
   return response.json();
 };
@@ -23,6 +24,8 @@ function Home() {
     console.log(partners);
 
     if(partnerLoading) return <Loading/>;
+
+    // if(partnerError) return <NotFound/>;
 
   return (
     <div className="">
@@ -160,7 +163,7 @@ function Home() {
 
         </div>
 
-        <section className=" text-[var(--primary-dark)] py-8 px-6">
+        <section className="  text-[var(--primary-dark)] py-8 px-6">
             <div className="max-w-6xl mx-auto">
 
                 {/* Section Header */}
@@ -213,7 +216,7 @@ function Home() {
         </section>
 
         {/* Our Partners */}
-        <section className=" py-16 px-6">
+        <section className=" py-16 px-6 ">
         <div className="max-w-6xl mx-auto">
 
             {/* Section Header */}

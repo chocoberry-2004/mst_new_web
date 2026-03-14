@@ -1,43 +1,34 @@
 import React from 'react';
-import tchal from '../assets/images/tchal.png';
-import CampusTour from '../components/CampusTour';
 import { useContext } from 'react';
-import { AppContext } from '../providers/AppContextProvider';
 import { useQuery } from '@tanstack/react-query';
-import Award from "../assets/images/award1.png";
-import AwardDetailForm from '../components/AwardDetailForm';
 import { NavLink } from 'react-router-dom';
-import Loading from './Loading';
+
+// images
+import tchal from '../assets/images/tchal.png';
+import Award from "../assets/images/award1.png";
+
+// providers
+import { AppContext } from '../providers/AppContextProvider';
 import { useLecturer } from "../providers/LecturerProvider";
+import { useAchievement } from '../providers/AchievemetProvider';
+import { useTimeLine } from '../providers/TimeLineProvider';
 
-const fetchAchiement = async () => {
-  const response = await fetch("/api/achievement/");
-  return await response.json();
-}
+// components
+import CampusTour from '../components/CampusTour';
+import AwardDetailForm from '../components/AwardDetailForm';
 
+// pages
+import Loading from './Loading';
+import NotFound from './NotFound';
 
-
-const fetchTimeLine = async () => {
-  const response = await fetch ("/js/timeline.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-}
 
 function About() {
 
   let {CampusTourHandler,AwardDetailHandler} = useContext(AppContext);
   const { lecturers, lecturerLoading, lecturerError } = useLecturer();
+  const { awards, awardLoading, awardErr } = useAchievement();
+  const { timeLine, timeLineLoading, timeLineErr } = useTimeLine();
 
-  const {data:awards, isPending:awardLoading, error} = useQuery({
-                        queryKey: ['achievement'],
-                        queryFn : fetchAchiement
-  });
-
-
-  const {data: timeLine, isPending: timeLineLoading, error: timeLineErr} = useQuery({
-      queryKey: ['timeLine'],
-      queryFn: fetchTimeLine,
-  })
 
   const leadership = lecturers?.filter((lecturer) =>
     lecturer.positions?.some((p) =>
@@ -55,6 +46,8 @@ function About() {
   };
 
   if(awardLoading || timeLineLoading || lecturerLoading) return <Loading/>
+
+  // if(lecturerError || awardErr || timeLineErr) return <NotFound/>;
 
   return (
     <div className="">
@@ -156,7 +149,7 @@ function About() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-5 lg:py-16 ">
+      <section className="py-5 lg:py-16 bg-[var(--primary-dark)]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -238,7 +231,7 @@ function About() {
       </section>
 
       {/* Achievements & Recognition */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -277,7 +270,7 @@ function About() {
       </section>   
 
       {/* Leadership Team */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -332,7 +325,7 @@ function About() {
       </section>
 
       {/* Timeline */}
-      <section className="py-16 lg:py-24 ">
+      <section className="py-16 lg:py-24 bg-[var(--primary-dark)]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">

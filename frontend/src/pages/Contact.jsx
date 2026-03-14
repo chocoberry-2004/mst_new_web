@@ -4,8 +4,12 @@ import logo from '../assets/images/mst_logo1.png';
 import library from "../assets/images/library.png";
 import diamond2 from "../assets/images/star.png";
 import { useQuery } from '@tanstack/react-query';
+
 import { useContactInfo } from '../providers/ContactInfoProvider';
+import { useFAQ } from '../providers/FAQprovider';
+
 import Loading from './Loading';
+import NotFound from './NotFound';
 
 const locationList =  [
   {
@@ -59,14 +63,10 @@ const locationList =  [
 ];
 
 
-const fetchFAQ = async () => {
-  const response = await fetch("/api/faqs/");
-  return await response.json();
-}
-
 function Contact() {
   const [activeCampus, setActiveCampus] = useState(locationList[0]);
-  const { contactInfo, contactInfoLoading } = useContactInfo();
+  const { contactInfo, contactInfoLoading, contactInfoError } = useContactInfo();
+  const { FAQ, FAQLoading, FAQErr } = useFAQ();
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -97,13 +97,11 @@ function Contact() {
     });
   };
 
-  const {data: FAQ, isPending: FAQLoading, error: FAQErr} = useQuery({
-        queryKey: ['faq'],
-        queryFn: fetchFAQ,
-  })
 
 
   if(contactInfoLoading || FAQLoading) return <Loading/>;
+
+  if (contactInfoError || FAQErr) return <NotFound/>;
 
   return (
     <div className="min-h-screen">

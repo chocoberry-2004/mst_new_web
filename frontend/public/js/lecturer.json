@@ -16,12 +16,8 @@
       "Outstanding Academic Contribution 2019"
     ],
     "bio": "25+ years of teaching and research experience in Artificial Intelligence and Machine Learning.",
-    "profileImage": "https://randomuser.me/api/portraits/women/65.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/sunandaraung",
-      "facebook": "https://facebook.com/sunandaraung",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/women/65.jpg"
+    
   },
   {
     "name": "U Aung Zaw Myint",
@@ -39,12 +35,7 @@
       "Excellence in Education Award 2021"
     ],
     "bio": "Former Director at Tech Giant Inc., expert in designing IT curricula.",
-    "profileImage": "https://randomuser.me/api/portraits/men/72.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/aungzawmyint",
-      "facebook": "https://facebook.com/aungzawmyint",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/men/72.jpg"
   },
   {
     "name": "U Myat Min Oo",
@@ -59,12 +50,7 @@
     ],
     "awards": [],
     "bio": "Industry liaison with 100+ company networks, connecting students to real-world opportunities.",
-    "profileImage": "https://randomuser.me/api/portraits/men/81.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/myatminoo",
-      "facebook": "https://facebook.com/myatminoo",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/men/81.jpg"
   },
   {
     "name": "Dr. Aung Min",
@@ -82,12 +68,7 @@
       "Top AI Researcher 2023"
     ],
     "bio": "Expert in AI and Data Science with multiple international publications.",
-    "profileImage": "https://randomuser.me/api/portraits/men/32.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/aungmin",
-      "facebook": "https://facebook.com/aungmin",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/men/32.jpg"
   },
   {
     "name": "Ms. Thandar Win",
@@ -104,12 +85,7 @@
       "Best UI/UX Designer 2022"
     ],
     "bio": "Passionate about designing modern web applications and user experiences.",
-    "profileImage": "https://randomuser.me/api/portraits/women/44.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/thandarwin",
-      "facebook": "https://facebook.com/thandarwin",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/women/44.jpg" 
   },
   {
     "name": "U Kyaw Zaw",
@@ -126,12 +102,7 @@
       "Innovative Teaching Award 2021"
     ],
     "bio": "Skilled in cloud computing and system architecture with extensive industry experience.",
-    "profileImage": "https://randomuser.me/api/portraits/men/75.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/kyawzaw",
-      "facebook": "https://facebook.com/kyawzaw",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/men/75.jpg" 
   },
   {
     "name": "Daw May Zin Oo",
@@ -149,11 +120,6 @@
       "Digital Transformation Leader 2020"
     ],
     "bio": "Bringing business and IT together, with expertise in project management and digital strategy.",
-    "profileImage": "https://randomuser.me/api/portraits/women/68.jpg",
-    "social": {
-      "linkedin": "https://linkedin.com/in/mayzinoo",
-      "facebook": "https://facebook.com/mayzinoo",
-      "twitter": ""
-    }
+    "profileImage": "https://randomuser.me/api/portraits/women/68.jpg" 
   }
 ]
