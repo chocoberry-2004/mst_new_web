@@ -8,10 +8,15 @@
     "venue": "Main Auditorium",
     "description": "Annual tech fest featuring AI/ML workshops, coding competitions, and startup pitch sessions.",
     "status": "upcoming",
+    "highlight": false,
     "speakers": 12,
     "participants": 500,
     "registered": true,
-    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475"
+    "images": [
+      "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+      "https://images.unsplash.com/photo-1555949963-aa79dcee981c"
+    ]
   },
   {
     "id": 2,
@@ -22,10 +27,14 @@
     "venue": "Lab 301",
     "description": "Hands-on workshop on ethical hacking and network security by industry experts.",
     "status": "upcoming",
+    "highlight": true,
     "speakers": 3,
     "participants": 50,
     "registered": false,
-    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b"
+    "images": [
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b",
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3"
+    ]
   },
   {
     "id": 3,
@@ -36,10 +45,14 @@
     "venue": "Innovation Center",
     "description": "24-hour hackathon to solve real-world problems using emerging technologies.",
     "status": "upcoming",
+    "highlight": true,
     "speakers": 8,
     "participants": 200,
     "registered": true,
-    "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998"
+    "images": [
+          "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+          "https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
+    ]
   },
   {
     "id": 4,
@@ -50,10 +63,14 @@
     "venue": "Conference Hall",
     "description": "Industry leaders discuss the future of Artificial Intelligence and its applications.",
     "status": "past",
+    "highlight": false,
     "speakers": 6,
     "participants": 300,
     "registered": false,
-    "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d"
+    "images": [
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+      "https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
+    ]
   },
   {
     "id": 5,
@@ -64,10 +81,14 @@
     "venue": "Lab 204",
     "description": "Intensive 3-day bootcamp covering Python, ML algorithms, and data visualization.",
     "status": "past",
+    "highlight": false,
     "speakers": 4,
     "participants": 60,
     "registered": false,
-    "image": "https://images.unsplash.com/photo-1527430253228-e93688616381"
+    "images": [
+      "https://images.unsplash.com/photo-1527430253228-e93688616381",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71"
+    ]
   },
   {
     "id": 6,
@@ -78,9 +99,13 @@
     "venue": "Open Air Theater",
     "description": "Annual cultural fest with music, dance, drama, and tech-art exhibitions.",
     "status": "past",
+    "highlight": false,
     "speakers": 0,
     "participants": 1000,
     "registered": false,
-    "image": "https://images.unsplash.com/photo-1497032205916-ac775f0649ae"
+    "images": [
+      "https://images.unsplash.com/photo-1497032205916-ac775f0649ae",
+      "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2"
+    ]
   }
 ]

@@ -1,68 +1,93 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-// components
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Login from "./components/Login";
-import Register from "./components/Register";
+// layouts
+import MainLayout from "./layouts/MainLayout";
 
 // pages
 import Home from "./pages/Home";
 import Faculty from "./pages/Faculty";
+import Course from "./pages/Course";
+import Article from "./pages/Article";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
-import Loading from "./pages/Loading";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+
+// auth
+import Login from "./components/Login";
+import Register from "./components/Register";
+
+// admin
+import Index from "./admin";
+import Dashboard from "./admin/dashboard";
+import ManageLecturer from "./admin/ManageLecturer";
+import ManageFaculty from "./admin/ManageFaculty";
+import ManageEvent from "./admin/ManageEvent";
+import ManagePartner from "./admin/ManagePartner";
+import ManageAchievement from "./admin/ManageAchievement";
 
 function App() {
   const [hideBacktoTop, setHideBacktoTop] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setHideBacktoTop(false);
-      } else {
-        setHideBacktoTop(true);
-      }
+      setHideBacktoTop(window.scrollY <= 100);
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div className=" scrollbar-hide">
-      <Header />
+    <div className="scrollbar-hide">
 
-      <main className="flex-1 scrollbar-hide">
-        <Routes>
+      <Routes>
+
+        {/* user page routes */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/faculty" element={<Faculty />} />
-          <Route path="/events" element={<Events />} />
+          <Route path="/course"  element={<Course/>}/>
+          <Route path="/article" element={<Article/>}/>
+          <Route path="/event" element={<Events />} />
+          <Route path="/event/type/:typeSlug" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/register" element={<Register/>}/>
-          <Route path='/*' element={<NotFound/>} />
-        </Routes>
-      </main>
+          <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
+        </Route>
 
-      {/* Back to Top Button */}
+        {/* auth routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* admin pages routes */}
+        <Route path="/admin" element={<Index />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="dashboard/lecturer" element={<ManageLecturer />} />
+            <Route path="dashboard/faculty" element={<ManageFaculty />} />
+            <Route path="dashboard/event" element={<ManageEvent />} />
+            <Route path="dashboard/partner" element={<ManagePartner/>}/>
+            <Route path="dashboard/achievement" element={<ManageAchievement/>}/>
+        </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
+
+      {/* Back To Top */}
       {!hideBacktoTop && (
         <button
-          className="fixed right-5 bottom-5 lg:right-7 lg:bottom-7 w-10 h-10 rounded-full bg-[var(--accent-yellow)] text-blue-800 cursor-pointer border border-1 animate-text-slide-up"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed right-5 bottom-5 lg:right-7 lg:bottom-7 w-10 h-10 rounded-full bg-[var(--accent-yellow)] text-blue-800 border animate-text-slide-up cursor-pointer"
+          onClick={() =>
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }
         >
           <i className="fa-solid fa-angle-up"></i>
         </button>
       )}
-
-      <Footer />
     </div>
   );
 }

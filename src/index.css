@@ -9,6 +9,8 @@
 }
 
 
+
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -247,6 +249,60 @@ canvas {
     background-color: #807F9A;
 }
 
+.mission-vission {
+  background: url("assets/images/front_uni.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 /* --------------------------------------------- */
 
+/* course page  */
+
+/* https://9elements.github.io/fancy-border-radius/full-control.html#33.49.34.52-32.49.35.52-. */
+
+
+
+
+/* event page */
+
+/* Curtain Slide Animation - Specifically for background images */
+@keyframes curtainSlide {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-curtain-slide {
+  animation: curtainSlide 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Dramatic Curtain Slide - Slower and more pronounced */
+@keyframes dramaticCurtain {
+  0% {
+    transform: translateX(-150%);
+    opacity: 0;
+    filter: brightness(0.5);
+  }
+  30% {
+    opacity: 0.9;
+    filter: brightness(0.8);
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+.animate-dramatic-curtain {
+  animation: dramaticCurtain 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}

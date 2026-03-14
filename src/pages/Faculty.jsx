@@ -1,43 +1,43 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import w4 from "../assets/images/w1.jpg";
+import event_bg from "../assets/images/event_bg1.jpg";
 import { useQuery } from "@tanstack/react-query";
 import ApplicationForm from "../components/ApplicationForm";
 import { AppContext } from "../providers/AppContextProvider";
 import { useContext } from "react";
 import Loading from "./Loading";
-
-const fetchFaculty = async () => {
-  const response = await fetch("/js/faculty.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-};
-
-const fetchLecturer = async () => {
-  const response = await fetch ("/js/lecturer.json");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-}
+import NotFound from "./NotFound";
+import { useLecturer } from "../providers/LecturerProvider";
+import { useFaculty } from "../providers/FacultyProvider";
 
 
 function Faculty() {
 
-  let {showModal, setShowModal, ApplicationFormHandler} = useContext(AppContext);
-
-  const { data: facultyList, isPending: facultyLoading, error: facultyError } = useQuery({
-    queryKey: ["faculty"],
-    queryFn: fetchFaculty,
-  });
-
-  const { data: lecturers, isPending: lecturerLoading, error: lecturerError } = useQuery({
-    queryKey: ["lecturers"],
-    queryFn: fetchLecturer,
-  });
+  let {showModal, setShowModal, ApplicationFormHandler, openApplicationForm} = useContext(AppContext);
+  const { lecturers, lecturerLoading, lecturerError } = useLecturer();
+  const { facultyList, facultyLoading, facultyError } = useFaculty();
 
   if (facultyLoading || lecturerLoading) return <Loading/>;
-  if (facultyError) return <p className="text-center mt-20">Error: {facultyError.message}</p>;
-  if (lecturerError) return <p className="text-center mt-20">Error: {lecturerError.message}</p>;
+  if (facultyError || lecturerError) return <NotFound/>;
 
   const faculty = facultyList?.faculty;
+
+  // Dynamic Statistics
+  const totalCourses = faculty?.courses?.length || 0;
+  const totalLecturers = lecturers?.length || 0;
+
+  const totalCareerPaths =
+    faculty?.courses?.reduce(
+      (sum, course) => sum + (course.career_paths?.length || 0),
+      0
+    ) || 0;
+
+  const totalLevels =
+    faculty?.courses?.reduce(
+      (sum, course) => sum + (course.levels?.length || 0),
+      0
+    ) || 0;
 
   return (
     <div className="bg-white relative">
@@ -101,10 +101,10 @@ function Faculty() {
               {/* Stats Section - Responsive Grid */}
               <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 ">
                 {[
-                  { value: "50+", label: "Faculty" },
-                  { value: "150+", label: "Experienced Tutor" },
-                  { value: "25+", label: "Countries" },
-                  { value: "50+", label: "Awards" }
+                  { value: totalCourses, label: "Programs" },
+                  { value: totalLecturers, label: "Expert Lecturers" },
+                  { value: totalCareerPaths, label: "Career Paths" },
+                  { value: totalLevels, label: "Study Levels" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
                     <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-400 mb-1">
@@ -125,11 +125,11 @@ function Faculty() {
       {/* Lecturer Grid */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <div className="text-center mb-12 pb-8 border-b border-[var(--accent-yellow)]">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-dark)]">
               Our Expert Lecturers
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mt-3">
+            <p className="text-gray-600 max-w-3xl mx-auto mt-3">
               Learn from experienced professionals with strong academic backgrounds and real-world industry expertise.
             </p>
           </div>
@@ -138,25 +138,50 @@ function Faculty() {
             {lecturers?.map((lecturer, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center"
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center border border-gray-200"
               >
                 <img
                   src={lecturer.profileImage}
                   alt={lecturer.name}
-                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-yellow-400"
+                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[var(--primary-dark)]"
                 />
-                <h3 className="text-xl font-semibold text-gray-800">{lecturer.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{lecturer.degree}</p>
-                <p className="text-gray-600 mt-2 text-sm">{lecturer.expertise}</p>
-                {lecturer.award && (
-                  <p className="mt-2 text-xs text-yellow-600 font-medium">{lecturer.award}</p>
+
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {lecturer.name}
+                </h3>
+
+                {/* Positions */}
+                <p className="text-sm text-gray-500 mt-1">
+                  {lecturer.positions?.join(", ")}
+                </p>
+
+                {/* Degrees */}
+                <p className="text-xs text-gray-400 mt-1">
+                  {lecturer.degrees?.join(", ")}
+                </p>
+
+                <div className="flex flex-wrap gap-2 justify-center mt-2">
+            {lecturer.expertise?.map((skill, i) => (
+              <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                {skill}
+              </span>
+            ))}
+          </div>
+
+                {/* Awards */}
+                {lecturer.awards?.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2 justify-center">
+                    {lecturer.awards.map((award, i) => (
+                      <span
+                        key={i}
+                        className="text-xs text-yellow-700 font-medium border px-2 py-1 rounded-lg bg-yellow-100"
+                      >
+                        {award}
+                      </span>
+                    ))}
+                  </div>
                 )}
-                <button
-                  onClick={() => ApplicationFormHandler()}
-                  className="mt-4 px-4 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 cursor-pointer"
-                >
-                  Contact
-                </button>
+                
               </div>
             ))}
           </div>
@@ -164,7 +189,7 @@ function Faculty() {
       </section>
 
       {/* Faculty section */}
-      <section id="faculty" className="min-h-screen py-10 px-6">
+      <section id="faculty" className="min-h-screen py-16 lg:py-24 px-6">
       {/* Faculty Header */}
       <div className="max-w-6xl mx-auto text-center mb-12 border-b border-[var(--accent-yellow)] py-5">
         <h1 className="text-4xl font-bold text-[var(--primary-dark)]">
@@ -228,14 +253,48 @@ function Faculty() {
             </div>
 
             <button 
-            onClick={() => ApplicationFormHandler()}
+            onClick={() => openApplicationForm("program")}
             className="mt-5 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition cursor-pointer" >
               Contact
             </button>
           </div>
         ))}
       </div>
-    </section>
+      </section>
+
+      {/* Hero Section */}
+      <section 
+          className="w-full h-screen relative overflow-hidden"
+          style={{
+              backgroundImage: `url(${event_bg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              position: 'relative',
+              zIndex: 1
+          }}
+      >
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-[var(--primary-dark)]/60"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+                  Trusted by Over 6000+ Students
+              </h1>
+              <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+                  We have a fully qualified and very well educated teaching staff, 
+                  continuous student counseling, and a very effective and enthusiastic 
+                  student support staff.
+              </p>
+              
+              {/* Optional CTA Button */}
+              <NavLink to="/contact">
+                <button className="mt-8 px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                    Contact Us
+                </button>
+              </NavLink>
+          </div>
+      </section>
 
     <ApplicationForm/>
     </div>

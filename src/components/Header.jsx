@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Mst_logo from "../assets/images/mst_logo1.png";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,6 +34,7 @@ function Header() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           
           {/* Logo */}
+          <NavLink to="/">
           <div className="flex items-center gap-3">
             <img
               src={Mst_logo}
@@ -43,6 +45,7 @@ function Header() {
               M.S.T College
             </h1>
           </div>
+          </NavLink>
 
           {/* Desktop Navbar */}
           <div className="hidden lg:block">

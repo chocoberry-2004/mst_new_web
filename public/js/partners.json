@@ -1,0 +1,173 @@
+{
+  "partnersSection": {
+    "title": "Our Technology Partners",
+    "subtitle": "We collaborate with industry-leading technology providers to deliver exceptional solutions",
+    "description": "Through our strategic partnerships, we bring you the best-in-class technologies and expertise",
+    
+    "partners": [
+    {
+        "id": 1,
+        "name": "Microsoft",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+        "url": "https://www.microsoft.com",
+        "tier": "platinum",
+        "description": "Gold Certified Partner delivering Azure, Office 365, and enterprise solutions",
+        "categories": ["Cloud", "Productivity", "Enterprise Software"],
+        "featured": true
+    },
+    {
+        "id": 2,
+        "name": "AWS",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+        "url": "https://aws.amazon.com",
+        "tier": "platinum",
+        "description": "Advanced Consulting Partner specializing in cloud migration and DevOps",
+        "categories": ["Cloud Computing", "Infrastructure", "AI/ML"],
+        "featured": true
+    },
+    {
+        "id": 3,
+        "name": "Cisco",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/6/64/Cisco_logo.svg",
+        "url": "https://www.cisco.com",
+        "tier": "gold",
+        "description": "Premier partner for networking, security, and collaboration solutions",
+        "categories": ["Networking", "Cybersecurity", "Communications"],
+        "featured": false
+    },
+    {
+        "id": 4,
+        "name": "Salesforce",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
+        "url": "https://www.salesforce.com",
+        "tier": "gold",
+        "description": "Silver Consulting Partner for CRM and digital transformation",
+        "categories": ["CRM", "Sales", "Customer Service"],
+        "featured": true
+    },
+    {
+        "id": 5,
+        "name": "VMware",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg",
+        "url": "https://www.vmware.com",
+        "tier": "silver",
+        "description": "Enterprise partner for virtualization and cloud infrastructure",
+        "categories": ["Virtualization", "Cloud", "Data Center"],
+        "featured": false
+    },
+    {
+        "id": 6,
+        "name": "Dell Technologies",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_logo_2016.svg",
+        "url": "https://www.dell.com",
+        "tier": "gold",
+        "description": "Authorized partner for infrastructure, servers, and storage solutions",
+        "categories": ["Hardware", "Infrastructure", "Storage"],
+        "featured": false
+    },
+    {
+        "id": 7,
+        "name": "Google Cloud",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg",
+        "url": "https://cloud.google.com",
+        "tier": "silver",
+        "description": "Partner for cloud computing, data analytics, and AI solutions",
+        "categories": ["Cloud", "Data Analytics", "AI/ML"],
+        "featured": false
+    },
+    {
+        "id": 8,
+        "name": "Adobe",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Corporate_Logo.svg",
+        "url": "https://www.adobe.com",
+        "tier": "bronze",
+        "description": "Solution partner for digital experience and marketing tools",
+        "categories": ["Digital Marketing", "Creative", "Document Cloud"],
+        "featured": false
+    },
+    {
+        "id": 9,
+        "name": "ServiceNow",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/3/3b/ServiceNow_logo.svg",
+        "url": "https://www.servicenow.com",
+        "tier": "bronze",
+        "description": "Implementation partner for IT service management and workflows",
+        "categories": ["ITSM", "Workflow", "Enterprise"],
+        "featured": false
+    },
+    {
+        "id": 10,
+        "name": "Oracle",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
+        "url": "https://www.oracle.com",
+        "tier": "silver",
+        "description": "Specialized partner for database and enterprise applications",
+        "categories": ["Database", "ERP", "Cloud Applications"],
+        "featured": false
+    }
+    ],
+    
+    "partnerTiers": [
+      {
+        "level": "platinum",
+        "label": "Platinum Partners",
+        "description": "Our most strategic partners with the deepest integration",
+        "color": "#E5E4E2"
+      },
+      {
+        "level": "gold",
+        "label": "Gold Partners",
+        "description": "Key partners delivering certified solutions",
+        "color": "#FFD700"
+      },
+      {
+        "level": "silver",
+        "label": "Silver Partners",
+        "description": "Trusted partners for specialized solutions",
+        "color": "#C0C0C0"
+      },
+      {
+        "level": "bronze",
+        "label": "Technology Partners",
+        "description": "Emerging and specialized technology providers",
+        "color": "#CD7F32"
+      }
+    ],
+    
+    "benefits": [
+      {
+        "icon": "certification",
+        "title": "Certified Expertise",
+        "description": "Our team holds the latest certifications from our partners"
+      },
+      {
+        "icon": "integration",
+        "title": "Seamless Integration",
+        "description": "Deep technical integration for optimal performance"
+      },
+      {
+        "icon": "support",
+        "title": "Priority Support",
+        "description": "Direct access to partner engineering and support teams"
+      },
+      {
+        "icon": "innovation",
+        "title": "Early Access",
+        "description": "Early access to new features and beta programs"
+      }
+    ],
+    
+    "cta": {
+      "text": "Become a Partner",
+      "url": "/partners/become-a-partner",
+      "buttonStyle": "primary"
+    },
+    
+    "stats": {
+      "totalPartners": 50,
+      "countries": 15,
+      "certifiedExperts": 120,
+      "yearsPartnering": 10
+    }
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "name": "Seminar",
+    "slug": "seminar"
+  },
+  {
+    "id": 2,
+    "name": "Workshop",
+    "slug": "workshop"
+  },
+  {
+    "id": 3,
+    "name": "hackathon",
+    "slug": "hackathon"
+  },
+  {
+    "id" : 4,
+    "name" : "tech",
+    "slug" : "tech"
+  },
+  {
+    "id" : 5,
+    "name" : "cultural",
+    "slug" : "cultural"
+  }
+]
+
