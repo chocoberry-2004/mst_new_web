@@ -7,6 +7,7 @@ import { useParams, useLocation } from "react-router-dom";
 import EventGallery from '../components/EventGallery';
 import ApplicationForm from '../components/ApplicationForm';
 import Loading from "./Loading";
+import NotFound from './NotFound';
 
 // images
 import event1 from "../assets/images/event1.jpg";
@@ -51,8 +52,8 @@ function Events() {
   
    
     if (loading) return <Loading />;
-    if (error) return <div>Error loading events: {error.message}</div>;
-    if (!events || events.length === 0) return <div>No events found</div>;
+    if (error) return <NotFound/>;
+    if (!events || events.length === 0) return <NotFound/>;
 
     const eventList = Array.isArray(events) ? events : [];
 

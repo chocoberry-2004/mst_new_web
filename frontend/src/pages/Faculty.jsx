@@ -7,6 +7,7 @@ import ApplicationForm from "../components/ApplicationForm";
 import { AppContext } from "../providers/AppContextProvider";
 import { useContext } from "react";
 import Loading from "./Loading";
+import NotFound from "./NotFound";
 import { useLecturer } from "../providers/LecturerProvider";
 import { useFaculty } from "../providers/FacultyProvider";
 
@@ -18,8 +19,7 @@ function Faculty() {
   const { facultyList, facultyLoading, facultyError } = useFaculty();
 
   if (facultyLoading || lecturerLoading) return <Loading/>;
-  if (facultyError) return <p className="text-center mt-20">Error: {facultyError.message}</p>;
-  if (lecturerError) return <p className="text-center mt-20">Error: {lecturerError.message}</p>;
+  if (facultyError || lecturerError) return <NotFound/>;
 
   const faculty = facultyList?.faculty;
 
@@ -181,32 +181,7 @@ function Faculty() {
                     ))}
                   </div>
                 )}
-
-
-                {/* Social Links */}
-                <div className="flex gap-3 mt-4">
-                  {lecturer.social?.linkedin && (
-                    <a
-                      href={lecturer.social.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center justify-center w-10 h-10 text-blue-600 hover:text-white bg-blue-600/20 hover:bg-blue-600 rounded-full transition"
-                    >
-                      <i className="fab fa-linkedin text-lg"></i>
-                    </a>
-                  )}
-
-                  {lecturer.social?.facebook && (
-                    <a
-                      href={lecturer.social.facebook}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center justify-center w-10 h-10 text-blue-500 hover:text-white bg-blue-500/20 hover:bg-blue-500 rounded-full transition"
-                    >
-                      <i className="fab fa-facebook text-lg"></i>
-                    </a>
-                  )}
-                </div>
+                
               </div>
             ))}
           </div>

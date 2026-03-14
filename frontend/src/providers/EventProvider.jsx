@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 // Fetch functions
 const fetchEvent = async () => {
-  const response = await fetch("/js/event.json");
+  const response = await fetch("/api/events/");
   if (!response.ok) throw new Error("Failed to fetch events");
   return await response.json();
 };

@@ -1,118 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAchievement } from '../providers/AchievemetProvider';
+import Loading from '../pages/Loading';
+import NotFound from '../pages/NotFound';
 
 function ManageAchievement() {
   // Achievements data from JSON
-  const [achievements, setAchievements] = useState([
-    {
-      id: "1",
-      title: "Highest Student Enrollment Award",
-      category: "Academic Excellence",
-      organization: "Myanmar Higher Education Council",
-      country: "Myanmar",
-      location: "Yangon",
-      date: "2023",
-      how: "Achieved through expanded IT programs, scholarships, and modern teaching methods.",
-      why: "Recognized for attracting the highest number of IT students among regional colleges.",
-      impact: "Increased student intake by 35% compared to previous years.",
-      metrics: {
-        totalStudents: 3200,
-        growthRate: "35%"
-      },
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
-      description: "Ranked first in student enrollment among regional IT colleges."
-    },
-    {
-      id: "2",
-      title: "Top Graduate Placement Rate Award",
-      category: "Career Development",
-      organization: "Asia-Pacific Education Forum",
-      country: "Singapore",
-      location: "Singapore",
-      date: "2022",
-      how: "Strong industry collaboration, internship programs, and career guidance services.",
-      why: "Recognized for achieving one of the highest graduate employment rates in the region.",
-      impact: "Enhanced reputation and stronger partnerships with global IT companies.",
-      metrics: {
-        placementRate: "92%",
-        partnerCompanies: 150
-      },
-      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
-      description: "More than 90% of graduates successfully placed in jobs or internships."
-    },
-    {
-      id: "3",
-      title: "Global Industry Partnership Excellence Award",
-      category: "International Collaboration",
-      organization: "International IT Education Association (IIEA)",
-      country: "United Kingdom",
-      location: "London",
-      date: "2024",
-      how: "Established partnerships with multinational IT firms and global universities.",
-      why: "Recognized for building extensive global industry and academic networks.",
-      impact: "Expanded student exchange programs and joint research projects.",
-      metrics: {
-        globalPartners: 1000,
-        countriesInvolved: 25
-      },
-      image: "https://images.unsplash.com/photo-1526378722484-bd91ca387e72",
-      description: "Collaborations with over 1000 international companies and institutions."
-    },
-    {
-      id: "4",
-      title: "International Certification Exam Success Award",
-      category: "Academic Performance",
-      organization: "Global Certification Board",
-      country: "United States",
-      location: "California",
-      date: "2023",
-      how: "Advanced training programs and certified instructors for international exams.",
-      why: "Recognized for exceptional student performance in global IT certifications.",
-      impact: "Improved global recognition and graduate competitiveness.",
-      metrics: {
-        passRate: "88%",
-        certifications: ["Cisco", "Microsoft", "AWS", "Oracle"]
-      },
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
-      description: "High success rate in international certification and academic exams."
-    },
-    {
-      id: "5",
-      title: "Best IT Curriculum Innovation Award",
-      category: "Innovation in Education",
-      organization: "ASEAN Education Network",
-      country: "Thailand",
-      location: "Bangkok",
-      date: "2021",
-      how: "Introduced AI, Cloud Computing, and Cybersecurity into the core curriculum.",
-      why: "Recognized for designing future-ready IT academic programs.",
-      impact: "Modernized learning experience and improved student skill readiness.",
-      metrics: {
-        newCourses: 12,
-        studentSatisfaction: "95%"
-      },
-      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
-      description: "Awarded for developing innovative and industry-aligned IT curricula."
-    },
-    {
-      id: "6",
-      title: "Outstanding Research Contribution Award",
-      category: "Research Excellence",
-      organization: "Asian Research Council",
-      country: "Japan",
-      location: "Tokyo",
-      date: "2024",
-      how: "Published high-impact research papers in AI and Software Engineering.",
-      why: "Recognized for significant contributions to IT research and innovation.",
-      impact: "Strengthened academic reputation and international research collaboration.",
-      metrics: {
-        researchPapers: 45,
-        internationalJournals: 18
-      },
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-      description: "Honored for outstanding research achievements in information technology."
-    }
-  ]);
 
+  const { awards, awardLoading, awardErr } = useAchievement();
+  const [achievements, setAchievements] = useState([]);
+
+  console.log(awards);
+
+  useEffect(() => {
+    if (awards) {
+      setAchievements(awards);
+    }
+  }, [awards]);
+ 
   // Categories for filtering
   const categories = [
     "All Categories",
@@ -162,6 +66,7 @@ function ManageAchievement() {
     image: '',
     description: ''
   });
+
 
   // Get unique years for filter
   const years = ['all', ...new Set(achievements.map(a => a.date))].sort();
@@ -274,6 +179,14 @@ function ManageAchievement() {
     }
   };
 
+  if (awardLoading) {
+    return <Loading/>;
+  }
+
+  // if (awardErr) {
+  //   return <NotFound/>;
+  // }
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -283,19 +196,21 @@ function ManageAchievement() {
           <p className="text-gray-600 mt-1">View and manage all institutional awards and recognitions</p>
         </div>
         <div className="flex gap-3">
+
           <button 
             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'grid'} text-gray-600`}></i>
+            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+          > 
+            <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'th-large'} text-gray-600`}></i>
           </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+
+          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
             <i className="fas fa-download text-gray-600 mr-2"></i>
             Export
           </button>
           <button 
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium"
+            className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium cursor-pointer"
           >
             <i className="fas fa-plus mr-2"></i>
             Add Achievement
@@ -375,7 +290,7 @@ function ManageAchievement() {
           <div className="flex flex-wrap gap-3">
             <div className="relative">
               <select
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
               >
@@ -387,7 +302,7 @@ function ManageAchievement() {
             </div>
             <div className="relative">
               <select
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
                 value={filterCountry}
                 onChange={(e) => setFilterCountry(e.target.value)}
               >
@@ -399,7 +314,7 @@ function ManageAchievement() {
             </div>
             <div className="relative">
               <select
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
                 value={filterYear}
                 onChange={(e) => setFilterYear(e.target.value)}
               >
@@ -597,6 +512,7 @@ function ManageAchievement() {
           </table>
         </div>
       )}
+
 
       {/* Add Achievement Modal */}
       {showAddModal && (

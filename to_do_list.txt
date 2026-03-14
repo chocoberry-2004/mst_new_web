@@ -1,14 +1,8 @@
 1. login function
 2. event filter and register function
 3. contact send message function
-4. course enrollment function
 5. CRUD for admin dashboard
-6. gallery ???????
-7. term and policy
-8. cookie
-9. now how many students
-10 departments
-
+6. username and password for lecturers
 
 
 footer function new letters
