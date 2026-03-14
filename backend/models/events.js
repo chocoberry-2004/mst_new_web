@@ -8,8 +8,8 @@ const eventSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      uppercase: true,
-      default: "TECH",
+      lowercase: true,
+      default: "tech",
     },
     date: {
       type: String,
