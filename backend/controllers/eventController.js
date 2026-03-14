@@ -24,14 +24,36 @@ export const createEvent = async (req, res) => {
 // READ - Get all events (with optional status filter)
 export const getEvents = async (req, res) => {
   try {
-    const { status } = req.query; // e.g., /api/events?status=upcoming
-    const filter = status ? { status } : {};
-    const events = await Event.find(filter).sort({ createdAt: -1 });
+    const { type, status } = req.query;
+    let query = {};
+    if (type) {
+      query.type = type.toUpperCase();
+    }
+
+    if (status) {
+      query.status = status.toLowerCase();
+    }
+
+    const events = await Event.find(query).sort({ createdAt: -1 });
+
     res.status(200).json(events);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+// get events by category
+// export const getEventsByCategory = async (req, res) => {
+//   try {
+//     const { type } = req.query;
+//     const query = type ? { type: type.toLowercase() } : {};
+
+//     const events = await Event.find(query);
+//     res.status(200).json(events);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// }
 
 // UPDATE - Edit event details
 export const updateEvent = async (req, res) => {

@@ -17,7 +17,11 @@ const app = express();
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://mst-new-web.onrender.com",
+  }),
+);
 app.use(express.urlencoded());
 app.use(express.json());
 dotenv.config();
@@ -28,9 +32,11 @@ const port = process.env.PORT;
 mongoose
   .connect(mongodbUrl)
   .then(() => console.log("Connected to Database."))
-  .then(()=> {app.listen(port, () => {
-    console.log(`App is running on http://localhost:${port}`);
-  });})
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`App is running on http://localhost:${port}`);
+    });
+  })
   .catch((err) => console.error("MongoDB Error!"));
 
 app.use("/uploads", express.static("uploads"));
