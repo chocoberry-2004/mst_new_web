@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 const FAQContext = createContext();
 
 const fetchFAQ = async () => {
-  const response = await fetch("/api/faqs/");
+  const response = await fetch("https://mst-new-web-shiv.onrender.com/api/faqs/");
   if (!response.ok) throw new Error("Failed to fetch FAQ data");
   return response.json();
 };
