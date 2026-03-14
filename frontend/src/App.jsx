@@ -21,7 +21,7 @@ import Register from "./components/Register";
 
 // admin
 import Index from "./admin/Index";
-import Dashboard from "./admin/dashboard";
+import Dashboard from "./admin/Dashboard";
 import ManageLecturer from "./admin/ManageLecturer";
 import ManageFaculty from "./admin/ManageFaculty";
 import ManageEvent from "./admin/ManageEvent";
