@@ -1,27 +1,35 @@
 import Event from "../models/events.js";
 
-// CREATE - Post a new event with image/video
+// CREATE
 export const createEvent = async (req, res) => {
   try {
     const eventData = { ...req.body };
 
-    // Map uploaded files to schema fields
     if (req.files) {
-      if (req.files.image)
-        eventData.imageURL = `/uploads/events/${req.files.image[0].filename}`;
-      if (req.files.video)
-        eventData.videoURL = `/uploads/events/${req.files.video[0].filename}`;
+      if (req.files.image && req.files.image.length > 0) {
+        eventData.imageURL = req.files.image[0].path;
+      }
+
+      if (req.files.video && req.files.video.length > 0) {
+        eventData.videoURL = req.files.video[0].path;
+      }
     }
 
     const newEvent = new Event(eventData);
-    await newEvent.save();
-    res.status(201).json(newEvent);
+    const savedEvent = await newEvent.save();
+
+    res.status(201).json(savedEvent);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Create Event Error:", error);
+
+    res.status(500).json({
+      message: "Failed to create event",
+      error: error.message,
+    });
   }
 };
 
-// READ - Get all events (with optional status filter)
+// READ - Get all events (with optional status and type filter)
 export const getEvents = async (req, res) => {
   try {
     const { type, status } = req.query;
@@ -55,7 +63,7 @@ export const getEvents = async (req, res) => {
 //   }
 // }
 
-// UPDATE - Edit event details
+// UPDATE
 export const updateEvent = async (req, res) => {
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
@@ -71,7 +79,7 @@ export const updateEvent = async (req, res) => {
   }
 };
 
-// DELETE - Remove an event
+// DELETE
 export const deleteEvent = async (req, res) => {
   try {
     const event = await Event.findByIdAndDelete(req.params.id);

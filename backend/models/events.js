@@ -42,10 +42,6 @@ const eventSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
-    participants: {
-      type: Number,
-      default: 10,
-    },
     registered: {
       type: Boolean,
       default: false,
@@ -53,7 +49,6 @@ const eventSchema = new mongoose.Schema(
     imageURL: [
       {
         type: String,
-        unique: true,
       },
     ],
     videoURL: String,
