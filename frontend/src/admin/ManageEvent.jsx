@@ -129,7 +129,7 @@ function ManageEvent() {
         description: newEvent.description || '',
         status: newEvent.status,
         highlight: newEvent.highlight,
-        imageFiles: imageFiles, // This should contain the actual File objects
+        imageFiles: imageFiles, 
       };
 
       console.log('Sending event data with images:', eventData);
@@ -362,8 +362,6 @@ function ManageEvent() {
           {filteredEvents?.map(event => (
             <div key={event._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
-                {console.log(event.imageURL)}
-
                 <img
                   src={
                     event.imageURL?.length > 0
