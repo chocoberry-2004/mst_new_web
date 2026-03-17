@@ -71,23 +71,23 @@ function AdminSidebar() {
             Dashboard
           </NavLink>
 
-          <NavLink to="dashboard/lecturer" className={linkClass} onClick={() => setOpen(false)}>
+          <NavLink to="lecturer" className={linkClass} onClick={() => setOpen(false)}>
             Lecturers
           </NavLink>
 
-          <NavLink to="dashboard/faculty" className={linkClass} onClick={() => setOpen(false)}>
+          <NavLink to="faculty" className={linkClass} onClick={() => setOpen(false)}>
             Faculty
           </NavLink>
 
-          <NavLink to="dashboard/event" className={linkClass} onClick={() => setOpen(false)}>
+          <NavLink to="event" className={linkClass} onClick={() => setOpen(false)}>
             Events
           </NavLink>
 
-          <NavLink to="dashboard/partner" className={linkClass} onClick={() => setOpen(false)}>
+          <NavLink to="partner" className={linkClass} onClick={() => setOpen(false)}>
             Partners
           </NavLink>
 
-          <NavLink to="dashboard/achievement" className={linkClass} onClick={() => setOpen(false)}>
+          <NavLink to="achievement" className={linkClass} onClick={() => setOpen(false)}>
             Achievements
           </NavLink>
         </nav>

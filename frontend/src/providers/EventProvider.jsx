@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 
 // Fetch functions
 const fetchEvent = async () => {
-  const response = await fetch("/api/events/");
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${apiUrl}/events/`);
   if (!response.ok) throw new Error("Failed to fetch events");
   return await response.json();
 };
@@ -32,6 +33,8 @@ export const EventProvider = ({ children }) => {
   const loading = eventsLoading || eventTypeLoading;
   const error = eventsError || eventTypeError;
 
+  console.log(events);
+  
   return (
     <EventContext.Provider value={{ events, eventType, loading, error }}>
       {children}

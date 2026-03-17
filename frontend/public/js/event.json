@@ -10,7 +10,6 @@
     "status": "upcoming",
     "highlight": false,
     "speakers": 12,
-    "participants": 500,
     "registered": true,
     "images": [
       "https://images.unsplash.com/photo-1518770660439-4636190af475",
@@ -29,7 +28,6 @@
     "status": "upcoming",
     "highlight": true,
     "speakers": 3,
-    "participants": 50,
     "registered": false,
     "images": [
       "https://images.unsplash.com/photo-1550751827-4bd374c3f58b",
@@ -47,7 +45,6 @@
     "status": "upcoming",
     "highlight": true,
     "speakers": 8,
-    "participants": 200,
     "registered": true,
     "images": [
           "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
@@ -65,7 +62,6 @@
     "status": "past",
     "highlight": false,
     "speakers": 6,
-    "participants": 300,
     "registered": false,
     "images": [
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
@@ -83,7 +79,6 @@
     "status": "past",
     "highlight": false,
     "speakers": 4,
-    "participants": 60,
     "registered": false,
     "images": [
       "https://images.unsplash.com/photo-1527430253228-e93688616381",
@@ -101,7 +96,6 @@
     "status": "past",
     "highlight": false,
     "speakers": 0,
-    "participants": 1000,
     "registered": false,
     "images": [
       "https://images.unsplash.com/photo-1497032205916-ac775f0649ae",

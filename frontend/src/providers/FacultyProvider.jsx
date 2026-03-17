@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 const FacultyContext = createContext();
 
 const fetchFaculty = async () => {
-  const response = await fetch("/api/faculties/");
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${apiUrl}/faculties/`);
   if (!response.ok) throw new Error("Failed to fetch faculty data");
   return response.json();
 };

@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 
 const FAQContext = createContext();
 
+
 const fetchFAQ = async () => {
-  const response = await fetch("https://mst-new-web-shiv.onrender.com/api/faqs/");
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${apiUrl}/faqs/`);
   if (!response.ok) throw new Error("Failed to fetch FAQ data");
   return response.json();
 };

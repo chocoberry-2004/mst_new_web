@@ -52,14 +52,14 @@ function Events() {
   
    
     if (loading) return <Loading />;
-    if (error) return <NotFound/>;
-    if (!events || events.length === 0) return <NotFound/>;
+    // if (error) return <NotFound/>;
+    // if (!events || events.length === 0) return <NotFound/>;
 
     const eventList = Array.isArray(events) ? events : [];
 
     // Statistics
     const totalEvents = eventList.length;
-    const totalParticipants = eventList.reduce((sum, event) => sum + (event.participants || 0), 0);
+    // const totalParticipants = eventList.reduce((sum, event) => sum + (event.participants || 0), 0);
     const totalSpeakers = eventList.reduce((sum, event) => sum + (event.speakers || 0), 0);
     const upcomingEvents = eventList.filter(event => event.status === "upcoming").length;
 
@@ -85,13 +85,12 @@ function Events() {
         return matchesSearch && matchesType && matchesStatus && matchesCategory;
     });
 
-    const highlightEvents = eventList?.filter(event => event.highlight == true) || [];
-    const pastEvents = eventList?.filter(event => event.status === 'past') || [];
+    const highlightEvents = eventList?.filter(event => event.highlight === true && event.status === "upcoming") || [];
+    const pastEvents = eventList?.filter(event => event.status === "past") || [];
 
     return (
         <div className="min-h-screen">
            
-
             {/*  Hero Section */}
             <section className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden px-4">
                 
@@ -196,7 +195,7 @@ function Events() {
 
                             {[
                                 { number: totalEvents, label: 'Total Events' },
-                                { number: totalParticipants, label: 'Participants' },
+                                // { number: totalParticipants, label: 'Participants' },
                                 { number: totalSpeakers, label: 'Industry Speakers' },
                                 { number: upcomingEvents, label: 'Upcoming Events'},
                             ].map((stat, index) => (
@@ -288,7 +287,7 @@ function Events() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                         {filteredEvents?.map((event) => (
                             <div
-                                key={event.id}
+                                key={event._id}
                                 className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 animate-rise-up"
                             >
                                 {/* Image Header */}
@@ -370,7 +369,7 @@ function Events() {
 
                                     <div className="flex justify-between items-center mb-5">
                                         {/* Participants */}
-                                        <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
+                                        {/* <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
                                             <div className="w-9 h-9 flex items-center justify-center rounded-full bg-green-100 text-green-600">
                                                 <i className="fas fa-users"></i>
                                             </div>
@@ -380,7 +379,7 @@ function Events() {
                                                     {event.participants}
                                                 </p>
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         {/* Speakers */}
                                         <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
@@ -444,7 +443,7 @@ function Events() {
                             >
 
                             {highlightEvents?.map((highlightEvent) => (
-                                <div key={highlightEvent.id} className="relative rounded-3xl overflow-hidden shadow-xl">
+                                <div key={highlightEvent._id} className="relative rounded-3xl overflow-hidden shadow-xl">
                                     {/* Background Image */}
                                     <img
                                         src={highlightEvent?.images?.[0]}
@@ -515,12 +514,12 @@ function Events() {
                                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
                                                 <div className="flex flex-wrap items-center gap-4">
-                                                    <div className="flex items-center gap-1">
+                                                    {/* <div className="flex items-center gap-1">
                                                     <i className="fas fa-users text-yellow-400"></i>
                                                     <span className="text-sm">
                                                         {highlightEvent.participants}+ Participants
                                                     </span>
-                                                    </div>
+                                                    </div> */}
 
                                                     {highlightEvent.speakers > 0 && (
                                                     <div className="flex items-center gap-1">

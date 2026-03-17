@@ -101,7 +101,7 @@ function Contact() {
 
   if(contactInfoLoading || FAQLoading) return <Loading/>;
 
-  if (contactInfoError || FAQErr) return <NotFound/>;
+  // if (contactInfoError || FAQErr) return <NotFound/>;
 
   return (
     <div className="min-h-screen">
