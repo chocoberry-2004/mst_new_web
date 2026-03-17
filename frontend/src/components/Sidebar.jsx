@@ -126,7 +126,7 @@ function Sidebar({ isOpen, onClose }) {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={toggleEventsDropdown}
-              className="flex justify-between items-center w-full px-3 py-2 text-[#FEFEFE] hover:text-[#FFC53A] transition-all duration-300 font-medium relative after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-[#FFC53A] after:transition-all after:duration-300 after:w-0 hover:after:w-full"
+              className="flex cursor-pointer justify-between items-center w-full px-3 py-2 text-[#FEFEFE] hover:text-[#FFC53A] transition-all duration-300 font-medium relative after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-[#FFC53A] after:transition-all after:duration-300 after:w-0 hover:after:w-full"
             >
               <span>Events</span>
               <i className={`fa-solid fa-chevron-right transition-transform duration-300 ${isEventsOpen ? 'rotate-90' : ''}`}></i>

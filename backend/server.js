@@ -17,11 +17,20 @@ const app = express();
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-app.use(
-  cors({
-    origin: "https://mst-new-web.onrender.com",
-  }),
-);
+// app.use(
+//   cors({
+//     origin: ["https://mst-new-web.onrender.com", "http://localhost:5173   "],
+//   }),
+// );
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://mst-new-web.onrender.com",
+    "https://mst-new-web-shiv.onrender.com"
+  ]
+}));
+
 app.use(express.urlencoded());
 app.use(express.json());
 dotenv.config();

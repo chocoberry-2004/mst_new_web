@@ -29,7 +29,8 @@ function AwardDetailForm() {
             showAwardDetail ? "flex" : "hidden"
         }`}
     >
-      <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 max-w-2xl w-full relative max-h-[95vh] overflow-y-auto scrollbar-hide">
+      <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 max-w-2xl w-full relative max-h-[95vh] overflow-y-auto scrollbar-hide"
+        onClick = {(e) => e.stopPropagation()}>
         {/* Close Button */}
         <div className="flex justify-end sticky top-0 bg-white p-4 pb-2">
             <button 

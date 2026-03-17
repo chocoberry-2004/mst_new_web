@@ -5,23 +5,14 @@ import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "./Loading";
 import NotFound from "./NotFound";
+import { usePartner } from "../providers/PartnerProvider";
 
 const binaryDigits = Array.from({ length: 40 });
 
-const fetchPartner = async () => {
-  const response = await fetch("/api/partners/");
-  if (!response.ok) throw new Error("Failed to fetch");
-  return response.json();
-};
 
 function Home() {
 
-    const { data: partners, isPending: partnerLoading, error: partnerError } = useQuery({
-        queryKey: ["partners"],
-        queryFn: fetchPartner,
-    });
-
-    console.log(partners);
+    const { partners, partnerLoading, partnerError } = usePartner();
 
     if(partnerLoading) return <Loading/>;
 

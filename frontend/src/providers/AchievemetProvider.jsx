@@ -3,8 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 
 const AchievementContext = createContext();
 
+// https://mst-new-web-shiv.onrender.com
+
 const fetchAchievement = async () => {
-  const response = await fetch("https://mst-new-web-shiv.onrender.com/api/achievements/");
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${apiUrl}/achievements/`);
   if (!response.ok) throw new Error("Failed to fetch achievement data");
   return response.json();
 };

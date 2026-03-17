@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 // layouts
 import MainLayout from "./layouts/MainLayout";
@@ -64,12 +65,13 @@ function App() {
 
         {/* admin pages routes */}
         <Route path="/admin" element={<Index />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="dashboard/lecturer" element={<ManageLecturer />} />
-            <Route path="dashboard/faculty" element={<ManageFaculty />} />
-            <Route path="dashboard/event" element={<ManageEvent />} />
-            <Route path="dashboard/partner" element={<ManagePartner/>}/>
-            <Route path="dashboard/achievement" element={<ManageAchievement/>}/>
+            <Route index element={<Navigate to="dashboard" />} /> 
+            <Route path="dashboard" element={<Dashboard/>} />
+            <Route path="lecturer" element={<ManageLecturer />} />
+            <Route path="faculty" element={<ManageFaculty />} />
+            <Route path="event" element={<ManageEvent />} />
+            <Route path="partner" element={<ManagePartner/>}/>
+            <Route path="achievement" element={<ManageAchievement/>}/>
         </Route>
 
         {/* 404 */}

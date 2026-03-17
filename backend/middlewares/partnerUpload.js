@@ -12,3 +12,5 @@ const storage = multer.diskStorage({
 });
 
 export const partnerUpload = multer({ storage });
+
+
