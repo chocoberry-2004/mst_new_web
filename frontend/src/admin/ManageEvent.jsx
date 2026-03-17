@@ -129,7 +129,7 @@ function ManageEvent() {
         description: newEvent.description || '',
         status: newEvent.status,
         highlight: newEvent.highlight,
-        imageFiles: imageFiles, // This should contain the actual File objects
+        imageFiles: imageFiles, 
       };
 
       console.log('Sending event data with images:', eventData);
