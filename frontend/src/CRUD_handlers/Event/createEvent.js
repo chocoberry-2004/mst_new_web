@@ -1,7 +1,6 @@
 export const createEvent = async (eventData) => {
 
     try {
-
         const requestEvent = await fetch(`${import.meta.env.VITE_API_URL}/events`, {
             method: 'POST',
             headers: {
