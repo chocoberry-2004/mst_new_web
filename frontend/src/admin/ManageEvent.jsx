@@ -11,8 +11,8 @@ function ManageEvent() {
   const { events, eventType, loading, error } = useEventContext();
   const [eventList, setEventList] = useState([]);
 
-  const [creatLoading, setCreatLoading] = useState(false);
-  const [creatErr, setCreateErr] = useState(null);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createErr, setCreateErr] = useState(null);
 
   useEffect(() => {
     if (events) {
@@ -41,7 +41,6 @@ function ManageEvent() {
     description: '',
     status: 'upcoming',
     highlight: false,
-    imageURL: []
   });
 
   const [eventImages, setEventImages] = useState([]);
@@ -93,8 +92,10 @@ function ManageEvent() {
       description: '',
       status: 'upcoming',
       highlight: false,
-      registered: false,
     });
+    
+    // Clean up object URLs to prevent memory leaks
+    eventImages.forEach(url => URL.revokeObjectURL(url));
     setEventImages([]);
     setImageFiles([]);
     setShowAddModal(false);
@@ -108,12 +109,17 @@ function ManageEvent() {
       return;
     }
 
-    setCreatLoading(true);
+    // Optional: Validate that at least one image is uploaded
+    if (imageFiles.length === 0) {
+      setCreateErr('Please upload at least one image');
+      return;
+    }
+
+    setCreateLoading(true);
     setCreateErr(null);
 
     try {
-
-      // Prepare the event data with a UNIQUE imageURL
+      // Prepare the event data with images
       const eventData = {
         title: newEvent.title,
         type: newEvent.type,
@@ -123,30 +129,24 @@ function ManageEvent() {
         description: newEvent.description || '',
         status: newEvent.status,
         highlight: newEvent.highlight,
-        registered: newEvent.registered || false,
-        imageURL: [], 
+        imageFiles: imageFiles, // This should contain the actual File objects
       };
 
-      console.log('Sending event data with unique imageURL:', eventData);
+      console.log('Sending event data with images:', eventData);
 
       const response = await createEvent(eventData);
 
       if (response && response.success) {
-        // Add the new event to the list with the response data
-        const newEventWithId = {
-          ...eventData,
-          _id: response.event?._id || Date.now().toString(),
-        };
-        
-        setEventList([...eventList, newEventWithId]);
         resetForm();
-        setCreatLoading(false);
+        setCreateLoading(false);
+        // Optionally refresh the events list
+        // You might want to add a refresh function from your context
       } else {
-        setCreatLoading(false);
+        setCreateLoading(false);
         setCreateErr(response?.message || 'Failed to create event');
       }
     } catch (error) {
-      setCreatLoading(false);
+      setCreateLoading(false);
       setCreateErr(error.message || 'An error occurred while creating the event');
       console.error('Error creating event:', error);
     }
@@ -178,20 +178,42 @@ function ManageEvent() {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     
-    // Store actual files for upload
-    setImageFiles(files);
+    // Validate file types
+    const validFiles = files.filter(file => {
+        const isValid = file.type.startsWith('image/');
+        if (!isValid) {
+            setCreateErr('Please upload only image files');
+        }
+        return isValid;
+    });
+
+    if (validFiles.length === 0) return;
+
+    // Limit to 4 files total
+    const totalFiles = [...imageFiles, ...validFiles].slice(0, 4);
+    const newFiles = validFiles.slice(0, 4 - imageFiles.length);
     
+    if (newFiles.length === 0) {
+        setCreateErr('Maximum 4 images allowed');
+        return;
+    }
+
     // Create preview URLs
-    const urls = files.map(f => URL.createObjectURL(f));
-    setEventImages(urls);
+    const newImageUrls = newFiles.map(f => URL.createObjectURL(f));
+    
+    setImageFiles(prev => [...prev, ...newFiles]);
+    setEventImages(prev => [...prev, ...newImageUrls]);
+    
+    // Clear any previous error
+    setCreateErr(null);
   };
 
   const removeImage = (index) => {
+    // Revoke object URL to avoid memory leaks
+    URL.revokeObjectURL(eventImages[index]);
+    
     const newImages = [...eventImages];
     const newFiles = [...imageFiles];
-    
-    // Revoke object URL to avoid memory leaks
-    URL.revokeObjectURL(newImages[index]);
     
     newImages.splice(index, 1);
     newFiles.splice(index, 1);
@@ -219,6 +241,9 @@ function ManageEvent() {
       default: return 'fa-circle text-gray-400';
     }
   };
+
+  const BASE_URL = "http://localhost:8000";
+  const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
   if (loading) return <Loading />;
 
@@ -337,7 +362,18 @@ function ManageEvent() {
           {filteredEvents?.map(event => (
             <div key={event._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
-                <img src={event.imageURL} alt={event.title} />
+                {console.log(event.imageURL)}
+
+                <img
+                  src={
+                    event.imageURL?.length > 0
+                      ? `${BASE_URL}${event.imageURL[0]}`
+                      : `${placeholderImg}`
+                  }
+                  alt={event.title}
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -427,6 +463,19 @@ function ManageEvent() {
             <tbody className="divide-y divide-gray-200">
               {filteredEvents?.map(event => (
                 <tr key={event._id} className="hover:bg-gray-50">
+
+                  <td className="px-6 py-4">
+                      <img 
+                        src={
+                          event.imageURL?.length > 0
+                            ? `${BASE_URL}${event.imageURL[0]}`
+                            : `${placeholderImg}`
+                        }
+                        alt={event.title}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                  </td>
+
                   <td className="px-6 py-4">
                     <div className="font-medium text-gray-900">{event.title}</div>
                     <div className="text-sm text-gray-500">{event.highlight ? 'Featured' : 'Regular'}</div>
@@ -499,13 +548,18 @@ function ManageEvent() {
             </div>
 
             {/* Display error message */}
-            {creatErr && (
+            {createErr && (
               <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-                {creatErr}
+                {createErr}
               </div>
             )}
 
-            <form  encType='multipart/form-data' onSubmit={() => EventConfirm()}>
+            <form  
+              encType="multipart/form-data" 
+              onSubmit={(e) => {
+                e.preventDefault();
+                EventConfirm();
+              }}>
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-1 space-y-4">
                   {/* title */}
@@ -554,7 +608,7 @@ function ManageEvent() {
                 <div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Images
+                      Images * {imageFiles.length > 0 && `(${imageFiles.length}/4)`}
                     </label>
 
                     <div className="relative bg-gray-200 min-h-[200px] w-full rounded-xl border-2 border-dashed border-gray-300 hover:border-[#FFC53A] transition-colors flex flex-col items-center justify-center overflow-hidden p-2">
@@ -570,6 +624,7 @@ function ManageEvent() {
                                 className="w-full h-24 object-cover rounded-lg"
                               />
                               <button
+                                type="button"
                                 onClick={() => removeImage(index)}
                                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                               >
@@ -602,6 +657,7 @@ function ManageEvent() {
                             multiple
                             onChange={handleImageChange}
                             className="hidden"
+                            required
                           />
                         </label>
                       )}
@@ -619,7 +675,7 @@ function ManageEvent() {
                         </label>
                       )}
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">You can upload up to 4 images</p>
+                    <p className="text-xs text-gray-500 mt-1">You can upload up to 4 images (JPEG, PNG, etc.)</p>
                   </div>
                 </div>
 
@@ -683,9 +739,10 @@ function ManageEvent() {
 
               <div className="flex justify-end gap-3 mt-6">
                 <button
+                  type="button"
                   onClick={resetForm}
                   className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer"
-                  disabled={creatLoading}
+                  disabled={createLoading}
                 >
                   Cancel
                 </button>
@@ -693,9 +750,9 @@ function ManageEvent() {
                 <button
                   type="submit"
                   className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                  disabled={creatLoading}
+                  disabled={createLoading || imageFiles.length === 0}
                 >
-                  {creatLoading ? (
+                  {createLoading ? (
                     <>
                       <span className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"></span>
                       Creating...
@@ -880,14 +937,14 @@ function ManageEvent() {
                 <p className="text-gray-600">{selectedEvent.description}</p>
               </div>
 
-              {selectedEvent.images && selectedEvent.images.length > 0 && (
+              {selectedEvent.imageURL && selectedEvent.imageURL.length > 0 && (
                 <div className="p-4 border border-gray-200 rounded-lg">
                   <p className="text-sm font-medium text-gray-700 mb-2">Images</p>
                   <div className="grid grid-cols-3 gap-2">
-                    {selectedEvent.images.map((image, index) => (
+                    {selectedEvent.imageURL.map((image, index) => (
                       <img 
                         key={index}
-                        src={image} 
+                        src={`${BASE_URL}${image}`} 
                         alt={`Event ${index + 1}`}
                         className="w-full h-20 object-cover rounded-lg"
                       />
