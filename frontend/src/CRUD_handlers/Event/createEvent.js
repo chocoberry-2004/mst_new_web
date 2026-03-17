@@ -12,10 +12,8 @@ export const createEvent = async (eventData) => {
         formData.append("status", eventData.status);
         formData.append("highlight", eventData.highlight.toString());
 
-        // IMPORTANT: Use 'imageURL' instead of 'images' to match your backend
         if (eventData.imageFiles && eventData.imageFiles.length > 0) {
             eventData.imageFiles.forEach(file => {
-                // This must match what your backend expects (eventUpload.array('imageURL', 5))
                 formData.append("imageURL", file);
             });
             console.log(`Appended ${eventData.imageFiles.length} images`);
@@ -31,7 +29,8 @@ export const createEvent = async (eventData) => {
             body: formData,
         });
 
-        // Check if response is OK before trying to parse JSON
+        console.log(requestEvent);
+
         if (!requestEvent.ok) {
             const text = await requestEvent.text();
             console.error('Server response (not JSON):', text);
@@ -39,6 +38,7 @@ export const createEvent = async (eventData) => {
         }
 
         const eventResponse = await requestEvent.json();
+        
         return { success: true, event: eventResponse };
 
     } catch (error) {

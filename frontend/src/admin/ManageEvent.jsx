@@ -362,8 +362,6 @@ function ManageEvent() {
           {filteredEvents?.map(event => (
             <div key={event._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
-                {console.log(event.imageURL)}
-
                 <img
                   src={
                     event.imageURL?.length > 0
