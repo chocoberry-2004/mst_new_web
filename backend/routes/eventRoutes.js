@@ -14,10 +14,7 @@ router.get("/", getEvents);
 // Accepts one image and one video file
 router.post(
   "/",
-  eventUpload.fields([
-    { name: "image", maxCount: 1 },
-    { name: "video", maxCount: 1 },
-  ]),
+  eventUpload.array('imageURL', 5),
   createEvent,
 );
 

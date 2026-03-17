@@ -38,10 +38,6 @@ const eventSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    speakers: {
-      type: Number,
-      default: 1,
-    },
     registered: {
       type: Boolean,
       default: false,
