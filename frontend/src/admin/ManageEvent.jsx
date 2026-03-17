@@ -41,7 +41,7 @@ function ManageEvent() {
     description: '',
     status: 'upcoming',
     highlight: false,
-    registered: false,
+    imageURL: []
   });
 
   const [eventImages, setEventImages] = useState([]);
@@ -101,13 +101,6 @@ function ManageEvent() {
     setCreateErr(null);
   };
 
-  // Generate a unique image URL based on timestamp and random string
-  const generateUniqueImageURL = () => {
-    const timestamp = Date.now();
-    const randomStr = Math.random().toString(36).substring(2, 15);
-    return `https://images.unsplash.com/photo-${timestamp}-${randomStr}?w=800`;
-  };
-
   const EventConfirm = async () => {
     // Validate required fields
     if (!newEvent.title || !newEvent.type || !newEvent.date || !newEvent.venue) {
@@ -119,10 +112,6 @@ function ManageEvent() {
     setCreateErr(null);
 
     try {
-      // Create a unique imageURL - this is CRITICAL for your backend
-      const uniqueImageURL = eventImages.length > 0 
-        ? eventImages[0]  // Use the first uploaded image
-        : generateUniqueImageURL(); // Generate unique URL for default image
 
       // Prepare the event data with a UNIQUE imageURL
       const eventData = {
@@ -135,9 +124,7 @@ function ManageEvent() {
         status: newEvent.status,
         highlight: newEvent.highlight,
         registered: newEvent.registered || false,
-        imageURL: uniqueImageURL, // This must be UNIQUE for each event
-        // If your backend expects an images array as well
-        images: eventImages.length > 0 ? eventImages : [uniqueImageURL]
+        imageURL: [], 
       };
 
       console.log('Sending event data with unique imageURL:', eventData);
