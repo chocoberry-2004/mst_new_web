@@ -7,12 +7,14 @@ export const createEvent = async (req, res) => {
 
     if (req.files) {
       if (req.files.image && req.files.image.length > 0) {
-        eventData.imageURL = req.files.image[0].path;
+        eventData.imageURL = req.files.map(
+          (file) => `/uploads/events/${file.filename}`,
+        );
       }
 
-      if (req.files.video && req.files.video.length > 0) {
-        eventData.videoURL = req.files.video[0].path;
-      }
+      // if (req.files.video && req.files.video.length > 0) {
+      //   eventData.videoURL = req.files.video[0].path;
+      // }
     }
 
     const newEvent = new Event(eventData);

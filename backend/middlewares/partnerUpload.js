@@ -6,7 +6,6 @@ const storage = multer.diskStorage({
     cb(null, "uploads/partners/");
   },
   filename: (req, file, cb) => {
-    // Generates a unique filename like 1710000000-microsoft-logo.svg
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });

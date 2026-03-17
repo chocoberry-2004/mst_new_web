@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import publicRoutes from "./routes/publicRoutes.js";
+import fs from "fs";
 
 import achievementRoutes from "./routes/achievementRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
@@ -34,6 +35,16 @@ app.use(cors({
 app.use(express.urlencoded());
 app.use(express.json());
 dotenv.config();
+
+const uploadDirs = ["uploads/events", "uploads/partners", "uploads/lecturers"];
+
+uploadDirs.forEach((dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`Created directory: ${dir}`);
+  }
+});
+
 const mongodbUrl = process.env.MONGODB_URL;
 
 const port = process.env.PORT;
