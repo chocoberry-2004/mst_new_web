@@ -28,6 +28,9 @@ function Events() {
     const [selectedType, setSelectedType] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
 
+    const BASE_URL = "http://localhost:8000";
+    const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
+
 
     useEffect(() => {
     if (typeSlug) {
@@ -293,7 +296,11 @@ function Events() {
                                 {/* Image Header */}
                                 <div className="relative h-48 overflow-hidden">
                                     <img
-                                        src={event?.images?.[0]}
+                                        src={
+                                            event.imageURL?.length > 0
+                                            ? `${BASE_URL}${event.imageURL[0]}`
+                                            : `${placeholderImg}`
+                                        }
                                         alt={event.title}
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
