@@ -60,11 +60,18 @@ function Events() {
 
     const eventList = Array.isArray(events) ? events : [];
 
-    // Statistics
-    const totalEvents = eventList.length;
-    // const totalParticipants = eventList.reduce((sum, event) => sum + (event.participants || 0), 0);
-    const totalSpeakers = eventList.reduce((sum, event) => sum + (event.speakers || 0), 0);
-    const upcomingEvents = eventList.filter(event => event.status === "upcoming").length;
+    // // Statistics
+    // const totalEvents = eventList.length;
+    // // const totalParticipants = eventList.reduce((sum, event) => sum + (event.participants || 0), 0);
+    // const totalSpeakers = eventList.reduce((sum, event) => sum + (event.speakers || 0), 0);
+    // const upcomingEvents = eventList.filter(event => event.status === "upcoming").length;
+
+    // Calculate statistics
+    const totalEvents = eventList?.length || 0;
+    const upcomingEvents = eventList?.filter(e => e.status === 'upcoming').length || 0;
+    const completedEvents = eventList?.filter(e => e.status === 'past').length || 0;
+    const highlightEvent = eventList?.filter(e => e.highlight=== true).length || 0;
+
 
 
     const filteredEvents = eventList.filter((event) => {
@@ -88,7 +95,7 @@ function Events() {
         return matchesSearch && matchesType && matchesStatus && matchesCategory;
     });
 
-    const highlightEvents = eventList?.filter(event => event.highlight === true && event.status === "upcoming") || [];
+    const highlightEvents = eventList?.filter(event => event.highlight === true ) || [];
     const pastEvents = eventList?.filter(event => event.status === "past") || [];
 
     return (
@@ -198,9 +205,9 @@ function Events() {
 
                             {[
                                 { number: totalEvents, label: 'Total Events' },
-                                // { number: totalParticipants, label: 'Participants' },
-                                { number: totalSpeakers, label: 'Industry Speakers' },
+                                { number: completedEvents, label: 'Past Events' },
                                 { number: upcomingEvents, label: 'Upcoming Events'},
+                                { number: highlightEvent, label: 'Highlight Events' },
                             ].map((stat, index) => (
                                 <div
                                     key={index}
@@ -226,7 +233,7 @@ function Events() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Filter Tabs */}
                     <div className="mb-12">
-                        <h2 className="text-3xl font-bold text-gray-900 border-b border-gray-200 pb-5 mb-8 text-center">
+                        <h2 className="text-3xl font-bold text-gray-900 border-b border-gray-300 pb-5 mb-8 text-center">
                             Browse Events by Category
                         </h2>
 
@@ -305,9 +312,6 @@ function Events() {
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
 
-                                    {/* Overlay */}
-                                    <div className="absolute inset-0 bg-black/40"></div>
-
                                     {/* Status Badge */}
                                     <div className="absolute top-4 left-4">
                                         <span
@@ -337,7 +341,7 @@ function Events() {
 
                                     <div className="space-y-1 mb-5 text-sm">
                                         {/* Date */}
-                                        <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition border border-gray-100">
+                                        <div className=" flex items-center gap-2 bg-gray-100 rounded-xl p-2 hover:bg-gray-200 transition border border-gray-300">
                                             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600">
                                                 <i className="fas fa-calendar-alt"></i>
                                             </div>
@@ -348,7 +352,7 @@ function Events() {
                                         </div>
 
                                         {/* Time */}
-                                        <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition border border-gray-100">
+                                        <div className=" flex items-center gap-2 bg-gray-100 p-2 rounded-xl hover:bg-gray-200 transition border border-gray-300">
                                             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-purple-100 text-purple-600">
                                                 <i className="fas fa-clock"></i>
                                             </div>
@@ -356,10 +360,10 @@ function Events() {
                                                 <p className="text-xs text-gray-400">Time</p>
                                                 <p className="font-medium text-gray-700">{event.time}</p>
                                             </div>
-                                        </div>
+                                        </div>                                        
 
                                         {/* Venue */}
-                                        <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition border border-gray-100">
+                                        <div className="flex items-center gap-2 bg-gray-100 p-2 rounded-xl hover:bg-gray-200 transition border border-gray-300">
                                             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 text-red-600">
                                                 <i className="fas fa-map-marker-alt"></i>
                                             </div>
@@ -374,33 +378,6 @@ function Events() {
                                         {event.description}
                                     </p>
 
-                                    <div className="flex justify-between items-center mb-5">
-                                        {/* Participants */}
-                                        {/* <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
-                                            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-green-100 text-green-600">
-                                                <i className="fas fa-users"></i>
-                                            </div>
-                                            <div>
-                                                <p className="text-xs text-gray-400">Participants</p>
-                                                <p className="text-sm font-semibold text-gray-700">
-                                                    {event.participants}
-                                                </p>
-                                            </div>
-                                        </div> */}
-
-                                        {/* Speakers */}
-                                        <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl hover:bg-gray-100 transition">
-                                            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600">
-                                                <i className="fas fa-microphone"></i>
-                                            </div>
-                                            <div>
-                                                <p className="text-xs text-gray-400">Speakers</p>
-                                                <p className="text-sm font-semibold text-gray-700">
-                                                    {event.speakers}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <button
                                         onClick={() => openApplicationForm("event")}
@@ -433,12 +410,11 @@ function Events() {
                     {highlightEvents?.length > 0 && (
                         <div className="mb-20">
                             {/* Section Title */}
-                            <div className="mb-10">
+                            <div className="mb-5 pb-5 border-b border-gray-300">
                                 <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                                     <i className="fas fa-fire text-orange-500"></i>
                                     Upcoming Highlights
                                 </h2>
-                                <div className="w-28 h-1 mt-3 rounded-full bg-gradient-to-r from-cyan-500 to-[var(--primary-dark)]"></div>
                             </div>
 
                             <div
@@ -453,7 +429,11 @@ function Events() {
                                 <div key={highlightEvent._id} className="relative rounded-3xl overflow-hidden shadow-xl">
                                     {/* Background Image */}
                                     <img
-                                        src={highlightEvent?.images?.[0]}
+                                        src={
+                                            highlightEvent.imageURL?.length > 0
+                                            ? `${BASE_URL}${highlightEvent.imageURL[0]}`
+                                            : `${placeholderImg}`
+                                        }
                                         alt={highlightEvent.title}
                                         className="absolute inset-0 w-full h-full object-cover"
                                     />
@@ -521,21 +501,7 @@ function Events() {
                                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
                                                 <div className="flex flex-wrap items-center gap-4">
-                                                    {/* <div className="flex items-center gap-1">
-                                                    <i className="fas fa-users text-yellow-400"></i>
-                                                    <span className="text-sm">
-                                                        {highlightEvent.participants}+ Participants
-                                                    </span>
-                                                    </div> */}
 
-                                                    {highlightEvent.speakers > 0 && (
-                                                    <div className="flex items-center gap-1">
-                                                        <i className="fas fa-microphone text-yellow-400"></i>
-                                                        <span className="text-sm">
-                                                        {highlightEvent.speakers} Speakers
-                                                        </span>
-                                                    </div>
-                                                    )}
 
                                                     <button
                                                         onClick={() => openApplicationForm("event")}
@@ -575,29 +541,31 @@ function Events() {
                         </div>
                     )}
 
+                </div>
+            </section>
 
-
-                    {/* Past Events Gallery */}
+            <section className='py-16 lg:py-24 bg-gray-100'>
+                {/* Past Events Gallery */}
                     {pastEvents.length > 0 && (
-                        <div>
-                            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                                <i className="fas fa-images text-purple-500 mr-3"></i>
-                                Past Events Gallery
-                                <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-[var(--primary-dark)] mt-2"></div>
-                            </h2>
+                        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+                            <div className="border-b border-gray-300 pb-5 mb-10">
+                                <h2 className="text-3xl font-bold text-gray-900 mb-3 ">
+                                    <i className="fas fa-images text-purple-500 mr-3"></i>
+                                    Past Events Gallery
+                                </h2>
+                            </div>
                             
                             <div className="">
                                 <EventGallery/>
                             </div>
                             
                             <div className="text-center mt-8">
-                                <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 hover:border-blue-700 hover:text-blue-700 transition-all duration-300 transform hover:scale-105">
+                                <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 hover:border-blue-700 hover:text-blue-700 transition-all duration-300 transform hover:scale-105 cursor-pointer">
                                     View All Gallery <i className="fas fa-arrow-right ml-2"></i>
                                 </button>
                             </div>
                         </div>
                     )}
-                </div>
             </section>
 
             {/* CTA Section */}

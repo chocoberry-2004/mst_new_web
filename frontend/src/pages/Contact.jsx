@@ -226,10 +226,11 @@ function Contact() {
               
               {/* Contact Form */}
               <div id="contact-form" className="bg-white rounded-2xl shadow-xl p-8 lg:p-12 text-[var(--gray-text)]">
-                <h2 className="text-3xl font-bold mb-8">
-                  Send us a Message
-                  <div className="w-20 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
-                </h2>
+                <div className="border-b border-gray-300 mb-5">
+                  <h2 className="text-3xl font-bold mb-5">
+                    Send us a Message
+                  </h2>
+                </div>
                 
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -331,12 +332,11 @@ function Contact() {
 
               {/* Contact Information */}
               <div id='contact-info'>
-                <div className="mb-12">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                <div className="mb-12 border-b border-gray-300">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-5">
                     Contact Information
-                    <div className="w-20 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
                   </h2>
-                  <p className="text-gray-600 mb-8">
+                  <p className="text-gray-600 mb-5 ">
                     We're here to help! Reach out to us through any of the following channels.
                   </p>
                 </div>
@@ -586,11 +586,13 @@ function Contact() {
         <section className='px-5 lg:px-16 py-16 lg:py-24 bg-white'>
           {/* FAQ Section */}
           <div className="mt-16">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              Frequently Asked Questions
-              <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2 mx-auto"></div>
-            </h2>
-            
+
+            <div className="border-b border-gray-300 mb-8">
+              <h2 className="text-3xl font-bold text-center text-gray-900 mb-5">
+                Frequently Asked Questions
+              </h2>
+            </div>
+           
             <div className="grid md:grid-cols-2 gap-8">
               {FAQ?.map((faq, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
