@@ -68,19 +68,20 @@ export const getEvents = async (req, res) => {
 // UPDATE
 export const updateEvent = async (req, res) => {
   try {
-    
+    const { imageURL, ...otherData } = req.body;
+    let finalData = { ...otherData };
 
-    const updatedData = { ...req.body };
     if (req.files && req.files.length > 0) {
-      updatedData.imageURL = req.files.map(
-        (file) => `uploads/events/${file.filename}`,
+      finalData.imageURL = req.files.map(
+        (file) => `/uploads/events/${file.filename}`,
       );
-      
+    } else {
+      // do nothing
     }
 
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
-      updatedData,
+      finalData,
       { new: true },
     );
 
