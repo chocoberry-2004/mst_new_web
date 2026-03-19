@@ -52,47 +52,57 @@ export const getEvents = async (req, res) => {
   }
 };
 
-// get events by category
-// export const getEventsByCategory = async (req, res) => {
-//   try {
-//     const { type } = req.query;
-//     const query = type ? { type: type.toLowercase() } : {};
-
-//     const events = await Event.find(query);
-//     res.status(200).json(events);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
-
 // UPDATE
 export const updateEvent = async (req, res) => {
   try {
-    console.log("Files received:", req.files);
-    console.log("Body received:", req.body);
-    
-    const { imageURL, ...otherData } = req.body;
-    let finalData = { ...otherData };
+    console.log("Files:", req.files);
+    console.log("Body:", req.body);
 
+    const { existingImages, deletedImages, ...otherData } = req.body;
+
+    let finalImages = [];
+
+    // 1. Keep existing images
+    if (existingImages) {
+      finalImages = Array.isArray(existingImages)
+        ? existingImages
+        : JSON.parse(existingImages);
+    }
+
+    // 2. Remove deleted images
+    if (deletedImages) {
+      const toDelete = Array.isArray(deletedImages)
+        ? deletedImages
+        : JSON.parse(deletedImages);
+
+      finalImages = finalImages.filter((img) => !toDelete.includes(img));
+    }
+
+    // 3. Add new uploaded images
     if (req.files && req.files.length > 0) {
-      finalData.imageURL = req.files.map(
-        (file) => `uploads/events/${file.filename}`,
+      const newImages = req.files.map(
+        (file) => `/uploads/events/${file.filename}`,
       );
-    } else if (req.body.imageURL === "" || req.body.imageURL === "[]") {
-      finalData.imageURL = [];
+      finalImages = [...finalImages, ...newImages];
     }
 
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
-      finalData,
+      {
+        ...otherData,
+        imageURL: finalImages,
+      },
       { new: true },
     );
 
-    if (!updatedEvent)
+    if (!updatedEvent) {
       return res.status(404).json({ message: "Event not found" });
+    }
+
     res.status(200).json(updatedEvent);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Update Error:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
