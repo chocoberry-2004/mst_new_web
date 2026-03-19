@@ -68,11 +68,22 @@ export const getEvents = async (req, res) => {
 // UPDATE
 export const updateEvent = async (req, res) => {
   try {
+    
+
+    const updatedData = { ...req.body };
+    if (req.files && req.files.length > 0) {
+      updatedData.imageURL = req.files.map(
+        (file) => `uploads/events/${file.filename}`,
+      );
+      
+    }
+
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updatedData,
       { new: true },
     );
+
     if (!updatedEvent)
       return res.status(404).json({ message: "Event not found" });
     res.status(200).json(updatedEvent);

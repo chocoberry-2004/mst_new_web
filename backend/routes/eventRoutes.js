@@ -14,11 +14,11 @@ router.get("/", getEvents);
 // Accepts one image and one video file
 router.post(
   "/",
-  eventUpload.array('imageURL', 5),
+  eventUpload.array('imageURL', 4),
   createEvent,
 );
 
-router.put("/:id", updateEvent);
+router.put("/:id", eventUpload.array('imageURL', 4), updateEvent);
 router.delete("/:id", deleteEvent);
 
 export default router;
