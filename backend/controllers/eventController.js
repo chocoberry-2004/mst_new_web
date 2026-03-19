@@ -68,15 +68,18 @@ export const getEvents = async (req, res) => {
 // UPDATE
 export const updateEvent = async (req, res) => {
   try {
+    console.log("Files received:", req.files);
+    console.log("Body received:", req.body);
+    
     const { imageURL, ...otherData } = req.body;
     let finalData = { ...otherData };
 
     if (req.files && req.files.length > 0) {
       finalData.imageURL = req.files.map(
-        (file) => `/uploads/events/${file.filename}`,
+        (file) => `uploads/events/${file.filename}`,
       );
-    } else {
-      // do nothing
+    } else if (req.body.imageURL === "" || req.body.imageURL === "[]") {
+      finalData.imageURL = [];
     }
 
     const updatedEvent = await Event.findByIdAndUpdate(
