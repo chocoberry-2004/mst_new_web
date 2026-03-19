@@ -1,14 +1,12 @@
-export const updateEvent = async (eventId, eventData) => {
+
+
+export const updateEvent = async (eventId, formData) => {
   try {
     const requestEvent = await fetch(
       `${import.meta.env.VITE_API_URL}/events/${eventId}`,
       {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(eventData),
+        body: formData, 
       }
     );
 

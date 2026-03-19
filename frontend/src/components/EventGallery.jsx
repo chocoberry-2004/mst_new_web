@@ -6,16 +6,28 @@ import logo from '../assets/images/mst_logo1.png';
 function EventGallery() {
     const { events, loading, error } = useEventContext();
 
+    console.log(events);
+
     const [isOpen, setIsOpen] = useState(false);
     const [currentEventIndex, setCurrentEventIndex] = useState(0);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    const BASE_URL = "http://localhost:8000";
+    const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
     if (loading) return <div>Loading events...</div>;
     if (error) return <div>Error loading events: {error.message}</div>;
     if (!events || events.length === 0) return <div>No events found</div>;
 
     // Filter past events FIRST
-    const pastEvents = events?.filter(event => event.status === "past") || [];
+    const pastEvents = (events || [])
+    .filter(event => event.status === "past")
+    .map(event => ({
+        ...event,
+        imageURL: event.imageURL && event.imageURL.length > 0
+        ? event.imageURL
+        : [null]
+    }));
 
     const openModal = (eventIndex, imageIndex = 0) => {
         setCurrentEventIndex(eventIndex);
@@ -26,49 +38,68 @@ function EventGallery() {
     const closeModal = () => setIsOpen(false);
 
     const prevImage = () => {
-        const images = pastEvents[currentEventIndex].images;
+        const images = currentEvent?.imageURL || [];
+        if (images.length === 0) return;
+
         setCurrentImageIndex(prev =>
-        prev === 0 ? images.length - 1 : prev - 1
+            prev === 0 ? images.length - 1 : prev - 1
         );
     };
 
     const nextImage = () => {
-        const images = pastEvents[currentEventIndex].images;
+        const images = currentEvent?.imageURL || [];
+        if (images.length === 0) return;
+
         setCurrentImageIndex(prev =>
-        prev === images.length - 1 ? 0 : prev + 1
+            prev === images.length - 1 ? 0 : prev + 1
         );
     };
 
     const prevEvent = () => {
-        setCurrentEventIndex(prev =>
-        prev === 0 ? pastEvents.length - 1 : prev - 1
-        );
+        if (pastEvents.length === 0) return;
+
+        setCurrentEventIndex(prev => {
+            const newIndex = prev === 0 ? pastEvents.length - 1 : prev - 1;
+            return newIndex;
+        });
+
         setCurrentImageIndex(0);
     };
 
     const nextEvent = () => {
-        setCurrentEventIndex(prev =>
-        prev === pastEvents.length - 1 ? 0 : prev + 1
-        );
+        if (pastEvents.length === 0) return;
+
+        setCurrentEventIndex(prev => {
+            const newIndex = prev === pastEvents.length - 1 ? 0 : prev + 1;
+            return newIndex;
+        });
+
         setCurrentImageIndex(0);
     };
 
     const currentEvent = pastEvents[currentEventIndex];
 
+    if (pastEvents.length === 0) {
+        return <div>No past events available</div>;
+    }
+
     return (
     <div>
         {/* Event thumbnails */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
             {pastEvents.map((event, eventIndex) =>
-            event.images?.map((img, imageIndex) => (
+            event.imageURL?.map((img, imageIndex) => (
                 <div
-                key={`${event.id}-${imageIndex}`}
-                className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer"
+                key={`${event._id}-${imageIndex}`}
+                className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer bg-gray-200 border border-gray-300"
                 onClick={() => openModal(eventIndex, imageIndex)}
                 >
                 <img
-                    src={img}
+                    src={img ? `${BASE_URL}${img}` : placeholderImg}
                     alt={event.title}
+                    onError={(e) => {
+                        e.target.src = placeholderImg;
+                    }}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
 
@@ -133,25 +164,32 @@ function EventGallery() {
 
             {/* Event image */}
             <div className="relative">
-                <img
-                src={currentEvent.images[currentImageIndex]}
-                alt={currentEvent.title}
-                className="w-full h-96 object-cover rounded-lg"
+               <img
+                    src={
+                        currentEvent?.imageURL?.[currentImageIndex]
+                        ? `${BASE_URL}${currentEvent.imageURL[currentImageIndex]}`
+                        : placeholderImg
+                    }
+                    alt={currentEvent?.title}
+                    onError={(e) => {
+                        e.target.src = placeholderImg;
+                    }}
+                    className="w-full h-96 object-cover rounded-lg"
                 />
 
                 {/* Image navigation */}
-                {currentEvent.images.length > 1 && (
+                {currentEvent.imageURL.length > 1 && (
                 <>
                     <button
                     onClick={prevImage}
-                    className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-3 shadow cursor-pointer"
+                    className="absolute top-1/2 left-3 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 border border-gray-500 rounded-full p-3 shadow cursor-pointer"
                     >
                     &#10094;
                     </button>
 
                     <button
                     onClick={nextImage}
-                    className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-3 shadow cursor-pointer"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 border border-gray-500 rounded-full p-3 shadow cursor-pointer"
                     >
                     &#10095;
                     </button>
