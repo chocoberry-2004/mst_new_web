@@ -36,6 +36,7 @@ function ManageEvent() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
 
+
   // Form state for new event
   const [newEvent, setNewEvent] = useState({
     title: '',
@@ -53,6 +54,14 @@ function ManageEvent() {
       editPreviewImages.forEach(url => URL.revokeObjectURL(url));
     };
   }, [editPreviewImages]);
+
+  useEffect(() => {
+    if (!showEditModal) {
+      editPreviewImages.forEach(url => URL.revokeObjectURL(url));
+      setEditPreviewImages([]);
+      setEditImageFiles([]);
+    }
+  }, [showEditModal]);
 
   const [eventImages, setEventImages] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
@@ -165,6 +174,9 @@ function ManageEvent() {
   };
 
   const handleEditEvent = async () => {
+
+    console.log(selectedEvent);
+
     try {
 
       const formData = new FormData();
@@ -179,14 +191,12 @@ function ManageEvent() {
       formData.append("highlight", selectedEvent.highlight);
 
       // existing images
-      formData.append("imageURL", JSON.stringify(selectedEvent.imageURL));
+      formData.append("existingImages", JSON.stringify(selectedEvent.imageURL));
 
       // new images
       editImageFiles.forEach(file => {
-        formData.append("imageURL", file);
+        formData.append("newImages", file);
       });
-
-      console.log(formData);
 
       const response = await updateEvent(selectedEvent._id, formData);
 
@@ -197,6 +207,7 @@ function ManageEvent() {
           )
         );
 
+        editPreviewImages.forEach(url => URL.revokeObjectURL(url));
         setEditImageFiles([]);
         setEditPreviewImages([]);
         setShowEditModal(false);
@@ -264,9 +275,14 @@ function ManageEvent() {
 
     const validFiles = files.filter(file => file.type.startsWith('image/'));
 
-    const total = [...editImageFiles, ...validFiles].slice(0, 4);
+    const remainingSlots = 4 - (selectedEvent.imageURL.length + editImageFiles.length);
 
-    const newFiles = validFiles.slice(0, 4 - editImageFiles.length);
+    if (remainingSlots <= 0) {
+      alert("Maximum 4 images allowed");
+      return;
+    }
+
+    const newFiles = validFiles.slice(0, remainingSlots);
 
     const previews = newFiles.map(file => URL.createObjectURL(file));
 
@@ -291,6 +307,18 @@ function ManageEvent() {
       default: return 'fa-circle text-gray-400';
     }
   };
+
+  const getStatusStyle = (status) => {
+  const styles = {
+    'upcoming': 'bg-green-100/80 text-green-800',
+    'ongoing': 'bg-blue-100/80 text-blue-800',
+    'completed': 'bg-gray-100/80 text-gray-800',
+    'cancelled': 'bg-red-100/80 text-red-800',
+    'draft': 'bg-yellow-100/80 text-yellow-800'
+  };
+  
+  return styles[status?.toLowerCase()] || 'bg-gray-100/80 text-gray-800';
+};
 
   const BASE_URL = "http://localhost:8000";
   const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
@@ -1164,87 +1192,220 @@ function ManageEvent() {
       {/* View Event Modal */}
       {showViewModal && selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-full max-w-2xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Event Details</h2>
-              <button onClick={() => setShowViewModal(false)} className="text-gray-500 hover:text-gray-700">
+          
+          <div className="bg-white rounded-lg w-full max-w-2xl max-h-[95vh] overflow-y-auto">
+            
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4 sticky top-0 z-50 bg-white px-6 pt-6 pb-4 border-b border-gray-300">
+              {/* Left Section */}
+              <div className="flex gap-3 items-center ">
+                <img
+                  src={logo}
+                  alt="MST Logo"
+                  className="w-14 h-14 rounded-full border-2 border-[var(--accent-yellow)] object-cover"
+                />
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">M.S.T</h1>
+                  <p className="text-sm text-gray-500">View Event Details</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setShowViewModal(false)} 
+                className="text-gray-500 hover:text-gray-700 cursor-pointer w-10 h-10 bg-gray-200 rounded-full flex justify-center items-center hover:rotate-45 transition-all duration-300 ease-in-out"
+              >
                 <i className="fas fa-times text-xl"></i>
               </button>
             </div>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{selectedEvent.title}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="px-2 py-1 bg-gray-200 text-gray-700 text-xs font-medium rounded-full">
-                      {selectedEvent.type}
-                    </span>
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(selectedEvent.status)}`}>
-                      {selectedEvent.status}
-                    </span>
+
+            <div className="space-y-6 p-6 max-w-2xl mx-auto">
+            {/* Header Card with Hero Section */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-lg">
+              {/* Decorative Pattern */}
+              <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,transparent,black)]" />
+              
+              <div className="relative p-6 text-white">
+                <div className="flex items-start justify-between">
+                  <div className="space-y-3 flex-1">
+                    <h2 className="text-2xl font-bold leading-tight">
+                      {selectedEvent.title || 'Untitled Event'}
+                    </h2>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      <span className="inline-flex items-center px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
+                        <i className="fas fa-tag mr-1.5 text-xs opacity-75"></i>
+                        {selectedEvent.type || 'General'}
+                      </span>
+                      
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${getStatusStyle(selectedEvent.status)}`}>
+                        <i className={`fas fa-circle mr-1.5 text-[8px] opacity-75`}></i>
+                        {selectedEvent.status || 'Draft'}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex-shrink-0 ml-4">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                      <i className={`fas ${getStatusIcon(selectedEvent.status)} text-3xl text-white`}></i>
+                    </div>
                   </div>
                 </div>
-                <i className={`fas ${getStatusIcon(selectedEvent.status)} text-3xl`}></i>
               </div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-600">Venue</p>
-                  <p className="font-semibold text-gray-900">{selectedEvent.venue}</p>
+            {/* Quick Info Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Venue Card */}
+              <div className="group bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+                <div className="p-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-shrink-0 w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                      <i className="fas fa-map-pin text-blue-600 text-lg"></i>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Venue</p>
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {selectedEvent.venue || 'TBD'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-sm text-green-600">Date</p>
-                  <p className="font-semibold text-gray-900">{selectedEvent.date}</p>
-                </div>
-                <div className="p-4 bg-orange-50 rounded-lg">
-                  <p className="text-sm text-orange-600">Time</p>
-                  <p className="font-semibold text-gray-900">{selectedEvent.time}</p>
+              {/* Date Card */}
+              <div className="group bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+                <div className="p-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-shrink-0 w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center group-hover:bg-green-100 transition-colors">
+                      <i className="fas fa-calendar-alt text-green-600 text-lg"></i>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Date</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {selectedEvent.date ? new Date(selectedEvent.date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        }) : 'TBD'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-yellow-50 rounded-lg">
-                  <p className="text-sm text-yellow-600">Highlighted</p>
-                  <p className="font-semibold text-gray-900">{selectedEvent.highlight ? 'Yes' : 'No'}</p>
+              {/* Time Card */}
+              <div className="group bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+                <div className="p-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-shrink-0 w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                      <i className="fas fa-clock text-orange-600 text-lg"></i>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Time</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {selectedEvent.time || 'TBD'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 bg-red-50 rounded-lg">
-                  <p className="text-sm text-red-600">Registered</p>
-                  <p className="font-semibold text-gray-900">{selectedEvent.registered ? 'Yes' : 'No'}</p>
+              </div>
+            </div>
+
+            {/* Featured Badge & Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl p-5 border border-amber-200/50">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-amber-200 rounded-xl flex items-center justify-center">
+                    <i className="fas fa-star text-amber-700 text-lg"></i>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-amber-700 uppercase tracking-wider">Featured Status</p>
+                    <p className="text-lg font-bold text-amber-800">
+                      {selectedEvent.highlight ? 'Featured Event' : 'Standard Event'}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="p-4 border border-gray-200 rounded-lg">
-                <p className="text-sm font-medium text-gray-700 mb-2">Description</p>
-                <p className="text-gray-600">{selectedEvent.description}</p>
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-5 border border-purple-200/50">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-purple-200 rounded-xl flex items-center justify-center">
+                    <i className="fas fa-users text-purple-700 text-lg"></i>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-purple-700 uppercase tracking-wider">Registered</p>
+                    <p className="text-lg font-bold text-purple-800">
+                      {selectedEvent.registeredCount || 0}
+                    </p>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              {selectedEvent.imageURL && selectedEvent.imageURL.length > 0 && (
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Images</p>
-                  <div className="grid grid-cols-3 gap-2">
+            {/* Description Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="border-b border-gray-100 bg-gray-50/50 px-5 py-3">
+                <div className="flex items-center space-x-2">
+                  <i className="fas fa-align-left text-gray-500 text-sm"></i>
+                  <h3 className="font-medium text-gray-700">Description</h3>
+                </div>
+              </div>
+              <div className="p-5">
+                <p className="text-gray-600 leading-relaxed">
+                  {selectedEvent.description || 'No description provided for this event.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Images Gallery */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="border-b border-gray-100 bg-gray-50/50 px-5 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <i className="fas fa-images text-gray-500 text-sm"></i>
+                    <h3 className="font-medium text-gray-700">Gallery</h3>
+                  </div>
+                  {selectedEvent.imageURL?.length > 0 && (
+                    <span className="text-xs font-medium text-gray-500">
+                      {selectedEvent.imageURL.length} {selectedEvent.imageURL.length === 1 ? 'image' : 'images'}
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div className="p-5">
+                {selectedEvent.imageURL && selectedEvent.imageURL.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {selectedEvent.imageURL.map((image, index) => (
-                      <img 
+                      <div
                         key={index}
-                        src={`${BASE_URL}${image}`} 
-                        alt={`Event ${index + 1}`}
-                        className="w-full h-20 object-cover rounded-lg"
-                      />
+                        className="group relative aspect-square rounded-lg overflow-hidden cursor-pointer bg-gray-100"
+                        onClick={() => window.open(`${BASE_URL}${image}`, '_blank')}
+                      >
+                        <img
+                          src={`${BASE_URL}${image}`}
+                          alt={`Event ${index + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <i className="fas fa-expand text-white text-xl"></i>
+                        </div>
+                      </div>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 px-4">
+                    <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-3">
+                      <i className="fas fa-image text-gray-400 text-3xl"></i>
+                    </div>
+                    <p className="text-gray-500 text-sm font-medium">No images available</p>
+                    <p className="text-gray-400 text-xs mt-1">Images will appear here once added</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex justify-end mt-6">
-              <button
-                onClick={() => setShowViewModal(false)}
-                className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234]"
-              >
-                Close
-              </button>
-            </div>
+          </div>
+
           </div>
         </div>
       )}
