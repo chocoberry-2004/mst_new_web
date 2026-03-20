@@ -1,20 +1,33 @@
-
-
 export const updateEvent = async (eventId, formData) => {
   try {
-    const requestEvent = await fetch(
+    const response = await fetch(
       `${import.meta.env.VITE_API_URL}/events/${eventId}`,
       {
         method: "PUT",
-        body: formData, 
+        body: formData,
       }
     );
 
-    const eventResponse = await requestEvent.json();
+    const text = await response.text();
+
+    let data;
+    try {
+      data = JSON.parse(text); // try parsing JSON
+    } catch (err) {
+      console.error("Not JSON response:", text); 
+      throw new Error("Server returned invalid response");
+    }
+
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.message || "Update failed",
+      };
+    }
 
     return {
       success: true,
-      event: eventResponse,
+      event: data.event || data,
     };
 
   } catch (error) {
