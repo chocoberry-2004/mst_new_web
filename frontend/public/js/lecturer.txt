@@ -1,0 +1,21 @@
+
+[
+   {
+    "name": "Daw May Zin Oo",
+    "positions": ["Lecturer"],
+    "degrees": [
+      "MBA",
+      "Dip (ICT Education)"
+    ],
+    "expertise": [
+      "Project Management",
+      "Business IT",
+      "Digital Transformation"
+    ],
+    "awards": [
+      "Digital Transformation Leader 2020"
+    ],
+    "bio": "Bringing business and IT together, with expertise in project management and digital strategy.",
+    "profileImage": "https://randomuser.me/api/portraits/women/68.jpg" 
+  }
+]

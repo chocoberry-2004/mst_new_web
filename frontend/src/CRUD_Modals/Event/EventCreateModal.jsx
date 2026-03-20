@@ -38,7 +38,7 @@ function EventCreateModal({
             onClick={onClose} 
             className="text-gray-500 cursor-pointer w-10 h-10 bg-gray-200 border border-gray-300 rounded-full flex justify-center items-center hover:rotate-45 transition-all duration-300 ease-in-out"
           >
-            <i className="fas fa-times text-xl"></i>
+            <i className="fas fa-times text-md"></i>
           </button>
         </div>
 
