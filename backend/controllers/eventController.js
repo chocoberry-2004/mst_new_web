@@ -1,4 +1,22 @@
 import Event from "../models/events.js";
+import fs from "fs";
+import path from "path";
+
+const deleteFile = (filePath) => {
+  if (!filePath) return;
+
+  const fullPath = path.join(
+    process.cwd(),
+    filePath.startsWith("/") ? filePath.slice(1) : filePath,
+  );
+
+  if (fs.existsSync(fullPath)) {
+    fs.unlink(fullPath, (err) => {
+      if (err) console.log(`Error deleting file: ${fullPath}`, err);
+      else console.log(`Deleted file: ${fullPath}`);
+    });
+  }
+};
 
 // CREATE
 export const createEvent = async (req, res) => {
@@ -75,6 +93,8 @@ export const updateEvent = async (req, res) => {
         ? deletedImages
         : JSON.parse(deletedImages);
 
+      toDelete.forEach((img) => deleteFile(img));
+
       finalImages = finalImages.filter((img) => !toDelete.includes(img));
     }
 
@@ -109,8 +129,15 @@ export const updateEvent = async (req, res) => {
 // DELETE
 export const deleteEvent = async (req, res) => {
   try {
-    const event = await Event.findByIdAndDelete(req.params.id);
+    const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: "Event not found" });
+
+    if (event.imageURL && event.imageURL.length > 0) {
+      event.imageURL.forEach((img) => deleteFile(img));
+    }
+
+    await Event.findByIdAndDelete(req.params.id);
+
     res.status(200).json({ message: "Event deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
