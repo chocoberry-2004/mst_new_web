@@ -13,7 +13,7 @@ function EventEditModal({
   eventType,
   removeExistingImage,
   removeNewImage,
-}) {
+}) { 
   if (!show || !selectedEvent) return null;
 
   const BASE_URL = "http://localhost:8000";
