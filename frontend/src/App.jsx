@@ -45,7 +45,6 @@ function App() {
     <div className="scrollbar-hide">
 
       <Routes>
-
         {/* user page routes */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -76,7 +75,6 @@ function App() {
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
-
       </Routes>
 
       {/* Back To Top */}

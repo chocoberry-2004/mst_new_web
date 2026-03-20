@@ -6,16 +6,6 @@
       "PhD (Computer Science)",
       "MSc (Artificial Intelligence)"
     ],
-    "expertise": [
-      "Artificial Intelligence",
-      "Machine Learning",
-      "Research"
-    ],
-    "awards": [
-      "Best Researcher Award 2022",
-      "Outstanding Academic Contribution 2019"
-    ],
-    "bio": "25+ years of teaching and research experience in Artificial Intelligence and Machine Learning.",
     "profileImage": "https://randomuser.me/api/portraits/women/65.jpg"
     
   },
@@ -26,15 +16,6 @@
       "MSc (Software Engineering)",
       "BSc (Computer Science)"
     ],
-    "expertise": [
-      "Curriculum Development",
-      "Education Leadership",
-      "Academic Administration"
-    ],
-    "awards": [
-      "Excellence in Education Award 2021"
-    ],
-    "bio": "Former Director at Tech Giant Inc., expert in designing IT curricula.",
     "profileImage": "https://randomuser.me/api/portraits/men/72.jpg"
   },
   {
@@ -43,13 +24,6 @@
     "degrees": [
       "MEng (Information Technology)"
     ],
-    "expertise": [
-      "Corporate Relations",
-      "Industry Collaboration",
-      "Student Career Development"
-    ],
-    "awards": [],
-    "bio": "Industry liaison with 100+ company networks, connecting students to real-world opportunities.",
     "profileImage": "https://randomuser.me/api/portraits/men/81.jpg"
   },
   {
@@ -59,15 +33,6 @@
       "PhD (Computer Science)",
       "MSc (Data Science)"
     ],
-    "expertise": [
-      "Artificial Intelligence",
-      "Machine Learning",
-      "Data Science"
-    ],
-    "awards": [
-      "Top AI Researcher 2023"
-    ],
-    "bio": "Expert in AI and Data Science with multiple international publications.",
     "profileImage": "https://randomuser.me/api/portraits/men/32.jpg"
   },
   {
@@ -76,15 +41,6 @@
     "degrees": [
       "MSc (Information Technology)"
     ],
-    "expertise": [
-      "Web Development",
-      "UI/UX Design",
-      "Frontend Engineering"
-    ],
-    "awards": [
-      "Best UI/UX Designer 2022"
-    ],
-    "bio": "Passionate about designing modern web applications and user experiences.",
     "profileImage": "https://randomuser.me/api/portraits/women/44.jpg" 
   },
   {
@@ -93,15 +49,6 @@
     "degrees": [
       "BEng (Software Engineering)"
     ],
-    "expertise": [
-      "Backend Development",
-      "Cloud Computing",
-      "System Architecture"
-    ],
-    "awards": [
-      "Innovative Teaching Award 2021"
-    ],
-    "bio": "Skilled in cloud computing and system architecture with extensive industry experience.",
     "profileImage": "https://randomuser.me/api/portraits/men/75.jpg" 
   },
   {
@@ -111,15 +58,7 @@
       "MBA",
       "Dip (ICT Education)"
     ],
-    "expertise": [
-      "Project Management",
-      "Business IT",
-      "Digital Transformation"
-    ],
-    "awards": [
-      "Digital Transformation Leader 2020"
-    ],
-    "bio": "Bringing business and IT together, with expertise in project management and digital strategy.",
     "profileImage": "https://randomuser.me/api/portraits/women/68.jpg" 
   }
 ]
+

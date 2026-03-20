@@ -1,109 +1,49 @@
 import React, { useState } from 'react';
+import { useLecturer } from '../providers/LecturerProvider';
+
+// CRUD Modal
+import LecturerCreateModal from '../CRUD_Modals/Lecturer/LecturerCreateModal';
+import LecturerEditModal from '../CRUD_Modals/Lecturer/LecturerEditModal';
 
 function ManageLecturer() {
-  // Mock lecturers data
-  const [lecturers, setLecturers] = useState([
-    {
-      id: 1,
-      name: 'Dr. Sarah Johnson',
-      email: 'sarah.johnson@university.edu',
-      phone: '+1 234 567 890',
-      department: 'Computer Science',
-      specialization: 'Artificial Intelligence',
-      qualifications: 'Ph.D. in Computer Science',
-      courses: 4,
-      status: 'active',
-      joinDate: '2020-08-15',
-      rating: 4.8
-    },
-    {
-      id: 2,
-      name: 'Prof. Michael Chen',
-      email: 'michael.chen@university.edu',
-      phone: '+1 234 567 891',
-      department: 'Engineering',
-      specialization: 'Mechanical Engineering',
-      qualifications: 'Ph.D. in Mechanical Engineering',
-      courses: 3,
-      status: 'active',
-      joinDate: '2019-03-10',
-      rating: 4.9
-    },
-    {
-      id: 3,
-      name: 'Dr. Emily Williams',
-      email: 'emily.williams@university.edu',
-      phone: '+1 234 567 892',
-      department: 'Mathematics',
-      specialization: 'Applied Mathematics',
-      qualifications: 'Ph.D. in Mathematics',
-      courses: 5,
-      status: 'active',
-      joinDate: '2021-01-20',
-      rating: 4.7
-    },
-    {
-      id: 4,
-      name: 'Prof. David Brown',
-      email: 'david.brown@university.edu',
-      phone: '+1 234 567 893',
-      department: 'Physics',
-      specialization: 'Quantum Physics',
-      qualifications: 'Ph.D. in Physics',
-      courses: 3,
-      status: 'inactive',
-      joinDate: '2018-11-05',
-      rating: 4.6
-    },
-    {
-      id: 5,
-      name: 'Dr. Lisa Anderson',
-      email: 'lisa.anderson@university.edu',
-      phone: '+1 234 567 894',
-      department: 'Computer Science',
-      specialization: 'Data Science',
-      qualifications: 'Ph.D. in Data Science',
-      courses: 4,
-      status: 'active',
-      joinDate: '2022-02-28',
-      rating: 4.5
-    }
-  ]);
+
+  const { lecturers, lecturerLoading, lecturerError } = useLecturer();
+
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createErr, setCreateErr] = useState(null);
 
   // State for search and filters
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterDepartment, setFilterDepartment] = useState('all');
-  const [filterStatus, setFilterStatus] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedLecturer, setSelectedLecturer] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
 
+  // statis
+
+  const totalLecturer = lecturers?.length || 0;
+  const PHDs =lecturers.degrees.includes("PHD");
+  const MSCs =lecturers.degrees.includes("MSC");
+  const BSCs =lecturers.degrees.includes("BSC");
+
   // Form state for new lecturer
   const [newLecturer, setNewLecturer] = useState({
     name: '',
-    email: '',
-    phone: '',
-    department: '',
-    specialization: '',
-    qualifications: '',
-    status: 'active'
+    positions:'',
+    degrees:[],
+    profileImage:''
   });
 
   // Departments list for filter
   const departments = ['Computer Science', 'Engineering', 'Mathematics', 'Physics', 'Chemistry', 'Biology'];
 
   // Filter lecturers based on search and filters
-  const filteredLecturers = lecturers.filter(lecturer => {
-    const matchesSearch = lecturer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lecturer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lecturer.department.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesDepartment = filterDepartment === 'all' || lecturer.department === filterDepartment;
-    const matchesStatus = filterStatus === 'all' || lecturer.status === filterStatus;
-    
-    return matchesSearch && matchesDepartment && matchesStatus;
+  const filteredLecturers = lecturers?.filter(lecturer => {
+    const matchesSearch =
+      lecturer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lecturer.positions.join(' ').toLowerCase().includes(searchTerm.toLowerCase())
+    return matchesSearch;
   });
 
   // Handle delete lecturer
@@ -119,12 +59,9 @@ function ManageLecturer() {
     setShowAddModal(false);
     setNewLecturer({
       name: '',
-      email: '',
-      phone: '',
-      department: '',
-      specialization: '',
-      qualifications: '',
-      status: 'active'
+      positions:'',
+      degrees:[],
+      profileImage:''
     });
   };
 
@@ -135,6 +72,11 @@ function ManageLecturer() {
     ));
     setShowEditModal(false);
     setSelectedLecturer(null);
+  };
+
+  const resetForm = () => {
+      setShowAddModal(false);
+      setCreateErr(null);
   };
 
   return (
@@ -148,17 +90,17 @@ function ManageLecturer() {
         <div className="flex gap-3">
           <button 
             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >
-            <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'grid'} text-gray-600`}></i>
+            <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'th-large'} text-gray-600`}></i>
           </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
             <i className="fas fa-download text-gray-600 mr-2"></i>
             Export
           </button>
           <button 
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium"
+            className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium cursor-pointer"
           >
             <i className="fas fa-plus mr-2"></i>
             Add Lecturer
@@ -172,7 +114,7 @@ function ManageLecturer() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Lecturers</p>
-              <p className="text-2xl font-bold text-gray-900">{lecturers.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{lecturers?.length}</p>
             </div>
             <div className="bg-blue-50 p-3 rounded-lg">
               <i className="fas fa-chalkboard-teacher text-blue-600 text-xl"></i>
@@ -183,7 +125,9 @@ function ManageLecturer() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Active</p>
-              <p className="text-2xl font-bold text-green-600">{lecturers.filter(l => l.status === 'active').length}</p>
+              <p className="text-2xl font-bold text-green-600">
+                {/* {lecturers?.filter(l => l.positions.includes('Lecturer')).length} */}
+              </p>            
             </div>
             <div className="bg-green-50 p-3 rounded-lg">
               <i className="fas fa-check-circle text-green-600 text-xl"></i>
@@ -194,7 +138,7 @@ function ManageLecturer() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Inactive</p>
-              <p className="text-2xl font-bold text-red-600">{lecturers.filter(l => l.status === 'inactive').length}</p>
+              {/* <p className="text-2xl font-bold text-red-600">{lecturers.filter(l => l.status === 'inactive').length}</p> */}
             </div>
             <div className="bg-red-50 p-3 rounded-lg">
               <i className="fas fa-times-circle text-red-600 text-xl"></i>
@@ -205,7 +149,9 @@ function ManageLecturer() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Departments</p>
-              <p className="text-2xl font-bold text-gray-900">{new Set(lecturers.map(l => l.department)).size}</p>
+              <p className="text-sm text-gray-600">
+                {/* {lecturers?.positions.join(', ')} */}
+              </p>
             </div>
             <div className="bg-purple-50 p-3 rounded-lg">
               <i className="fas fa-building text-purple-600 text-xl"></i>
@@ -230,7 +176,7 @@ function ManageLecturer() {
           <div className="flex gap-3">
             <div className="relative">
               <select
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
                 value={filterDepartment}
                 onChange={(e) => setFilterDepartment(e.target.value)}
               >
@@ -243,7 +189,7 @@ function ManageLecturer() {
             </div>
             <div className="relative">
               <select
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -260,8 +206,8 @@ function ManageLecturer() {
       {/* Lecturers Grid/List View */}
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLecturers.map(lecturer => (
-            <div key={lecturer.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+          {filteredLecturers?.map((lecturer,id) => (
+            <div key={id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
@@ -313,7 +259,7 @@ function ManageLecturer() {
                         setSelectedLecturer(lecturer);
                         setShowEditModal(true);
                       }}
-                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors cursor-pointer"
                     >
                       <i className="fas fa-edit"></i>
                     </button>
@@ -322,7 +268,7 @@ function ManageLecturer() {
                         setSelectedLecturer(lecturer);
                         setShowDeleteModal(true);
                       }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                     >
                       <i className="fas fa-trash"></i>
                     </button>
@@ -346,8 +292,8 @@ function ManageLecturer() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredLecturers.map(lecturer => (
-                <tr key={lecturer.id} className="hover:bg-gray-50">
+              {filteredLecturers?.map((lecturer, id) => (
+                <tr key={id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-[#FFC53A] to-[#e6b234] rounded-full flex items-center justify-center text-white font-semibold text-sm">
@@ -374,7 +320,7 @@ function ManageLecturer() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
-                      <button className="text-blue-600 hover:text-blue-800">
+                      <button className="text-blue-600 hover:text-blue-800 cursor-pointer">
                         <i className="fas fa-eye"></i>
                       </button>
                       <button 
@@ -382,7 +328,7 @@ function ManageLecturer() {
                           setSelectedLecturer(lecturer);
                           setShowEditModal(true);
                         }}
-                        className="text-green-600 hover:text-green-800"
+                        className="text-green-600 hover:text-green-800 cursor-pointer"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
@@ -391,7 +337,7 @@ function ManageLecturer() {
                           setSelectedLecturer(lecturer);
                           setShowDeleteModal(true);
                         }}
-                        className="text-red-600 hover:text-red-800"
+                        className="text-red-600 hover:text-red-800 cursor-pointer"
                       >
                         <i className="fas fa-trash"></i>
                       </button>
@@ -404,202 +350,30 @@ function ManageLecturer() {
         </div>
       )}
 
-      {/* Add Lecturer Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-full max-w-2xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Add New Lecturer</h2>
-              <button onClick={() => setShowAddModal(false)} className="text-gray-500 hover:text-gray-700">
-                <i className="fas fa-times text-xl"></i>
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.name}
-                  onChange={(e) => setNewLecturer({...newLecturer, name: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input
-                  type="email"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.email}
-                  onChange={(e) => setNewLecturer({...newLecturer, email: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.phone}
-                  onChange={(e) => setNewLecturer({...newLecturer, phone: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.department}
-                  onChange={(e) => setNewLecturer({...newLecturer, department: e.target.value})}
-                >
-                  <option value="">Select Department</option>
-                  {departments.map(dept => (
-                    <option key={dept} value={dept}>{dept}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.specialization}
-                  onChange={(e) => setNewLecturer({...newLecturer, specialization: e.target.value})}
-                />
-              </div>
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Qualifications</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.qualifications}
-                  onChange={(e) => setNewLecturer({...newLecturer, qualifications: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={newLecturer.status}
-                  onChange={(e) => setNewLecturer({...newLecturer, status: e.target.value})}
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-            </div>
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddLecturer}
-                className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234]"
-              >
-                Add Lecturer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Edit Lecturer Modal */}
-      {showEditModal && selectedLecturer && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-full max-w-2xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Edit Lecturer</h2>
-              <button onClick={() => setShowEditModal(false)} className="text-gray-500 hover:text-gray-700">
-                <i className="fas fa-times text-xl"></i>
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.name}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, name: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input
-                  type="email"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.email}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, email: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.phone}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, phone: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.department}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, department: e.target.value})}
-                >
-                  {departments.map(dept => (
-                    <option key={dept} value={dept}>{dept}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.specialization}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, specialization: e.target.value})}
-                />
-              </div>
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Qualifications</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.qualifications}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, qualifications: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                  value={selectedLecturer.status}
-                  onChange={(e) => setSelectedLecturer({...selectedLecturer, status: e.target.value})}
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-            </div>
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleEditLecturer}
-                className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234]"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <LecturerCreateModal
+        show={showAddModal}
+        onClose={resetForm}
+        onSubmit={handleAddLecturer}
+        createLoading={createLoading}
+        createErr={createErr}
+        newLecturer={newLecturer}
+        handleAddLecturer={handleAddLecturer}
+      />
+
+      <LecturerEditModal 
+        show={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+        }}
+        onSubmit={handleEditLecturer}
+        createLoading={createLoading}
+        createErr={createErr}
+        newLecturer={newLecturer}
+        handleEditLecturer={handleEditLecturer}
+        selectedLecturer={selectedLecturer}
+      />
+
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && selectedLecturer && (
@@ -631,6 +405,7 @@ function ManageLecturer() {
           </div>
         </div>
       )}
+
     </div>
   );
 }
