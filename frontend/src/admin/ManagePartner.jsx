@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePartner } from '../providers/PartnerProvider';
 
 import { createPartner } from '../CRUD_handlers/Partner/createPartner';
+import SearchNotFound from '../components/SearchNotFound';
 
 function ManagePartner() {
   const { partners, partnerLoading, partnerError } = usePartner();
@@ -294,11 +295,7 @@ function ManagePartner() {
 
       {/* No Results Message */}
       {filteredPartners.length === 0 && (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-100">
-          <i className="fas fa-search text-4xl text-gray-400 mb-3"></i>
-          <h3 className="text-lg font-medium text-gray-900 mb-1">No partners found</h3>
-          <p className="text-gray-500">Try adjusting your search or filter criteria</p>
-        </div>
+        <SearchNotFound searchType={"partner"}/>
       )}
 
       {/* Partners Grid/List View */}
@@ -405,7 +402,7 @@ function ManagePartner() {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>

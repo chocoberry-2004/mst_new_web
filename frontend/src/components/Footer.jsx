@@ -185,7 +185,7 @@ function Footer() {
                 {new Date().getFullYear()} M.S.T College. All rights reserved.
               </p>
               <div className="flex gap-6 text-sm">
-                <NavLink to={"/privacy-policy"}>
+                <NavLink to={"/privacy-policy"} >
                 <p className="text-[#B8B8CC] hover:text-[var(--accent-yellow)] transition-colors">
                   <i className="fas fa-shield-alt mr-1"></i>
                   Privacy Policy

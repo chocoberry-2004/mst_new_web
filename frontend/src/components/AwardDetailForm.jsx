@@ -5,6 +5,7 @@ import { AppContext } from '../providers/AppContextProvider';
 function AwardDetailForm() {
   const { showAwardDetail, setShowAwardDetail, AwardDetailHandler } = useContext(AppContext);
   const [awardDetail, setAwardDetail] = useState(null);
+  const BASE_URL = "http://localhost:8000";
 
   useEffect(() => {
     const storedAward = localStorage.getItem('award-detail');
@@ -42,7 +43,10 @@ function AwardDetailForm() {
         
         <div className="flex flex-col items-center mb-4 p-4">
           <img 
-            src={awardDetail.image || Award} 
+            src={awardDetail.imageUrl 
+              ? `${BASE_URL}${awardDetail.imageUrl}` 
+              : "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg"
+            }
             alt={awardDetail?.title} 
             className="w-40 h-40 object-cover rounded-lg mb-4 shadow-md" 
           />

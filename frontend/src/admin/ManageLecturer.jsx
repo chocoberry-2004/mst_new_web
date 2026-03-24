@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { useLecturer } from '../providers/LecturerProvider';
 
-// CRUD Modal
+import SearchNotFound from '../components/SearchNotFound';
+import NotFound from '../pages/NotFound';
+import Loading from '../pages/Loading';
+
+// CRUD Handlers
+import { createLecturer } from '../CRUD_handlers/Lecturer/createLecturer';
+
+// CRUD Modals
 import LecturerCreateModal from '../CRUD_Modals/Lecturer/LecturerCreateModal';
 import LecturerEditModal from '../CRUD_Modals/Lecturer/LecturerEditModal';
 
@@ -12,6 +19,9 @@ function ManageLecturer() {
   const [createLoading, setCreateLoading] = useState(false);
   const [createErr, setCreateErr] = useState(null);
 
+  const [profileImage, setProfileImage] = useState(null);
+  const [profilePreview, setProfilePreview] = useState(null);
+
   // State for search and filters
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -21,11 +31,10 @@ function ManageLecturer() {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
 
   // statis
-
   const totalLecturer = lecturers?.length || 0;
-  const PHDs =lecturers.degrees.includes("PHD");
-  const MSCs =lecturers.degrees.includes("MSC");
-  const BSCs =lecturers.degrees.includes("BSC");
+  const PhDs =lecturers?.filter(lecturer => lecturer.degrees.toLowerCase().includes("phd"));
+  const MScs =lecturers?.filter(lecturer => lecturer.degrees.toLowerCase().includes("msc"));
+  const BScs =lecturers?.filter(lecturer => lecturer.degrees.toLowerCase().includes("bsc"));
 
   // Form state for new lecturer
   const [newLecturer, setNewLecturer] = useState({
@@ -35,9 +44,7 @@ function ManageLecturer() {
     profileImage:''
   });
 
-  // Departments list for filter
-  const departments = ['Computer Science', 'Engineering', 'Mathematics', 'Physics', 'Chemistry', 'Biology'];
-
+  
   // Filter lecturers based on search and filters
   const filteredLecturers = lecturers?.filter(lecturer => {
     const matchesSearch =
@@ -48,28 +55,47 @@ function ManageLecturer() {
 
   // Handle delete lecturer
   const handleDelete = (id) => {
-    setLecturers(lecturers.filter(lecturer => lecturer.id !== id));
     setShowDeleteModal(false);
   };
 
   // Handle add lecturer
-  const handleAddLecturer = () => {
-    const newId = lecturers.length + 1;
-    setLecturers([...lecturers, { ...newLecturer, id: newId, courses: 0, rating: 0, joinDate: new Date().toISOString().split('T')[0] }]);
-    setShowAddModal(false);
-    setNewLecturer({
-      name: '',
-      positions:'',
-      degrees:[],
-      profileImage:''
-    });
+  const handleAddLecturer = async () => {
+    try {
+      setCreateLoading(true);
+      console.log(newLecturer);
+      const formData = new FormData();
+
+      // append all fields except imageURL
+      Object.keys(newLecturer).forEach(key => {
+        if (key !== "profileImage" && key !== "_id") {
+          formData.append(key, newLecturer[key]);
+        }
+      });
+
+      // remaining images after deletion
+      formData.append(
+        "profileImage",
+        JSON.stringify(newLecturer.profileImage || '')
+      );
+
+      const response = await createLecturer(formData)
+
+      if(response.success) {
+        setCreateLoading(false);
+        setShowAddModal(false);
+        setCreateErr(null);
+        setNewLecturer(null);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+    
+    
   };
 
   // Handle edit lecturer
   const handleEditLecturer = () => {
-    setLecturers(lecturers.map(lecturer => 
-      lecturer.id === selectedLecturer.id ? selectedLecturer : lecturer
-    ));
     setShowEditModal(false);
     setSelectedLecturer(null);
   };
@@ -78,6 +104,29 @@ function ManageLecturer() {
       setShowAddModal(false);
       setCreateErr(null);
   };
+
+  const handleImage = (file) => {
+    
+    if(file.type.startsWith("image/")) {
+      
+      // Create preview URLs
+      const profilePreviewUrl = URL.createObjectURL(file);
+      setProfilePreview(profilePreviewUrl);
+      setProfileImage(file);
+      setNewLecturer({...newLecturer, profileImage: file})
+      
+    } else {
+      setCreateErr("Please upload only image files");
+    }
+
+  }
+
+  const removeImage = () => {
+    setProfileImage(null)
+    setProfilePreview(null);
+  }
+
+  if(lecturerLoading) return <Loading/>;
 
   return (
     <div className="space-y-6">
@@ -173,25 +222,26 @@ function ManageLecturer() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
           <div className="flex gap-3">
             <div className="relative">
               <select
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
-                value={filterDepartment}
-                onChange={(e) => setFilterDepartment(e.target.value)}
+                // value={filterDepartment}
+                // onChange={(e) => setFilterDepartment(e.target.value)}
               >
                 <option value="all">All Departments</option>
-                {departments.map(dept => (
+                {/* {departments.map(dept => (
                   <option key={dept} value={dept}>{dept}</option>
-                ))}
+                ))} */}
               </select>
               <i className="fas fa-filter absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
             <div className="relative">
               <select
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
+                // value={filterStatus}
+                // onChange={(e) => setFilterStatus(e.target.value)}
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
@@ -200,127 +250,63 @@ function ManageLecturer() {
               <i className="fas fa-flag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
           </div>
+          
         </div>
       </div>
 
-      {/* Lecturers Grid/List View */}
-      {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLecturers?.map((lecturer,id) => (
-            <div key={id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#FFC53A] to-[#e6b234] rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      {lecturer.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{lecturer.name}</h3>
-                      <p className="text-sm text-gray-600">{lecturer.department}</p>
-                    </div>
-                  </div>
-                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    lecturer.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    {lecturer.status}
-                  </span>
-                </div>
 
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <i className="fas fa-envelope w-4 text-gray-400"></i>
-                    <span>{lecturer.email}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <i className="fas fa-phone w-4 text-gray-400"></i>
-                    <span>{lecturer.phone}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <i className="fas fa-graduation-cap w-4 text-gray-400"></i>
-                    <span>{lecturer.specialization}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <i className="fas fa-book-open w-4 text-gray-400"></i>
-                    <span>{lecturer.courses} Courses</span>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    <i className="fas fa-star text-yellow-400"></i>
-                    <span className="text-sm font-medium">{lecturer.rating}</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                      <i className="fas fa-eye"></i>
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setSelectedLecturer(lecturer);
-                        setShowEditModal(true);
-                      }}
-                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setSelectedLecturer(lecturer);
-                        setShowDeleteModal(true);
-                      }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lecturer</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Courses</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {filteredLecturers?.map((lecturer, id) => (
-                <tr key={id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#FFC53A] to-[#e6b234] rounded-full flex items-center justify-center text-white font-semibold text-sm">
+      {
+        totalLecturer=== 0 ? (
+          <SearchNotFound searchType={'lecturer'}/>
+        ) : (
+          viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredLecturers?.map((lecturer,id) => (
+              <div key={id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                <div className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#FFC53A] to-[#e6b234] rounded-full flex items-center justify-center text-white font-bold text-xl">
                         {lecturer.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">{lecturer.name}</div>
-                        <div className="text-sm text-gray-500">{lecturer.specialization}</div>
+                        <h3 className="font-semibold text-gray-900">{lecturer.name}</h3>
+                        <p className="text-sm text-gray-600">{lecturer.department}</p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{lecturer.department}</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{lecturer.email}</div>
-                    <div className="text-sm text-gray-500">{lecturer.phone}</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{lecturer.courses}</td>
-                  <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                       lecturer.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
                       {lecturer.status}
                     </span>
-                  </td>
-                  <td className="px-6 py-4">
+                  </div>
+
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <i className="fas fa-envelope w-4 text-gray-400"></i>
+                      <span>{lecturer.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <i className="fas fa-phone w-4 text-gray-400"></i>
+                      <span>{lecturer.phone}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <i className="fas fa-graduation-cap w-4 text-gray-400"></i>
+                      <span>{lecturer.specialization}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <i className="fas fa-book-open w-4 text-gray-400"></i>
+                      <span>{lecturer.courses} Courses</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <i className="fas fa-star text-yellow-400"></i>
+                      <span className="text-sm font-medium">{lecturer.rating}</span>
+                    </div>
                     <div className="flex gap-2">
-                      <button className="text-blue-600 hover:text-blue-800 cursor-pointer">
+                      <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                         <i className="fas fa-eye"></i>
                       </button>
                       <button 
@@ -328,7 +314,7 @@ function ManageLecturer() {
                           setSelectedLecturer(lecturer);
                           setShowEditModal(true);
                         }}
-                        className="text-green-600 hover:text-green-800 cursor-pointer"
+                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors cursor-pointer"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
@@ -337,18 +323,91 @@ function ManageLecturer() {
                           setSelectedLecturer(lecturer);
                           setShowDeleteModal(true);
                         }}
-                        className="text-red-600 hover:text-red-800 cursor-pointer"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                       >
                         <i className="fas fa-trash"></i>
                       </button>
                     </div>
-                  </td>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lecturer</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Courses</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredLecturers?.map((lecturer, id) => (
+                  <tr key={id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-[#FFC53A] to-[#e6b234] rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                          {lecturer.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-900">{lecturer.name}</div>
+                          <div className="text-sm text-gray-500">{lecturer.specialization}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{lecturer.department}</td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900">{lecturer.email}</div>
+                      <div className="text-sm text-gray-500">{lecturer.phone}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{lecturer.courses}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        lecturer.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {lecturer.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <button className="text-blue-600 hover:text-blue-800 cursor-pointer">
+                          <i className="fas fa-eye"></i>
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setSelectedLecturer(lecturer);
+                            setShowEditModal(true);
+                          }}
+                          className="text-green-600 hover:text-green-800 cursor-pointer"
+                        >
+                          <i className="fas fa-edit"></i>
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setSelectedLecturer(lecturer);
+                            setShowDeleteModal(true);
+                          }}
+                          className="text-red-600 hover:text-red-800 cursor-pointer"
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+        )
+
+      }
+     
 
 
       <LecturerCreateModal
@@ -358,7 +417,11 @@ function ManageLecturer() {
         createLoading={createLoading}
         createErr={createErr}
         newLecturer={newLecturer}
+        setNewLecturer={setNewLecturer}
         handleAddLecturer={handleAddLecturer}
+        handleImage = {handleImage}
+        profilePreview = {profilePreview}
+        removeImage={removeImage}
       />
 
       <LecturerEditModal 

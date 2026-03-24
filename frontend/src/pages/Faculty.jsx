@@ -19,7 +19,7 @@ function Faculty() {
   const { facultyList, facultyLoading, facultyError } = useFaculty();
 
   if (facultyLoading || lecturerLoading) return <Loading/>;
-  if (facultyError || lecturerError) return <NotFound/>;
+  // if (facultyError || lecturerError) return <NotFound/>;
 
   const faculty = facultyList?.faculty;
 

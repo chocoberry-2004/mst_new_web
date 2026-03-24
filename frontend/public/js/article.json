@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "title": "Top 5 Programming Languages Every IT Student Should Learn in 2026",
+    "category": "Technology",
+    "date": "2026-03-20",
+    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    "summary": "A quick guide to the most in-demand programming languages for IT students.",
+    "content": "In today's fast-evolving tech world, choosing the right programming language is crucial. Languages like Python, JavaScript, and Go are dominating the industry due to their flexibility and demand...",
+    "author_id": "A1",
+    "author_name": "Dr. John Smith",
+    "author_profileImage": "https://randomuser.me/api/portraits/men/32.jpg",
+    "views": 1200,
+    "likes": 230,
+    "commentsCount": 12,
+    "isFeatured": true
+  },
+  {
+    "id": "2",
+    "title": "How AI is Transforming the Future of Education",
+    "category": "Artificial Intelligence",
+    "date": "2026-03-18",
+    "image": "https://images.unsplash.com/photo-1507146426996-ef05306b995a",
+    "summary": "Explore how artificial intelligence is reshaping modern classrooms.",
+    "content": "Artificial Intelligence is no longer a futuristic concept. In education, AI helps personalize learning, automate grading, and provide real-time feedback...",
+    "author_id": "A2",
+    "author_name": "Prof. Emily Davis",
+    "author_profileImage": "https://randomuser.me/api/portraits/women/44.jpg",
+    "views": 980,
+    "likes": 150,
+    "commentsCount": 8,
+    "isFeatured": false
+  },
+  {
+    "id": "3",
+    "title": "A Beginner’s Guide to Cybersecurity",
+    "category": "Cybersecurity",
+    "date": "2026-03-15",
+    "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87",
+    "summary": "Learn the basics of protecting systems and data from cyber threats.",
+    "content": "Cybersecurity is one of the fastest-growing fields in IT. Understanding concepts like encryption, firewalls, and ethical hacking is essential for beginners...",
+    "author_id": "A3",
+    "author_name": "Mr. David Lee",
+    "author_profileImage": "https://randomuser.me/api/portraits/men/65.jpg",
+    "views": 1500,
+    "likes": 310,
+    "commentsCount": 20,
+    "isFeatured": true
+  }
+]

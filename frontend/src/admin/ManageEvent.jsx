@@ -15,6 +15,7 @@ import EventCreateModal from '../CRUD_Modals/Event/EventCreateModal';
 import EventViewModal from '../CRUD_Modals/Event/EventViewModal';
 import EventEditModal from '../CRUD_Modals/Event/EventEditModal';
 import EventDeleteModal from '../CRUD_Modals/Event/EventDeleteModal';
+import SearchNotFound from '../components/SearchNotFound';
 
 function ManageEvent() {
   const { events, eventType, loading, error } = useEventContext();
@@ -90,6 +91,8 @@ function ManageEvent() {
   const handleDelete = async (id) => {
     try {
       const response = await deleteEvent(id);
+
+      console.log(response);
 
       if (response.success) {
         setEventList(eventList.filter(event => event._id !== id));
@@ -447,8 +450,13 @@ function ManageEvent() {
         </div>
       </div>
 
-      {/* Events Grid/List View */}
-      {viewMode === 'grid' ? (
+      {
+
+        totalEvents === 0 ? (
+          <SearchNotFound searchType={'event'}/>
+        ) : (
+
+      viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEvents?.map(event => (
             <div key={event._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
@@ -540,7 +548,7 @@ function ManageEvent() {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
@@ -629,7 +637,11 @@ function ManageEvent() {
             </tbody>
           </table>
         </div>
-      )}
+      )
+        )
+      }
+
+      
 
       <EventCreateModal
         show={showAddModal}
