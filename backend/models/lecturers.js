@@ -10,23 +10,21 @@ const lecturerSchema = new mongoose.Schema(
       type: String,
       default: "Teacher",
     },
-    degree: {
-      type: String,
-      default: "B.Sc",
-    },
+    degree: [
+      {
+        type: String
+      }
+    ],
     expertise: {
       type: String,
       default: "Teaching",
     },
-    award: {
-      type: String,
-      default: "Best",
-    },
-    bio: {
-      type: String,
-      default: "Bio",
-    },
     profileImageURL: String,
+    city: {
+      type: String,
+      enum: ["Yangon", "Mandalay"],
+      default: "Yangon"
+    }
   },
   { timestamps: true },
 );
