@@ -19,6 +19,24 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+        const mediaQuery = window.matchMedia("(min-width: 1024px)");
+  
+        const handleBreakpointChange = (e) => {
+          if (e.matches) {
+            // switched to large screen
+            setMenuOpen(false);
+          }
+        };
+  
+        mediaQuery.addEventListener("change", handleBreakpointChange);
+  
+        return () => {
+          mediaQuery.removeEventListener("change", handleBreakpointChange);
+        };
+      }, []);
+  
+
   return (
     <>
       {/* HEADER */}

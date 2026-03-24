@@ -37,13 +37,15 @@ function About() {
   );
 
   const findAward = (id) => {
-    const award = awards?.find((award) => award.id === id);
+    const award = awards?.find((award) => award._id === id);
 
     if (award) {
       localStorage.setItem("award-detail", JSON.stringify(award));
       AwardDetailHandler();
     }
   };
+
+  const BASE_URL = "http://localhost:8000";
 
   if(awardLoading || timeLineLoading || lecturerLoading) return <Loading/>
 
@@ -247,7 +249,14 @@ function About() {
             {awards?.map((achievement, index) => (
               <div key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex-col justify-between h-full">
                 <div className={`mx-auto mb-4 rounded-xl bg-gradient-to-r flex items-center justify-center`}>
-                  <img src={Award} alt={achievement?.title} className='w-30 h-30' />
+                  <img 
+                 
+                  src={achievement?.imageUrl
+                    ? `${BASE_URL}${achievement?.imageUrl}` 
+                    : "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg"
+                  }
+                  alt={achievement?.title} 
+                  className='w-30 h-30' />
                 </div>
 
                 <div className="text-center">
@@ -257,7 +266,7 @@ function About() {
 
                 <div className="mt-4 flex justify-center">
                   <button 
-                  onClick={() => findAward(achievement.id)} 
+                  onClick={() => findAward(achievement._id)} 
                   // onClick={() => AwardDetailHandler()} 
                   className='py-2 px-5 bg-white border-2 border-[var(--primary-dark)]  rounded-xl text-[var(--primary-dark)] cursor-pointer hover:bg-[var(--primary-dark)] hover:text-white'>
                     View Details

@@ -8,11 +8,16 @@ import ApplicationForm from "../components/ApplicationForm";
 import { AppContext } from "../providers/AppContextProvider";
 import { useContext } from "react";
 import Loading from "./Loading";
+import SearchNotFound from '../components/SearchNotFound';
+import { useArticle } from '../providers/Article';
 
 function Article() {
 
-  // if (courseLoading) return <Loading/>;
-  
+  const { articles, articlesLoading, articlesErr } = useArticle();
+
+  if (articlesLoading) return <Loading/>;
+  if (articlesErr) return <SearchNotFound searchType={'article'}/>;
+    
   return (
     <div>
       
@@ -104,54 +109,62 @@ function Article() {
             {/* News Feed */}
             <main className="md:col-span-2 space-y-6">
 
-              {/* Article Card */}
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
-                <img
-                  src="/images/article1.jpg"
-                  alt=""
-                  className="w-full h-48 object-cover"
-                />
+              {
+                articles?.map((article) => (
+                  <div
+                    key={article.id}
+                    className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition"
+                  >
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-48 object-cover"
+                    />
 
-                <div className="p-5">
-                  <h3 className="text-xl font-semibold mb-2 text-[var(--primary-dark)]">
-                    Introduction to Artificial Intelligence
-                  </h3>
+                    <div className="p-5">
+                      {/* Category + Date */}
+                      <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
+                        <span>{article.category}</span>
+                        <span>{article.date}</span>
+                      </div>
 
-                  <p className="text-gray-600 text-sm mb-3">
-                    Learn the fundamentals of artificial intelligence and how it is
-                    transforming modern technology.
-                  </p>
+                      {/* Title */}
+                      <h3 className="text-xl font-semibold mb-2 text-[var(--primary-dark)]">
+                        {article.title}
+                      </h3>
 
-                  <button className="text-sm font-medium text-[var(--primary-dark)] hover:underline">
-                    Read More →
-                  </button>
-                </div>
-              </div>
+                      {/* Summary */}
+                      <p className="text-gray-600 text-sm mb-3">
+                        {article.summary}
+                      </p>
 
-              {/* Article Card */}
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition">
-                <img
-                  src="/images/article2.jpg"
-                  alt=""
-                  className="w-full h-48 object-cover"
-                />
+                      {/* Author */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <img
+                          src={article.author_profileImage}
+                          alt={article.author_name}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                        <span className="text-sm text-gray-700">
+                          {article.author_name}
+                        </span>
+                      </div>
 
-                <div className="p-5">
-                  <h3 className="text-xl font-semibold mb-2 text-[var(--primary-dark)]">
-                    Cyber Security Best Practices
-                  </h3>
+                      {/* Stats */}
+                      <div className="flex justify-between text-xs text-gray-500 mb-3">
+                        <span>👁 {article.views}</span>
+                        <span>❤️ {article.likes}</span>
+                        <span>💬 {article.commentsCount}</span>
+                      </div>
 
-                  <p className="text-gray-600 text-sm mb-3">
-                    Protect your systems and applications by understanding common
-                    security vulnerabilities.
-                  </p>
-
-                  <button className="text-sm font-medium text-[var(--primary-dark)] hover:underline">
-                    Read More →
-                  </button>
-                </div>
-              </div>
-
+                      {/* Button */}
+                      <button className="text-sm font-medium text-[var(--primary-dark)] hover:underline">
+                        Read More →
+                      </button>
+                    </div>
+                  </div>
+                ))
+              }
             </main>
 
             {/* Profile / User Panel */}

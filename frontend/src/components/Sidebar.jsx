@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Mst_logo from "../assets/images/mst_logo1.png";
 import { useEventContext } from '../providers/EventProvider';
+import { AppContext } from "../providers/AppContextProvider";
 
 function Sidebar({ isOpen, onClose }) {
   const [isEventsOpen, setIsEventsOpen] = useState(false);
   const { events, eventType, loading, error } = useEventContext();
+  const {showSidebar, setShowSidebar, sideBarHandler} = useContext(AppContext);
   const dropdownRef = useRef(null);
   const location = useLocation();
 

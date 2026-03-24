@@ -6,7 +6,7 @@ const LecturerContext = createContext();
 
 // Fetch function
 const fetchLecturer = async () => {
-  const response = await fetch("/js/lecturer.json");
+  const response = await fetch(`${apiUrl}/lecturers/`);
   if (!response.ok) throw new Error("Failed to fetch lecturers");
   return response.json();
 };
