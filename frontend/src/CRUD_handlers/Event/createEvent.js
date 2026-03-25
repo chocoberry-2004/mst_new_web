@@ -16,13 +16,7 @@ export const createEvent = async (eventData) => {
             eventData.imageFiles.forEach(file => {
                 formData.append("imageURL", file);
             });
-            // console.log(`Appended ${eventData.imageFiles.length} images`);
         }
-
-        // Debug log
-        // for (let pair of formData.entries()) {
-        //     console.log(pair[0] + ': ' + (pair[0] === 'imageURL' ? 'File object' : pair[1]));
-        // }
 
         const requestEvent = await fetch(`${import.meta.env.VITE_API_URL}/events`, {
             method: 'POST',
