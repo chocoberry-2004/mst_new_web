@@ -171,6 +171,7 @@ function Faculty() {
                   ))}
                 </p>
 
+                {/* expertise */}
                 <div className="flex flex-wrap gap-2 justify-center mt-2">
                   {/* {lecturer?.expertise?.map((skill, i) => (
                     <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
