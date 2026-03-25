@@ -6,7 +6,7 @@ export const createLecturer = async (req, res) => {
     const data = { ...req.body };
 
     if (req.file) {
-      data.profileImageURL = `/uploads/lecturers/${req.file.filename}`;
+      data.profileImageURL = `uploads/lecturers/${req.file.filename}`;
     }
 
     const newLecturer = new Lecturer(data);
@@ -32,7 +32,7 @@ export const updateLecturer = async (req, res) => {
   try {
     const data = { ...req.body };
     if (req.file) {
-      data.profileImageURL = `/uploads/lecturers/${req.file.filename}`;
+      data.profileImageURL = `uploads/lecturers/${req.file.filename}`;
     }
 
     const updated = await Lecturer.findByIdAndUpdate(req.params.id, data, {

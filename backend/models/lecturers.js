@@ -6,19 +6,21 @@ const lecturerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    position: {
-      type: String,
-      default: "Teacher",
-    },
+    position: [
+      {
+        type: String
+      }
+    ],
     degree: [
       {
         type: String
       }
     ],
-    expertise: {
-      type: String,
-      default: "Teaching",
-    },
+    expertise: [
+      {
+        type: String
+      }
+    ],
     profileImageURL: String,
     city: {
       type: String,

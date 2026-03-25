@@ -12,9 +12,9 @@ const router = express.Router();
 router.get("/", getLecturers);
 
 // Use .single('image') to match the field name from your frontend form
-router.post("/", lecturerUpload.single("image"), createLecturer);
+router.post("/", lecturerUpload.single("profileImageURL"), createLecturer);
 
-router.put("/:id", lecturerUpload.single("image"), updateLecturer);
+router.put("/:id", lecturerUpload.single("profileImageURL"), updateLecturer);
 
 router.delete("/:id", deleteLecturer);
 
