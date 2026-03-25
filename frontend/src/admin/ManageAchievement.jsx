@@ -11,6 +11,8 @@ function ManageAchievement() {
   const { awards, awardLoading, awardErr } = useAchievement();
   const [achievements, setAchievements] = useState([]);
 
+  console.log(awards);
+
   const placeholderImg = "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg";
 
   useEffect(() => {

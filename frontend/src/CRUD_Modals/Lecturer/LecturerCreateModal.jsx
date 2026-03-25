@@ -23,12 +23,19 @@ function LecturerCreateModal({
                     ...prev,
                     position: ['']
                 }));
-                }
+            }
 
-                if (!newLecturer.degree || newLecturer.degree.length === 0) {
+            if (!newLecturer.degree || newLecturer.degree.length === 0) {
                 setNewLecturer(prev => ({
                     ...prev,
                     degree: ['']
+                }));                
+            }
+
+            if (!newLecturer.expertise || newLecturer.expertise.length === 0) {
+                setNewLecturer(prev => ({
+                    ...prev,
+                    expertise: ['']
                 }));
             }
         }
@@ -133,69 +140,85 @@ function LecturerCreateModal({
                     }}>
                         <div className="space-y-4">
 
-                            <div className="">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Profile Image
-                                </label>
+                            <div className="grid grid-cols-2 gap-4 mb-10">
+                                <div className="">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Profile Image
+                                    </label>
 
-                                <div className="relative w-full h-44 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#FFC53A] transition cursor-pointer group overflow-hidden">
+                                    <div className="relative w-full h-full border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#FFC53A] transition cursor-pointer group overflow-hidden">
 
-                                    {/* Preview (if image selected) */}
-                                    {profilePreview ? (
-                                        <>
-                                            <img
-                                                src={profilePreview}
-                                                alt="preview"
-                                                className="absolute inset-0 w-full h-full object-cover"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    removeImage();
-                                                }}
-                                                className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full cursor-pointer hover:bg-red-600 transition z-10"
-                                            >
-                                                <i className="fas fa-times text-md leading-none"></i>
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="text-4xl text-gray-400 group-hover:scale-110 transition">
-                                                <i className="fa-solid fa-cloud-arrow-up"></i>
-                                            </div>
-                                            <p className="text-sm text-gray-500 mt-2">
-                                                Click or drag image to upload
-                                            </p>
-                                            <p className="text-xs text-gray-400">
-                                                PNG, JPG (Max 2MB)
-                                            </p>
-                                        </>
-                                    )}
+                                        {/* Preview (if image selected) */}
+                                        {profilePreview ? (
+                                            <>
+                                                <img
+                                                    src={profilePreview}
+                                                    alt="preview"
+                                                    className="absolute inset-0 w-44 h-full object-cover"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        removeImage();
+                                                    }}
+                                                    className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full cursor-pointer hover:bg-red-600 transition z-10"
+                                                >
+                                                    <i className="fas fa-times text-md leading-none"></i>
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="text-4xl text-gray-400 group-hover:scale-110 transition">
+                                                    <i className="fa-solid fa-cloud-arrow-up"></i>
+                                                </div>
+                                                <p className="text-sm text-gray-500 mt-2">
+                                                    Click or drag image to upload
+                                                </p>
+                                                <p className="text-xs text-gray-400">
+                                                    PNG, JPG (Max 2MB)
+                                                </p>
+                                            </>
+                                        )}
 
-                                    {/* Hidden Input */}
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="absolute inset-0 opacity-0 cursor-pointer"
-                                        onChange={(e) => {
-                                            if (e.target.files && e.target.files[0]) {
-                                                handleImage(e.target.files[0]);
-                                            }
-                                        }}
-                                    />
+                                        {/* Hidden Input */}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            onChange={(e) => {
+                                                if (e.target.files && e.target.files[0]) {
+                                                    handleImage(e.target.files[0]);
+                                                }
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                                <input
-                                    type="text"
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                                    value={newLecturer.name || ''}
-                                    onChange={(e) => setNewLecturer({...newLecturer, name: e.target.value})}
-                                />
+                                <div className="space-y-4">
+                                    <div className="">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
+                                            value={newLecturer.name || ''}
+                                            onChange={(e) => setNewLecturer({...newLecturer, name: e.target.value})}
+                                        />
+                                    </div>
+                                    
+                                    <div className="">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                        <select
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
+                                            value={newLecturer.city || 'Yangon'}
+                                            onChange={(e) => setNewLecturer({...newLecturer, city: e.target.value})}
+                                        >
+                                            <option value="Yangon">Yangon</option>
+                                            <option value="Mandalay">Mandalay</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Positions Section */}
@@ -230,7 +253,7 @@ function LecturerCreateModal({
                                             className='bg-[#FFC53A] px-4 py-2 rounded-lg cursor-pointer hover:bg-[#e6b234] transition flex items-center gap-2'
                                         >
                                             <i className="fas fa-plus text-gray-900"></i>
-                                            <span className="text-gray-900 text-sm">Add Position</span>
+                                            <span className="text-gray-900 text-sm">Add</span>
                                         </button>
                                     </div>
                                 </div>
@@ -268,7 +291,7 @@ function LecturerCreateModal({
                                             className='bg-[#FFC53A] px-4 py-2 rounded-lg cursor-pointer hover:bg-[#e6b234] transition flex items-center gap-2'
                                         >
                                             <i className="fas fa-plus text-gray-900"></i>
-                                            <span className="text-gray-900 text-sm">Add Degree</span>
+                                            <span className="text-gray-900 text-sm">Add</span>
                                         </button>
                                     </div>
                                 </div>
@@ -293,7 +316,7 @@ function LecturerCreateModal({
                                     <button
                                         type="button"
                                         onClick={() => removeExpertise(index)}
-                                        className="bg-red-500 w-8 h-8 rounded-full flex items-center justify-center"
+                                        className="bg-red-500 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
                                     >
                                         <i className="fas fa-times text-white text-sm"></i>
                                     </button>
@@ -305,29 +328,14 @@ function LecturerCreateModal({
                                 <button
                                     type="button"
                                     onClick={moreExpertise}
-                                    className="bg-[#FFC53A] px-4 py-2 rounded-lg flex items-center gap-2"
+                                    className="bg-[#FFC53A] px-4 py-2 rounded-lg flex items-center gap-2 cursor-pointer"
                                 >
                                     <i className="fas fa-plus text-gray-900"></i>
-                                    <span className="text-gray-900 text-sm">Add Expertise</span>
+                                    <span className="text-gray-900 text-sm">Add</span>
                                 </button>
                                 </div>
                             </div>
                             </div>
-
-                            
-                            <div className="">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                                <select
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                                    value={newLecturer.city || 'Yangon'}
-                                    onChange={(e) => setNewLecturer({...newLecturer, city: e.target.value})}
-                                >
-                                    <option value="Yangon">Yangon</option>
-                                    <option value="Mandalay">Mandalay</option>
-                                </select>
-                            </div>
-
-                            
                         </div>
 
                         <div className="flex justify-end gap-3 mt-6">
@@ -355,6 +363,7 @@ function LecturerCreateModal({
                                 )}
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
