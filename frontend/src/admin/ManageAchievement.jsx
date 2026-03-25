@@ -11,7 +11,6 @@ function ManageAchievement() {
   const { awards, awardLoading, awardErr } = useAchievement();
   const [achievements, setAchievements] = useState([]);
 
-  const BASE_URL = "http://localhost:8000";
   const placeholderImg = "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg";
 
   useEffect(() => {
@@ -165,7 +164,7 @@ function ManageAchievement() {
       if (achievement.imageUrl.startsWith('http')) {
         return achievement.imageUrl;
       }
-      return `${BASE_URL}${achievement.imageUrl}`;
+      return `${import.meta.env.VITE_BASE_URL}${achievement.imageUrl}`;
     }
     return placeholderImg;
   };

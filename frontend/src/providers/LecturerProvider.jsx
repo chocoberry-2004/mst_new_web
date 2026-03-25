@@ -33,8 +33,6 @@ function LecturerProvider({ children }) {
     queryClient.invalidateQueries({ queryKey: ["lecturers"] });
   };
 
-  console.log(lecturers, "hhihihi");
-
   return (
     <LecturerContext.Provider
       value={{ lecturers, lecturerLoading, lecturerError, refreshLecturers }}

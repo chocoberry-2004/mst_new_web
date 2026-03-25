@@ -140,8 +140,11 @@ function Faculty() {
                 key={index}
                 className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center border border-gray-200"
               >
+                {
+                  console.log(lecturer)
+                }
                 <img
-                  src={lecturer.profileImage}
+                  src={`${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`}
                   alt={lecturer.name}
                   className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[var(--primary-dark)]"
                 />
@@ -152,36 +155,30 @@ function Faculty() {
 
                 {/* Positions */}
                 <p className="text-sm text-gray-500 mt-1">
-                  {lecturer.positions?.join(", ")}
+                  {/* {lecturer.position?.map((pos, i)=> (
+                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                      {pos}
+                    </span>
+                  ))} */}
                 </p>
 
                 {/* Degrees */}
                 <p className="text-xs text-gray-400 mt-1">
-                  {lecturer.degrees?.join(", ")}
+                  {lecturer.degree?.map((deg,i)=> (
+                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                      {deg}
+                    </span>
+                  ))}
                 </p>
 
+                {/* expertise */}
                 <div className="flex flex-wrap gap-2 justify-center mt-2">
-            {lecturer.expertise?.map((skill, i) => (
-              <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
-                {skill}
-              </span>
-            ))}
-          </div>
-
-                {/* Awards */}
-                {lecturer.awards?.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2 justify-center">
-                    {lecturer.awards.map((award, i) => (
-                      <span
-                        key={i}
-                        className="text-xs text-yellow-700 font-medium border px-2 py-1 rounded-lg bg-yellow-100"
-                      >
-                        {award}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                
+                  {/* {lecturer?.expertise?.map((skill, i) => (
+                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                      {skill}
+                    </span>
+                  ))} */}
+                </div>
               </div>
             ))}
           </div>

@@ -536,8 +536,6 @@ function ManageLecturer() {
   const mandalayCount = lecturers?.filter(l => l.city === 'Mandalay').length || 0;
   const otherCitiesCount = lecturers?.filter(l => l.city && l.city !== 'Yangon' && l.city !== 'Mandalay').length || 0;
 
-  const BASE_URL = "http://localhost:8000";
-
   // Form state for new lecturer
   const [newLecturer, setNewLecturer] = useState({
     name: '',
@@ -1016,7 +1014,7 @@ function ManageLecturer() {
                     <div className="flex items-center gap-4">
                       {lecturer.profileImageURL ? (
                         <img 
-                          src={`${BASE_URL}${lecturer.profileImageURL}`} 
+                          src={`${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`} 
                           alt={lecturer.name}
                           className="w-16 h-16 rounded-full object-cover"
                         />
@@ -1103,7 +1101,7 @@ function ManageLecturer() {
                       <div className="flex items-center gap-3">
                         {lecturer.profileImageURL ? (
                           <img 
-                            src={`${BASE_URL}${lecturer.profileImageURL}`} 
+                            src={`${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`} 
                             alt={lecturer.name}
                             className="w-10 h-10 rounded-full object-cover"
                           />
