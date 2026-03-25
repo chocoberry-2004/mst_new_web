@@ -1,0 +1,57 @@
+[
+  {
+    "_id": "academic",
+    "name": "Academic",
+    "description": "Awards related to academic excellence, high grades, and outstanding performance in coursework and examinations."
+  },
+  {
+    "_id": "technical",
+    "name": "Technical",
+    "description": "Recognition for software development, system design, programming, and other IT-related technical skills."
+  },
+  {
+    "_id": "research",
+    "name": "Research",
+    "description": "Awards for contributions to research, publications, innovation, and advancements in technology or science."
+  },
+  {
+    "_id": "competition",
+    "name": "Competition",
+    "description": "Achievements in local or international competitions such as coding contests, hackathons, and tech challenges."
+  },
+  {
+    "_id": "sports",
+    "name": "Sports",
+    "description": "Awards earned in physical sports activities such as football, basketball, athletics, and other outdoor games."
+  },
+  {
+    "_id": "esports",
+    "name": "E-Sports",
+    "description": "Recognition in competitive video gaming, including tournaments, leagues, and organized gaming events."
+  },
+  {
+    "_id": "leadership",
+    "name": "Leadership",
+    "description": "Awards for leadership roles, student organizations, team management, and initiative-taking within the college."
+  },
+  {
+    "_id": "industry",
+    "name": "Industry",
+    "description": "Recognition from industry partners, internships, collaborations, and real-world project contributions."
+  },
+  {
+    "_id": "community",
+    "name": "Community",
+    "description": "Awards for social impact, volunteering, outreach programs, and contributions to the community."
+  },
+  {
+    "_id": "institutional",
+    "name": "Institutional",
+    "description": "Awards given to the college as a whole for excellence in education, infrastructure, or reputation."
+  },
+  {
+    "_id": "special",
+    "name": "Special",
+    "description": "Special recognitions that do not fall into standard categories, including honorary awards and unique achievements."
+  }
+]

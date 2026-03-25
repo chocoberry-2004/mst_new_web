@@ -1,0 +1,4 @@
+to delete or update lecturer image in local uploads folder on update and delete cases
+
+for achievement category and event cateogry what will you do
+
