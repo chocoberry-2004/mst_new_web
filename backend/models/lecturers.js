@@ -31,3 +31,4 @@ const lecturerSchema = new mongoose.Schema(
 
 const Lecturer = mongoose.model("Lecturer", lecturerSchema);
 export default Lecturer;
+
