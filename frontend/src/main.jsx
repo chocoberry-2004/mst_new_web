@@ -16,7 +16,7 @@ import { TimeLineProvider } from "./providers/TimeLineProvider.jsx";
 import { FAQProvider } from "./providers/FAQprovider.jsx";
 import { PartnerProvider } from "./providers/PartnerProvider.jsx";
 import { CountryProvider } from "./providers/CountryProvider.jsx";
-import { ArticleProvider } from "./providers/Article.jsx";
+import { ArticleProvider } from "./providers/ArticleProvider.jsx";
 
 const queryClient = new QueryClient();
 

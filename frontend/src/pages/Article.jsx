@@ -9,7 +9,7 @@ import { AppContext } from "../providers/AppContextProvider";
 import { useContext } from "react";
 import Loading from "./Loading";
 import SearchNotFound from '../components/SearchNotFound';
-import { useArticle } from '../providers/Article';
+import { useArticle } from '../providers/ArticleProvider';
 
 function Article() {
 

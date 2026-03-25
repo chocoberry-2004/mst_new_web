@@ -8,10 +8,8 @@ import EditAchievementModal from '../CRUD_Modals/Achievement/EditAchievementModa
 import DeleteAchievementModal from '../CRUD_Modals/Achievement/DeleteAchievementModal';
 
 function ManageAchievement() {
-  const { awards, awardLoading, awardErr } = useAchievement();
+  const { awards, awardLoading, awardErr,awardType, awardTypeLoading, awardTypeErr } = useAchievement();
   const [achievements, setAchievements] = useState([]);
-
-  console.log(awards);
 
   const placeholderImg = "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg";
 
@@ -526,7 +524,7 @@ function ManageAchievement() {
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
         onSave={handleAddAchievement}
-        categories={categoriesWithoutAll}
+        categories={awardType}
       />
 
       <EditAchievementModal
@@ -537,7 +535,7 @@ function ManageAchievement() {
         }}
         onSave={handleEditAchievement}
         achievement={selectedAchievement}
-        categories={categoriesWithoutAll}
+        categories={awardType}
       />
 
       <ViewAchievementModal

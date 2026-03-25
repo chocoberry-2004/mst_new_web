@@ -124,8 +124,8 @@ function EditAchievementModal({ isOpen, onClose, onSave, achievement, categories
                 value={formData.category}
                 onChange={(e) => handleChange('category', e.target.value)}
               >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                {categories?.map((category) => (
+                  <option key={category._id} value={category._id}>{category.name}</option>
                 ))}
               </select>
             </div>
