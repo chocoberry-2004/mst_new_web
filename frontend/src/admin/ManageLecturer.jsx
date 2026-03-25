@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useLecturer } from '../providers/LecturerProvider';
 
@@ -50,12 +49,10 @@ function ManageLecturer() {
   // Form state for new lecturer
   const [newLecturer, setNewLecturer] = useState({
     name: '',
-    positions: [], // Changed from 'position' to 'positions' array
-    degrees: [],   // Changed from 'degree' to 'degrees' array
-    expertise: '',
-    city: '',
-    award: '',
-    bio: '',
+    position: [], 
+    degree: [],   
+    expertise: [],
+    city: 'Yangon',
     profileImageURL: ''
   });
 
@@ -74,62 +71,7 @@ function ManageLecturer() {
     });
   }, [lecturers, searchTerm, filterCity]);
 
-  // Handle create lecturer
-  // const handleCreateLecturer = async () => {
-  //   try {
-  //     setCreateLoading(true);
-  //     setCreateErr(null);
-      
-  //     const formData = new FormData();
-      
-  //     // Append all fields
-  //     Object.keys(newLecturer).forEach(key => {
-  //       if (key === 'degrees') {
-  //         // Handle degrees array
-  //         if (Array.isArray(newLecturer.degrees) && newLecturer.degrees.length > 0) {
-  //           newLecturer.degrees.forEach(degree => {
-  //             if (degree.trim()) {
-  //               formData.append('degree[]', degree);
-  //             }
-  //           });
-  //         }
-  //       } else if (key === 'positions') {
-  //         // Handle positions array
-  //         if (Array.isArray(newLecturer.positions) && newLecturer.positions.length > 0) {
-  //           newLecturer.positions.forEach(position => {
-  //             if (position.trim()) {
-  //               formData.append('position[]', position);
-  //             }
-  //           });
-  //         }
-  //       } else if (key !== 'profileImageURL') {
-  //         if (newLecturer[key] && newLecturer[key].toString().trim()) {
-  //           formData.append(key, newLecturer[key]);
-  //         }
-  //       }
-  //     });
-      
-  //     // Append profile image if exists
-  //     if (profileImage) {
-  //       formData.append('profileImage', profileImage);
-  //     }
-      
-  //     const response = await createLecturer(formData);
-      
-  //     if(response.success) {
-  //       await refreshLecturers(); // Refresh the list
-  //       resetForm(); // Close modal and reset form
-  //     } else {
-  //       setCreateErr(response.message || 'Failed to create lecturer');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error creating lecturer:', error);
-  //     setCreateErr('An error occurred while creating the lecturer');
-  //   } finally {
-  //     setCreateLoading(false);
-  //   }
-  // };
-
+  
   // Handle create lecturer
   const handleCreateLecturer = async () => {
     try {
@@ -143,43 +85,38 @@ function ManageLecturer() {
         formData.append('name', newLecturer.name);
       }
       
-      // Position - should be a single string (take the first non-empty position)
-      if (newLecturer.positions && newLecturer.positions.length > 0) {
-        const validPositions = newLecturer.positions.filter(p => p && p.trim());
-        if (validPositions.length > 0) {
-          // Join multiple positions with comma or take first one
-          formData.append('position', validPositions.join(', '));
-        }
+      // position
+      if (newLecturer.position?.length > 0) {
+        newLecturer.position
+          .filter(p => p.trim())
+          .forEach(p => formData.append('position[]', p));
       }
-      
-      // Degree - array of strings
-      if (newLecturer.degrees && newLecturer.degrees.length > 0) {
-        const validDegrees = newLecturer.degrees.filter(d => d && d.trim());
-        validDegrees.forEach(degree => {
-          formData.append('degree[]', degree);
-        });
+
+      // degree
+      if (newLecturer.degree?.length > 0) {
+        newLecturer.degree
+          .filter(d => d.trim())
+          .forEach(d => formData.append('degree[]', d));
       }
-      
-      // Expertise
-      if (newLecturer.expertise) {
-        formData.append('expertise', newLecturer.expertise);
+
+      // expertise
+      if (newLecturer.expertise?.length > 0) {
+        newLecturer.expertise
+          .filter(e => e.trim())
+          .forEach(e => formData.append('expertise[]', e));
       }
-      
-      // City - must be either "Yangon" or "Mandalay"
+
       if (newLecturer.city) {
-        // Validate city matches enum
         const validCities = ["Yangon", "Mandalay"];
         if (validCities.includes(newLecturer.city)) {
           formData.append('city', newLecturer.city);
         } else {
-          // Default to Yangon if invalid
           formData.append('city', 'Yangon');
         }
       } else {
         formData.append('city', 'Yangon'); // Default city
       }
       
-      // IMPORTANT: The image field must be named 'image' (not 'profileImage')
       if (profileImage) {
         formData.append('image', profileImage); // Changed from 'profileImage' to 'image'
       }
@@ -208,69 +145,8 @@ function ManageLecturer() {
     }
   };
 
-  // Handle edit lecturer
-  // const handleEditLecturer = async () => {
-  //   try {
-  //     setEditLoading(true);
-  //     setEditErr(null);
-      
-  //     const formData = new FormData();
-      
-  //     // Append all fields
-  //     Object.keys(newLecturer).forEach(key => {
-  //       if (key === 'degrees') {
-  //         // Handle degrees array
-  //         if (Array.isArray(newLecturer.degrees) && newLecturer.degrees.length > 0) {
-  //           newLecturer.degrees.forEach(degree => {
-  //             if (degree.trim()) {
-  //               formData.append('degree[]', degree);
-  //             }
-  //           });
-  //         }
-  //       } else if (key === 'positions') {
-  //         // Handle positions array
-  //         if (Array.isArray(newLecturer.positions) && newLecturer.positions.length > 0) {
-  //           newLecturer.positions.forEach(position => {
-  //             if (position.trim()) {
-  //               formData.append('position[]', position);
-  //             }
-  //           });
-  //         }
-  //       } else if (key !== 'profileImageURL' && key !== '_id') {
-  //         if (newLecturer[key] && newLecturer[key].toString().trim()) {
-  //           formData.append(key, newLecturer[key]);
-  //         }
-  //       }
-  //     });
-      
-  //     // Append profile image if exists and is new
-  //     if (profileImage) {
-  //       formData.append('profileImage', profileImage);
-  //     }
-      
-  //     const response = await updateLecturer(selectedLecturer._id, formData);
-      
-  //     if(response.success) {
-  //       await refreshLecturers(); // Refresh the list
-  //       setShowEditModal(false);
-  //       setSelectedLecturer(null);
-  //       resetForm();
-  //     } else {
-  //       setEditErr(response.error || 'Failed to update lecturer');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating lecturer:', error);
-  //     setEditErr('An error occurred while updating the lecturer');
-  //   } finally {
-  //     setEditLoading(false);
-  //   }
-  // };
-
-
-
-  // Handle delete lecturer
   
-  // Handle edit lecturer - similar fixes
+  // Handle edit lecturer
   const handleEditLecturer = async () => {
       try {
           setEditLoading(true);
@@ -281,24 +157,27 @@ function ManageLecturer() {
           // Basic fields
           if (newLecturer.name) formData.append('name', newLecturer.name);
           
-          // Position - single string
-          if (newLecturer.positions && newLecturer.positions.length > 0) {
-              const validPositions = newLecturer.positions.filter(p => p && p.trim());
-              if (validPositions.length > 0) {
-                  formData.append('position', validPositions.join(', '));
-              }
+          // position
+          if (newLecturer.position?.length > 0) {
+            newLecturer.position
+              .filter(p => p.trim())
+              .forEach(p => formData.append('position[]', p));
           }
-          
-          // Degree - array
-          if (newLecturer.degrees && newLecturer.degrees.length > 0) {
-              const validDegrees = newLecturer.degrees.filter(d => d && d.trim());
-              validDegrees.forEach(degree => {
-                  formData.append('degree[]', degree);
-              });
+
+          // degree
+          if (newLecturer.degree?.length > 0) {
+            newLecturer.degree
+              .filter(d => d.trim())
+              .forEach(d => formData.append('degree[]', d));
           }
-          
-          if (newLecturer.expertise) formData.append('expertise', newLecturer.expertise);
-          
+
+          // expertise
+          if (newLecturer.expertise?.length > 0) {
+            newLecturer.expertise
+              .filter(e => e.trim())
+              .forEach(e => formData.append('expertise[]', e));
+          }
+
           // City validation
           if (newLecturer.city && ["Yangon", "Mandalay"].includes(newLecturer.city)) {
               formData.append('city', newLecturer.city);
@@ -364,12 +243,10 @@ function ManageLecturer() {
     setSelectedLecturer(null);
     setNewLecturer({
       name: '',
-      positions: [],
-      degrees: [],
-      expertise: '',
-      city: '',
-      award: '',
-      bio: '',
+      position: [],
+      degree: [],
+      expertise: [],
+      city: 'Yangon',
       profileImageURL: ''
     });
   };
@@ -536,7 +413,7 @@ function ManageLecturer() {
                       )}
                       <div>
                         <h3 className="font-semibold text-gray-900">{lecturer.name}</h3>
-                        <p className="text-sm text-gray-600">{lecturer.position || 'No position'}</p>
+                        <p className="text-sm text-gray-600">{lecturer.position?.join(', ') || 'No position'}</p>
                         <p className="text-xs text-gray-500 mt-1">{lecturer.city}</p>
                       </div>
                     </div>
@@ -549,7 +426,7 @@ function ManageLecturer() {
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <i className="fas fa-chalkboard-teacher w-4 text-gray-400"></i>
-                      <span>{lecturer.expertise || 'No expertise'}</span>
+                      <span>{lecturer.expertise?.join(', ') || 'No expertise'}</span>
                     </div>
                     {lecturer.award && (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -565,8 +442,9 @@ function ManageLecturer() {
                         // Convert single position/degree to arrays for editing
                         const editData = {
                           ...lecturer,
-                          positions: lecturer.position ? [lecturer.position] : [],
-                          degrees: lecturer.degree || []
+                          position: lecturer.position || [],
+                          degree: lecturer.degree || [],
+                          expertise: lecturer.expertise || []
                         };
                         setSelectedLecturer(lecturer);
                         setNewLecturer(editData);
@@ -627,9 +505,9 @@ function ManageLecturer() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{lecturer.position || '-'}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{lecturer.position?.join(', ') || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">{lecturer.degree?.join(', ') || '-'}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{lecturer.expertise || '-'}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{lecturer.expertise?.join(', ') || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-600">{lecturer.city || '-'}</td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
@@ -637,8 +515,9 @@ function ManageLecturer() {
                           onClick={() => {
                             const editData = {
                               ...lecturer,
-                              positions: lecturer.position ? [lecturer.position] : [],
-                              degrees: lecturer.degree || []
+                              position: lecturer.position || [],
+                              degree: lecturer.degree || [],
+                              expertise: lecturer.expertise || []
                             };
                             setSelectedLecturer(lecturer);
                             setNewLecturer(editData);
