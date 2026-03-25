@@ -155,11 +155,11 @@ function Faculty() {
 
                 {/* Positions */}
                 <p className="text-sm text-gray-500 mt-1">
-                  {/* {lecturer.position?.map((pos, i)=> (
+                  {lecturer.position?.map((pos, i)=> (
                     <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
                       {pos}
                     </span>
-                  ))} */}
+                  ))}
                 </p>
 
                 {/* Degrees */}
@@ -173,11 +173,11 @@ function Faculty() {
 
                 {/* expertise */}
                 <div className="flex flex-wrap gap-2 justify-center mt-2">
-                  {/* {lecturer?.expertise?.map((skill, i) => (
+                  {lecturer?.expertise?.map((skill, i) => (
                     <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
                       {skill}
                     </span>
-                  ))} */}
+                  ))}
                 </div>
               </div>
             ))}
