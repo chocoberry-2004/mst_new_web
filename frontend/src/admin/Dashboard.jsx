@@ -1,8 +1,30 @@
-import React from 'react'
+import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+
+// import custom hooks
+import { useAchievement } from '../providers/AchievemetProvider'
+import { AppContext } from '../providers/AppContextProvider'
+import { useArticle } from '../providers/ArticleProvider'
+import { useContactInfo } from '../providers/ContactInfoProvider'
+import { useCourse } from '../providers/CourseProvider'
+import { useEventContext } from '../providers/EventProvider'
+import { useLecturer } from '../providers/LecturerProvider'
+import { usePartner } from '../providers/PartnerProvider'
+import { useFaculty } from '../providers/FacultyProvider'
 
 function Dashboard() {
   // Mock statistical data
+  
+  const { awards, awardLoading, awardErr,awardType, awardTypeLoading, awardTypeErr } = useAchievement();
+  const { events, eventType, loading, error } = useEventContext();
+  const { lecturers, lecturerLoading, lecturerError } = useLecturer();
+  const { facultyList, facultyLoading, facultyError } = useFaculty();
+  const { partners, partnerLoading, partnerError } = usePartner();
+  const { contactInfo, contactInfoLoading, contactInfoError } = useContactInfo();
+  let {showModal, setShowModal, ApplicationFormHandler, openApplicationForm} = useContext(AppContext);
+  const { course, courseLoading, courseError } = useCourse();
+  const { articles, articlesLoading, articlesErr } = useArticle();
+
   const statsData = [
     {
       title: 'Total Lecturers',
@@ -85,7 +107,7 @@ function Dashboard() {
           <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
           <p className="text-gray-600 mt-1">Welcome back! Here's what's happening with your institution today.</p>
         </div>
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <button className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium">
             <i className="fas fa-file-export mr-2"></i>
             Download Report
@@ -93,7 +115,7 @@ function Dashboard() {
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             <i className="fas fa-clock text-gray-600"></i>
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Stats Grid */}
