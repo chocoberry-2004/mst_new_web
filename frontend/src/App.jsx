@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import MaintenancePage from "./pages/MaintenancePage";
 
 // auth
 import Login from "./components/Login";
@@ -40,6 +41,12 @@ function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isMaintenanceMode = import.meta.env.VITE_BASE_UNDERMAINTENANCE
+
+  if(isMaintenanceMode) {
+    return <MaintenancePage/>
+  }
 
   return (
     <div className="scrollbar-hide">
