@@ -30,7 +30,7 @@ app.use(
       "http://localhost:5173",
       "https://mst-new-web.onrender.com",
       "https://mst-new-web-shiv.onrender.com",
-      "https://www.mstinstitute.net/",
+      "https://www.mstinstitute.net",
     ],
   }),
 );
