@@ -44,7 +44,7 @@ function App() {
 
   const isMaintenanceMode = import.meta.env.VITE_BASE_UNDERMAINTENANCE
 
-  if(isMaintenanceMode===true) {
+  if(isMaintenanceMode==="true") {
     return <MaintenancePage/>
   }
 

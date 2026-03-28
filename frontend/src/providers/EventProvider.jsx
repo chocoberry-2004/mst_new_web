@@ -30,8 +30,11 @@ export const EventProvider = ({ children }) => {
     queryFn: fetchEventType
   });
 
-  const loading = eventsLoading || eventTypeLoading;
-  const error = eventsError || eventTypeError;
+  // const loading = eventsLoading || eventTypeLoading;
+  // const error = eventsError || eventTypeError;
+
+  const loading = eventsLoading;
+  const error = eventsError;
   
   return (
     <EventContext.Provider value={{ events, eventType, loading, error }}>
