@@ -20,6 +20,7 @@ import MaintenancePage from "./pages/MaintenancePage";
 // auth
 import Login from "./components/Login";
 import Register from "./components/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // admin
 import Index from "./admin/Index";
@@ -48,6 +49,8 @@ function App() {
     return <MaintenancePage/>
   }
 
+  const isAdmin = localStorage.getItem("adminAuth");
+
   return (
     <div className="scrollbar-hide">
 
@@ -66,18 +69,35 @@ function App() {
         </Route>
 
         {/* auth routes */}
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+
+        <Route
+          path="/login"
+          element={
+            localStorage.getItem("adminAuth") === "true"
+              ? <Navigate to="/admin/dashboard" />
+              : <Login />
+          }
+        />
         <Route path="/register" element={<Register />} />
 
+
         {/* admin pages routes */}
-        <Route path="/admin" element={<Index />}>
-            <Route index element={<Navigate to="dashboard" />} /> 
-            <Route path="dashboard" element={<Dashboard/>} />
-            <Route path="lecturer" element={<ManageLecturer />} />
-            <Route path="faculty" element={<ManageFaculty />} />
-            <Route path="event" element={<ManageEvent />} />
-            <Route path="partner" element={<ManagePartner/>}/>
-            <Route path="achievement" element={<ManageAchievement/>}/>
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Index />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="dashboard" />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="lecturer" element={<ManageLecturer />} />
+          <Route path="faculty" element={<ManageFaculty />} />
+          <Route path="event" element={<ManageEvent />} />
+          <Route path="partner" element={<ManagePartner />} />
+          <Route path="achievement" element={<ManageAchievement />} />
         </Route>
 
         {/* 404 */}
