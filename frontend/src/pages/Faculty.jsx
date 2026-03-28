@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import w4 from "../assets/images/w1.jpg";
+import w4 from "../assets/images/WF-hero.png";
 import event_bg from "../assets/images/event_bg1.jpg";
 import { useQuery } from "@tanstack/react-query";
 import ApplicationForm from "../components/ApplicationForm";
