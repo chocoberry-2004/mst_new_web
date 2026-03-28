@@ -23,7 +23,7 @@ function Login() {
       ...prev,
       [name]: value
     }))
-    // Clear error for this field when user starts typing
+    // Clear error for this field when user starts typing....
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
