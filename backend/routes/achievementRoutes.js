@@ -17,8 +17,8 @@ router.get("/:id", getAchievementById);
 router.post(
   "/",
   upload.fields([
-    { name: "image", maxCount: 5 },
-    { name: "video", maxCount: 1 },
+    { name: "imageURL", maxCount: 5 },
+    { name: "videoURL", maxCount: 1 },
   ]),
   createAchievement,
 );

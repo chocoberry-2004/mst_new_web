@@ -7,8 +7,8 @@ export const createAchievement = async (req, res) => {
     
     // Handle files if they exist
     if (req.files) {
-      if (req.files.image) data.imageUrl = `/uploads/${req.files.image[0].filename}`;
-      if (req.files.video) data.videoUrl = `/uploads/${req.files.video[0].filename}`;
+      if (req.files.image) data.imageUrl = `uploads/${req.files.image[0].filename}`;
+      if (req.files.video) data.videoUrl = `uploads/${req.files.video[0].filename}`;
     }
 
     const newAchievement = new Achievement(data);
