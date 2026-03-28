@@ -24,13 +24,16 @@ const app = express();
 //   }),
 // );
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://mst-new-web.onrender.com",
-    "https://mst-new-web-shiv.onrender.com"
-  ]
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://mst-new-web.onrender.com",
+      "https://mst-new-web-shiv.onrender.com",
+      "https://www.mstinstitute.net/",
+    ],
+  }),
+);
 
 app.use(express.urlencoded());
 app.use(express.json());
