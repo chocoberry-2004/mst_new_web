@@ -23,6 +23,8 @@ function Faculty() {
 
   const faculty = facultyList?.faculty;
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   // Dynamic Statistics
   const totalCourses = faculty?.courses?.length || 0;
   const totalLecturers = lecturers?.length || 0;
@@ -144,7 +146,7 @@ function Faculty() {
                   // console.log(lecturer)
                 }
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`}
+                  src={`${BASE_URL}${lecturer.profileImageURL}`}
                   alt={lecturer.name}
                   className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[var(--primary-dark)]"
                 />
