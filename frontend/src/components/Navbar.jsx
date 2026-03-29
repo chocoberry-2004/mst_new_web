@@ -59,9 +59,9 @@ function Navbar() {
         Course
       </NavLink>
 
-      <NavLink to="/article" className={linkClass}>
+      {/* <NavLink to="/article" className={linkClass}>
         Article
-      </NavLink>
+      </NavLink> */}
 
       <div className="relative" ref={dropdownRef}>
         <button

@@ -120,9 +120,9 @@ function Sidebar({ isOpen, onClose }) {
             Course
           </NavLink>
 
-          <NavLink to="/article" className={linkClass} onClick={handleLinkClick}>
+          {/* <NavLink to="/article" className={linkClass} onClick={handleLinkClick}>
             Article
-          </NavLink>
+          </NavLink> */}
 
           {/* Events dropdown */}
           <div className="relative" ref={dropdownRef}>

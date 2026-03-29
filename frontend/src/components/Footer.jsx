@@ -18,7 +18,7 @@ function Footer() {
     { name: "Home", path: "/" },
     { name: "Faculty", path: "/faculty" },
     { name: "Course", path: "/course" },
-    { name: "Article", path: "/article" },
+    // { name: "Article", path: "/article" },
     { name: "Events", path: "/event" },
     { name: "Contact", path: "/contact" },
     { name: "About", path: "/about" },

@@ -30,11 +30,11 @@ function About() {
   const { timeLine, timeLineLoading, timeLineErr } = useTimeLine();
 
 
-  const leadership = lecturers?.filter((lecturer) =>
-    lecturer.positions?.some((p) =>
-      ["Principal", "Vice Principal"].includes(p)
-    )
-  );
+  // const leadership = lecturers?.filter((lecturer) =>
+  //   lecturer.positions?.some((p) =>
+  //     ["Principal", "Vice Principal"].includes(p)
+  //   )
+  // );
 
   const findAward = (id) => {
     const award = awards?.find((award) => award._id === id);
@@ -159,7 +159,6 @@ function About() {
                 <h2 className="text-3xl lg:text-4xl text-center font-bold text-gray-900 mb-4">
                   Our Mission & Vision
                 </h2>
-                <div className="w-20 h-1 m-auto bg-gradient-to-r from-cyan-500 to-blue-600 mt-2"></div>
               </div>
               
               <div className="space-y-8">
@@ -235,10 +234,9 @@ function About() {
       {/* Achievements & Recognition */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 border-b pb-5 border-gray-300">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Our Achievements
-              <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2 mx-auto"></div>
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
               Recognized for excellence in IT education and innovation
@@ -279,7 +277,7 @@ function About() {
       </section>   
 
       {/* Leadership Team */}
-      <section className="py-16 lg:py-24 bg-white">
+      {/* <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -331,7 +329,7 @@ function About() {
           </div>
 
         </div>
-      </section>
+      </section> */}
 
       {/* Timeline */}
       <section className="py-16 lg:py-24 bg-[var(--primary-dark)]/50">
