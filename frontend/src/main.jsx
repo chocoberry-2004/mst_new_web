@@ -17,6 +17,7 @@ import { FAQProvider } from "./providers/FAQprovider.jsx";
 import { PartnerProvider } from "./providers/PartnerProvider.jsx";
 import { CountryProvider } from "./providers/CountryProvider.jsx";
 import { ArticleProvider } from "./providers/ArticleProvider.jsx";
+import { MaintenanceProvider } from "./providers/MaintenanceProvider.jsx";
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,9 @@ ReactDOM.createRoot(root).render(
                         <PartnerProvider>
                           <CountryProvider>
                             <ArticleProvider>
-                              <App />
+                              <MaintenanceProvider>
+                                <App />
+                              </MaintenanceProvider>
                             </ArticleProvider>
                           </CountryProvider>
                         </PartnerProvider>

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
 
 // layouts
@@ -31,8 +31,27 @@ import ManageEvent from "./admin/ManageEvent";
 import ManagePartner from "./admin/ManagePartner";
 import ManageAchievement from "./admin/ManageAchievement";
 
+// context
+import { MaintainContext } from "./providers/MaintenanceProvider";
+
 function App() {
-  const [hideBacktoTop, setHideBacktoTop] = useState(true);
+  const [hideBacktoTop, setHideBacktoTop] = useState(true);   
+
+
+  const {
+        // Global user pages
+        maintaining,
+
+        // Pages
+        maintainHome,
+        maintainFaculty,
+        maintainCourse,
+        maintainArticle,
+        maintainEvent,
+        maintainContact,
+        maintainAbout,
+        maintainPrivacy,
+      } = useContext(MaintainContext);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,27 +64,119 @@ function App() {
 
   const isMaintenanceMode = import.meta.env.VITE_BASE_UNDERMAINTENANCE
 
+  // global maintenance
   if(isMaintenanceMode==="true") {
     return <MaintenancePage/>
   }
 
-  const isAdmin = localStorage.getItem("adminAuth");
+  const MaintenanceGuard = ({ condition, children }) => {
+    if (condition) return <MaintenancePage />;
+    return children;
+  };
+
+  const isAdminAuth = localStorage.getItem("adminAuth");
 
   return (
     <div className="scrollbar-hide">
 
       <Routes>
         {/* user page routes */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/faculty" element={<Faculty />} />
-          <Route path="/course"  element={<Course/>}/>
-          <Route path="/article" element={<Article/>}/>
-          <Route path="/event" element={<Events />} />
-          <Route path="/event/type/:typeSlug" element={<Events />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
+        <Route 
+          element={
+            maintaining ? <MaintenancePage /> : <MainLayout />
+          }
+        >
+          {/* <Route path="/" element={renderPage(maintainHome, <Home />)} />
+          <Route path="/faculty" element={renderPage(maintainFaculty, <Faculty />)} />
+          <Route path="/course" element={renderPage(maintainCourse, <Course />)} />
+          <Route path="/article" element={renderPage(maintainArticle, <Article />)} />
+          <Route path="/event" element={renderPage(maintainEvent, <Events />)} />
+          <Route path="/event/type/:typeSlug" element={renderPage(maintainEvent, <Events />)} />
+          <Route path="/contact" element={renderPage(maintainContact, <Contact />)} />
+          <Route path="/about" element={renderPage(maintainAbout, <About />)} />
+          <Route path="/privacy-policy" element={renderPage(maintainPrivacy, <PrivacyPolicy />)} /> */}
+
+          <Route
+            path="/"
+            element={
+              <MaintenanceGuard condition={maintainHome}>
+                <Home />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/faculty"
+            element={
+              <MaintenanceGuard condition={maintainFaculty}>
+                <Faculty />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/course"
+            element={
+              <MaintenanceGuard condition={maintainCourse}>
+                <Course />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/article"
+            element={
+              <MaintenanceGuard condition={maintainArticle}>
+                <Article />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/event"
+            element={
+              <MaintenanceGuard condition={maintainEvent}>
+                <Events />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/event/type/:typeSlug"
+            element={
+              <MaintenanceGuard condition={maintainEvent}>
+                <Events />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/contact"
+            element={
+              <MaintenanceGuard condition={maintainContact}>
+                <Contact />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/about"
+            element={
+              <MaintenanceGuard condition={maintainAbout}>
+                <About />
+              </MaintenanceGuard>
+            }
+          />
+
+          <Route
+            path="/privacy-policy"
+            element={
+              <MaintenanceGuard condition={maintainPrivacy}>
+                <PrivacyPolicy />
+              </MaintenanceGuard>
+            }
+          />
+
         </Route>
 
         {/* auth routes */}
@@ -74,9 +185,7 @@ function App() {
         <Route
           path="/login"
           element={
-            localStorage.getItem("adminAuth") === "true"
-              ? <Navigate to="/admin/dashboard" />
-              : <Login />
+            isAdminAuth ? <Navigate to="/admin/dashboard" /> : <Login />
           }
         />
         <Route path="/register" element={<Register />} />

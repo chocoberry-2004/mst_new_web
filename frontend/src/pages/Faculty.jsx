@@ -86,7 +86,7 @@ function Faculty() {
               </p>
 
               {/* CTA Buttons - Responsive */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              {/* <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <a href="#faculty" className="group relative px-6 sm:px-8 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl active:scale-95">
                   <span className="text-sm sm:text-base">Explore Faculty Profiles</span>
                   <svg className="inline-block ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +96,7 @@ function Faculty() {
                 <button className="px-6 sm:px-8 py-3 bg-transparent border-2 border-white/40 text-white font-semibold rounded-lg hover:bg-white/10 hover:border-white/60 transition-all duration-300 active:scale-95 text-sm sm:text-base">
                   View Departments
                 </button>
-              </div>
+              </div> */}
 
               {/* Stats Section - Responsive Grid */}
               <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 ">
@@ -141,7 +141,7 @@ function Faculty() {
                 className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center border border-gray-200"
               >
                 {
-                  console.log(lecturer)
+                  // console.log(lecturer)
                 }
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`}
