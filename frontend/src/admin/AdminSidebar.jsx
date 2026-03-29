@@ -75,17 +75,17 @@ function AdminSidebar() {
             Lecturers
           </NavLink>
 
-          <NavLink to="faculty" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+          {/* <NavLink to="faculty" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Faculty
-          </NavLink>
+          </NavLink> */}
 
           <NavLink to="event" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Events
           </NavLink>
 
-          <NavLink to="partner" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+          {/* <NavLink to="partner" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Partners
-          </NavLink>
+          </NavLink> */}
 
           <NavLink to="achievement" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Achievements
