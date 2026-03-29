@@ -67,6 +67,7 @@ function Contact() {
   const [activeCampus, setActiveCampus] = useState(locationList[0]);
   const { contactInfo, contactInfoLoading, contactInfoError } = useContactInfo();
   const { FAQ, FAQLoading, FAQErr } = useFAQ();
+  const [showAllFAQs, setShowAllFAQs] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -389,9 +390,9 @@ function Contact() {
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
                             <div className="space-y-2">
                               <div>
-                                <a href={contactInfo?.mst_college_contact?.headquarters?.email} className="text-blue-600 hover:text-blue-800 block">
+                                <p className="text-blue-600 hover:text-blue-800 block">
                                   {contactInfo?.mst_college_contact?.headquarters?.email}
-                                </a>
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -594,7 +595,7 @@ function Contact() {
             </div>
            
             <div className="grid md:grid-cols-2 gap-8">
-              {FAQ?.map((faq, index) => (
+              {FAQ?.slice(0, showAllFAQs ? FAQ.length : 4).map((faq, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
@@ -610,8 +611,19 @@ function Contact() {
             </div>
             
             <div className="text-center mt-8">
-              <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer">
-                View All FAQs <i className="fas fa-arrow-right ml-2"></i>
+              <button 
+                onClick={() => {
+                  if(showAllFAQs) {
+                    setShowAllFAQs(false)
+                  } else {
+                    setShowAllFAQs(true)
+                  }
+                }}
+                className="inline-flex items-center px-6 py-2 border-2 border-blue-600 text-blue-600 font-semibold rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer">
+               {
+                showAllFAQs ? `Show Less ` : ` See All  `
+               }
+               <i className="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
           </div>

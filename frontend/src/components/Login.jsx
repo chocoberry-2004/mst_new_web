@@ -64,7 +64,7 @@ function Login() {
   try {
     const dummyUser = {
       email: "admin@mst.com",
-      password: "123456"
+      password: "Password@123"
     };
 
     // simulate API delay
