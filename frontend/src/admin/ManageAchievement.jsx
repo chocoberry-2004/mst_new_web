@@ -161,7 +161,7 @@ function ManageAchievement() {
   const getImageUrl = (achievement) => {
     if (achievement.imageUrl) {
       // Check if it's a full URL or needs BASE_URL prepended
-      if (achievement.imageUrl.startsWith('http')) {
+      if (achievement?.imageUrl[0]?.startsWith('http')) {
         return achievement.imageUrl;
       }
       return `${import.meta.env.VITE_BASE_URL}${achievement.imageUrl}`;

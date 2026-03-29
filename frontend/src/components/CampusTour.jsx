@@ -12,7 +12,9 @@ function CampusTour({ onClose }) {
     className={`fixed inset-0 z-[100] items-center justify-center bg-black/60 backdrop-blur-sm transition-all duration-300 p-4 ${showCampusTour ? `flex` : `hidden`}`}>
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-4xl bg-[var(--primary-dark)] rounded-xl shadow-2xl overflow-hidden animate-scaleIn">
+      <div 
+      onClick={(e) => e.stopPropagation()}
+      className="relative w-full max-w-4xl bg-[var(--primary-dark)] rounded-xl shadow-2xl overflow-hidden animate-scaleIn">
 
         {/* Header */}
         <div className="flex justify-between items-center px-4 py-2 bg-gray-100">
