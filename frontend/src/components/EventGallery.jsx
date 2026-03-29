@@ -12,7 +12,7 @@ function EventGallery() {
     const [currentEventIndex, setCurrentEventIndex] = useState(0);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    const BASE_URL = "http://localhost:8000";
+    const BASE_URL =import.meta.env.VITE_BASE_URL;
     const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
     if (loading) return <div>Loading events...</div>;

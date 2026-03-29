@@ -28,7 +28,7 @@ function Events() {
     const [selectedType, setSelectedType] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
 
-    const BASE_URL = "http://localhost:8000";
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
     const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
 
