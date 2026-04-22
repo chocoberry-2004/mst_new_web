@@ -24,6 +24,8 @@ function Footer() {
     { name: "About", path: "/about" },
   ];
 
+  const headQuarter = contactInfo?.find(c => c.HQ);
+
   return (
     <footer className=" text-white"
      style={{
@@ -128,12 +130,12 @@ function Footer() {
                   <li className="flex items-start gap-3">
                     <i className="fas fa-map-marker-alt text-[var(--accent-yellow)] mt-1 flex-shrink-0 text-lg"></i>
                     <span className="text-[#B8B8CC]">
-                      {contactInfo?.mst_college_contact?.headquarters?.address}
+                      {headQuarter?.address}
                     </span>
                   </li>
 
                   {/* Phone */}
-                  {contactInfo?.mst_college_contact?.headquarters?.phone?.map((phone, index) => (
+                  {headQuarter?.phone?.map((phone, index) => (
                     <li key={index} className="flex items-center gap-3">
                       <i className="fas fa-phone text-[var(--accent-yellow)] text-lg"></i>
                       <span className="text-[#B8B8CC]">{phone}</span>
@@ -144,7 +146,7 @@ function Footer() {
                   <li className="flex items-center gap-3">
                     <i className="fas fa-envelope text-[var(--accent-yellow)] text-lg"></i>
                     <span className="text-[#B8B8CC]">
-                      {contactInfo?.mst_college_contact?.headquarters?.email}
+                      {headQuarter?.email}
                     </span>
                   </li>
 

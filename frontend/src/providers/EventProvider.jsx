@@ -36,7 +36,7 @@ export const EventProvider = ({ children }) => {
   const loading = eventsLoading;
   const error = eventsError;
 
-  console.log(events);
+  // console.log(events);
   
   return (
     <EventContext.Provider value={{ events, eventType, loading, error }}>

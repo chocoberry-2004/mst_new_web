@@ -30,6 +30,8 @@ import ManageFaculty from "./admin/ManageFaculty";
 import ManageEvent from "./admin/ManageEvent";
 import ManagePartner from "./admin/ManagePartner";
 import ManageAchievement from "./admin/ManageAchievement";
+import ManageFAQ from "./admin/ManageFAQ";
+import ManageTimeline from "./admin/ManageTimeline";
 
 // context
 import { MaintainContext } from "./providers/MaintenanceProvider";
@@ -207,6 +209,8 @@ function App() {
           <Route path="event" element={<ManageEvent />} />
           <Route path="partner" element={<ManagePartner />} />
           <Route path="achievement" element={<ManageAchievement />} />
+          <Route path="faq" element={<ManageFAQ/>}/>
+          <Route path="timeline" element={<ManageTimeline/>}/>
         </Route>
 
         {/* 404 */}

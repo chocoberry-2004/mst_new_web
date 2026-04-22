@@ -1,4 +1,4 @@
-export const createPartner = async (partnerData) => {
+export const updatePartner = async (partnerId, partnerData) => {
   try {
     const formData = new FormData();
 
@@ -15,15 +15,15 @@ export const createPartner = async (partnerData) => {
       });
     }
 
-    // logo file
-    if (partnerData.logo) {
+    // logo file (if new file is uploaded)
+    if (partnerData.logo && typeof partnerData.logo !== 'string') {
       formData.append("logo", partnerData.logo);
     }
 
     const requestPartner = await fetch(
-      `${import.meta.env.VITE_API_URL}/partners`,
+      `${import.meta.env.VITE_API_URL}/partners/${partnerId}`,
       {
-        method: "POST",
+        method: "PUT",
         body: formData,
       }
     );
@@ -33,7 +33,7 @@ export const createPartner = async (partnerData) => {
     return { success: true, partner: partnerResponse };
 
   } catch (error) {
-    console.error("Error creating partner:", error);
+    console.error("Error updating partner:", error);
     return { success: false, message: error.message };
   }
 };

@@ -51,10 +51,8 @@ function Dashboard() {
         setMaintainPrivacy,
       } = useContext(MaintainContext);
 
-  const faculty = facultyList?.faculty;
-
   // Dynamic Statistics
-  const totalCourses = faculty?.courses?.length || 0;
+  const totalCourses = facultyList?.length || 0;
   const totalLecturers = lecturers?.length || 0;
   const totalPartners = partners?.length || 0;
   const totalEvents = events?.length || 0;

@@ -299,10 +299,7 @@ function ManageLecturer() {
           >
             <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'th-large'} text-gray-600`}></i>
           </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-            <i className="fas fa-download text-gray-600 mr-2"></i>
-            Export
-          </button>
+         
           <button 
             onClick={() => setShowAddModal(true)}
             className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium cursor-pointer"
@@ -319,7 +316,7 @@ function ManageLecturer() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Lecturers</p>
-              <p className="text-2xl font-bold text-gray-900">{totalLecturer}</p>
+              <p className="text-2xl font-bold text-blue-600">{totalLecturer}</p>
             </div>
             <div className="bg-blue-50 p-3 rounded-lg">
               <i className="fas fa-chalkboard-teacher text-blue-600 text-xl"></i>
@@ -413,7 +410,7 @@ function ManageLecturer() {
                         <img 
                           src={`${import.meta.env.VITE_BASE_URL}${lecturer?.profileImageURL}`} 
                           alt={lecturer.name}
-                          className="w-16 h-16 rounded-full object-cover"
+                          className="w-16 h-16 rounded-full object-cover border-3 border-[var(--primary-dark)]"
                         />
                       ) : (
                         <div className="w-16 h-16 bg-gradient-to-br from-[#FFC53A] to-[#e6b234] rounded-full flex items-center justify-center text-white font-bold text-xl">
@@ -422,27 +419,57 @@ function ManageLecturer() {
                       )}
                       <div>
                         <h3 className="font-semibold text-gray-900">{lecturer.name}</h3>
-                        <p className="text-sm text-gray-600">{lecturer.position?.join(', ') || 'No position'}</p>
-                        <p className="text-xs text-gray-500 mt-1">{lecturer.city}</p>
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                          <i className="fas fa-map-marker-alt text-xs"></i>
+                          <span>{lecturer.city || 'Unknown location'}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <i className="fas fa-graduation-cap w-4 text-gray-400"></i>
-                      <span>{lecturer.degree?.join(', ') || 'No degree'}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <i className="fas fa-chalkboard-teacher w-4 text-gray-400"></i>
-                      <span>{lecturer.expertise?.join(', ') || 'No expertise'}</span>
-                    </div>
-                    {lecturer.award && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <i className="fas fa-trophy w-4 text-gray-400"></i>
-                        <span>{lecturer.award}</span>
+                  
+
+                  <div className="mt-5 space-y-3">
+
+                    {/* Position */}
+                    <div className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-blue-100 text-blue-600">
+                        <i className="fas fa-user-tie text-sm"></i>
                       </div>
-                    )}
+                      <div>
+                        <p className="text-xs text-gray-400">Position</p>
+                        <p className="text-sm font-medium text-gray-700">
+                          {lecturer.position?.join(', ') || 'No position'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Degree */}
+                    <div className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-green-100 text-green-600">
+                        <i className="fas fa-graduation-cap text-sm"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Degree</p>
+                        <p className="text-sm font-medium text-gray-700">
+                          {lecturer.degree?.join(', ') || 'No degree'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Expertise */}
+                    <div className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-purple-100 text-purple-600">
+                        <i className="fas fa-chalkboard-teacher text-sm"></i>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Expertise</p>
+                        <p className="text-sm font-medium text-gray-700">
+                          {lecturer.expertise?.join(', ') || 'No expertise'}
+                        </p>
+                      </div>
+                    </div>
+
                   </div>
 
                   <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-end gap-2">

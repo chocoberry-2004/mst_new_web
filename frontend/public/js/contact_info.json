@@ -1,50 +1,39 @@
-{
-  "mst_college_contact": {
-    "headquarters": {
-      "name": "MST College HQ",
-      "address": "No. 36/38, Alan Pya Pagoda Road, Mingalar Taung Nyunt Township, Yangon, Myanmar",
-      "phone": [
-        "+959422288106",
-        "+959422288601"
-      ],
-      "email": "info@mstinstitute.net"
-    },
+[
+  {
+    "id": "yangon-campus-1",
+    "name": "Yangon Campus - 1",
+    "address": "No.36 Alan Pya Pagoda Road, Mingalar Taung Nyunt Township, Yangon",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.8481634448913!2d96.15615017461441!3d16.78422811990177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1ec8817795cc3%3A0xb06372cdad1a36f!2sM.S.T%20University%20(Campus%201)!5e0!3m2!1sen!2smm!4v1776520490885!5m2!1sen!2smm",
+    "phone": ["+959422288106"],
+    "email": "info@mstinstitute.net",
+    "HQ" : true
+  },
+  {
+    "id": "yangon-campus-2",
+    "name": "Yangon Campus - 2",
+    "address": "5 Yaw Min Gyi St, Yangon",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1ed1a1f15fb4f%3A0x2c3fd7b20068780!2sM.S.T%20University%20(Campus%202)!5e0!3m2!1sen!2smm!4v1776520647235!5m2!1sen!2smm",
+    "phone": ["+959422288601"],
+    "email": "info@mstinstitute.net",
+    "HQ" : false
 
-    "campuses": [
-      {
-        "id": "yangon-campus-1",
-        "name": "Yangon Campus - 1",
-        "address": "No.36 Alan Pya Pagoda Road, Mingalar Taung Nyunt Township, Yangon",
-        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796",
-        "phone": ["+959422288106"],
-        "email": "info@mstinstitute.net"
-      },
-      {
-        "id": "yangon-campus-2",
-        "name": "Yangon Campus - 2",
-        "address": "M.S.T College Campus-2, Yangon",
-        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796",
-        "phone": ["+959422288601"],
-        "email": "info@mstinstitute.net"
-      },
-      {
-        "id": "mandalay-campus-1",
-        "name": "Mandalay Campus - 1",
-        "address": "M.S.T College Mandalay Campus-1",
-        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59212.829389280756!2d96.01642404863283!3d21.9421683",
-        "phone": ["+959880007292"],
-        "email": "info@mstinstitute.net"
-      },
-      {
-        "id": "mandalay-campus-2",
-        "name": "Mandalay Campus - 2",
-        "address": "M.S.T College Mandalay Campus-2",
-        "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59212.829389280756!2d96.01642404863283!3d21.9421683",
-        "phone": ["+959880007293"],
-        "email": "info@mstinstitute.net"
-      }
-    ]
-
+  },
+  {
+    "id": "mandalay-campus-1",
+    "name": "Mandalay Campus - 1",
+    "address": "Block4, Unit-18, Art Street, Mingalar Mandalay, 73rd St, Mandalay",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3700.8017092219197!2d96.08777077768663!3d21.94217320409568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30cb6d002f6a05c3%3A0xdddf9afc8652a665!2sM.S.T%20College%20Mandalay%20Campus-1!5e0!3m2!1sen!2smm!4v1776520917655!5m2!1sen!2smm",
+    "phone": ["+959880007292"],
+    "email": "info@mstinstitute.net",
+    "HQ" : false
+  },
+  {
+    "id": "mandalay-campus-2",
+    "name": "Mandalay Campus - 2",
+    "address": "Block-2, Unit-3, Star Light, Mingalar Mandalay, Street 73rd St, Mandalay",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3700.80964414642!2d96.08922957473928!3d21.9418682557929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30cb6d000934fad1%3A0x9a927c433a459026!2sM.S.T%20College%20Campus-2!5e0!3m2!1sen!2smm!4v1776520782470!5m2!1sen!2smm",
+    "phone": ["+959880007293"],
+    "email": "info@mstinstitute.net",
+    "HQ" : false
   }
-
-}
+]

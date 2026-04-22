@@ -5,7 +5,8 @@ const FacultyContext = createContext();
 
 const fetchFaculty = async () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const response = await fetch(`${apiUrl}/faculties/`);
+  // const response = await fetch(`${apiUrl}/faculties/`);
+  const response = await fetch(`/js/faculty.json`);
   if (!response.ok) throw new Error("Failed to fetch faculty data");
   return response.json();
 };
@@ -19,6 +20,7 @@ export const FacultyProvider = ({ children }) => {
     queryKey: ["faculty"],
     queryFn: fetchFaculty,
   });
+
 
   return (
     <FacultyContext.Provider

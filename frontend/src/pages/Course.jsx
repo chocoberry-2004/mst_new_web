@@ -173,7 +173,7 @@ const formatCurrency = (amount, currency) => {
 
         {/* Title */}
         <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--primary-dark)]">
-          Our IT Courses
+          Our Courses
         </h1>
 
         {/* Description */}
@@ -204,14 +204,14 @@ const formatCurrency = (amount, currency) => {
     {/* course section */}
     <section className="py-20 px-2 lg:px-4 bg-gray-50" id="course-section">
         <div className="container mx-auto">
-          <div className="">
-          <h2 className="text-4xl font-bold text-center mb-12 text-[var(--primary-dark)]">
-            Our Courses
-          </h2>
+          <div className=" border-b pb-5 border-gray-300 mb-10">
+            <h2 className="text-4xl font-bold text-center mb-5 text-[var(--primary-dark)]">
+              Our Courses
+            </h2>
 
-          <p>
-
-          </p>
+            <p className="text-center max-w-3xl mx-auto text-gray-600 text-md">
+              Explore our comprehensive range of IT courses designed to equip students with practical skills, industry knowledge, and real-world experience to succeed in today’s digital world.
+            </p>
           </div>
 
           {courseLoading && (
@@ -234,7 +234,7 @@ const formatCurrency = (amount, currency) => {
                   key={course.id}
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
                 >
-                  <div className="h-48 bg-gradient-to-r from-[var(--primary-dark)] to-[var(--accent-yellow)] p-6 flex items-center justify-center">
+                  <div className="h-48 bg-gradient-to-t from-[var(--primary-dark)] via-[var(--gray-text)] to-[var(--gray-text)] p-6 flex items-center justify-center">
                     <h3 className="text-2xl font-bold text-white text-center">
                       {course.name}
                     </h3>
@@ -312,26 +312,25 @@ const formatCurrency = (amount, currency) => {
 
             {/* Modal panel */}
             <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full relative z-10">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <div className="bg-white">
+
                 {/* Header with gradient */}
-                <div className="h-24 bg-gradient-to-r from-[var(--primary-dark)] to-[var(--accent-yellow)] -mx-4 -mt-5 px-4 pt-6 mb-6 rounded-t-lg">
-                  <div className="flex justify-between items-start">
+                <div className=" bg-gradient-to-r from-[var(--primary-dark)] to-[var(--gray-text)]  p-4">
+                  <div className="flex justify-between items-center">
                     <h3 className="text-3xl font-bold text-white pr-8">
                       {selectedCourse.name}
                     </h3>
                     <button
                       onClick={closeModal}
-                      className="text-white hover:text-gray-200 transition-colors cursor-pointer"
+                      className=" hover:rotate-45 transition-all duration-300 ease-in-out cursor-pointer bg-gray-100 w-10 h-10 rounded-full text-gray-400"
                     >
-                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
+                      <i className="fa-solid fa-xmark"></i>
                     </button>
                   </div>
                 </div>
 
                 {/* Modal Content */}
-                <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
+                <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   {/* Course Info Badges */}
                   <div className="flex flex-wrap gap-3">
                     <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
