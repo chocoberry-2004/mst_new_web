@@ -16,7 +16,7 @@ function MaintenanceProvider({ children }) {
   const [maintainAbout, setMaintainAbout] = useState(false);
   const [maintainPrivacy, setMaintainPrivacy] = useState(false);
 
-  console.log(maintaining);
+  // console.log(maintaining);
 
   return (
     <MaintainContext.Provider

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 const PartnerContext = createContext();
 
 const fetchPartner = async () => {
-   const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
   const response = await fetch(`${apiUrl}/partners/`);
   if (!response.ok) throw new Error("Failed to fetch partners");
   return response.json();

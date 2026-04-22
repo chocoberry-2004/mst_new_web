@@ -184,10 +184,7 @@ function ManageAchievement() {
           > 
             <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'th-large'} text-gray-600`}></i>
           </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-            <i className="fas fa-download text-gray-600 mr-2"></i>
-            Export
-          </button>
+         
           <button 
             onClick={() => setShowAddModal(true)}
             className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium cursor-pointer"
@@ -199,7 +196,7 @@ function ManageAchievement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
           <div className="flex items-center justify-between">
@@ -243,23 +240,6 @@ function ManageAchievement() {
 
           <p className="text-xs text-gray-500 mt-2">
             Achievements in {currentYear}
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Top Category</p>
-              <p className="text-2xl font-bold text-[#FFC53A]">
-                {Object.entries(achievementsByCategory).sort((a, b) => b[1] - a[1])[0]?.[1] || 0}
-              </p>
-            </div>
-            <div className="bg-orange-50 p-3 rounded-lg">
-              <i className="fas fa-chart-bar text-[#FFC53A] text-xl"></i>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            {Object.entries(achievementsByCategory).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'}
           </p>
         </div>
 

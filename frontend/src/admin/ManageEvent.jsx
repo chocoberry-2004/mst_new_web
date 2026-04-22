@@ -222,7 +222,6 @@ function ManageEvent() {
     setImageFiles(newFiles);
   };
 
-
   const handleEditImageChange = (e) => {
     const files = Array.from(e.target.files);
     const validFiles = files.filter(file => file.type.startsWith('image/'));
@@ -256,9 +255,6 @@ function ManageEvent() {
       default: return 'fa-circle text-gray-400';
     }
   };
-  
-
-
 
   const removeExistingImage = (index) => {
     const imgToDelete = selectedEvent.imageURL[index];
@@ -370,10 +366,7 @@ function ManageEvent() {
           >
             <i className={`fas fa-${viewMode === 'grid' ? 'list' : 'th-large'} text-gray-600`}></i>
           </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-            <i className="fas fa-download text-gray-600 mr-2"></i>
-            Export
-          </button>
+          
           <button 
             onClick={() => setShowAddModal(true)}
             className="px-4 py-2 bg-[#FFC53A] text-gray-900 rounded-lg hover:bg-[#e6b234] transition-colors font-medium cursor-pointer"

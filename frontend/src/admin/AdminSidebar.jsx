@@ -21,7 +21,6 @@ function AdminSidebar() {
 
   return (
     <>
-     
 
       {showAdminSideBar && (
         <div
@@ -66,7 +65,7 @@ function AdminSidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex flex-col gap-6 px-6 py-6">
+        <nav className="flex flex-col gap-4 px-6 py-6">
           <NavLink to="dashboard" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Dashboard
           </NavLink>
@@ -75,20 +74,28 @@ function AdminSidebar() {
             Lecturers
           </NavLink>
 
-          {/* <NavLink to="faculty" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+          <NavLink to="faculty" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Faculty
-          </NavLink> */}
+          </NavLink>
 
           <NavLink to="event" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Events
           </NavLink>
 
-          {/* <NavLink to="partner" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+          <NavLink to="partner" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Partners
-          </NavLink> */}
+          </NavLink>
 
           <NavLink to="achievement" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Achievements
+          </NavLink>
+
+          <NavLink to="faq" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+            FAQs
+          </NavLink>
+
+          <NavLink to="timeline" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+            History
           </NavLink>
         </nav>
       </aside>

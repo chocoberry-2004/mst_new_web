@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/images/mst_logo1.png';
 import library from "../assets/images/library.png";
@@ -11,60 +11,9 @@ import { useFAQ } from '../providers/FAQprovider';
 import Loading from './Loading';
 import NotFound from './NotFound';
 
-const locationList =  [
-  {
-    id: 'yangon-campus-2',
-    name: 'Yangon Campus - 2',
-    address: 'M.S.T College Campus-2, Yangon',
-    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59212.829389280756!2d96.01642404863283!3d21.9421683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30cb6d000934fad1%3A0x9a927c433a459026!2sM.S.T%20College%20Campus-2!5e0!3m2!1sen!2smm!4v1769763315592!5m2!1sen!2smm',
-    details: [
-      { icon: 'fas fa-bus', text: 'Bus Stop: 300m from gate' },
-      { icon: 'fas fa-subway', text: 'Near Sule Pagoda' },
-      { icon: 'fas fa-wifi', text: 'High-speed WiFi' },
-    ],
-    active: true
-  },
-  {
-    id: 'mandalay-campus-1',
-    name: 'Mandalay Campus - 1',
-    address: 'M.S.T College Mandalay Campus-1',
-    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59212.829389280756!2d96.01642404863283!3d21.9421683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30cb6d002f6a05c3%3A0xdddf9afc8652a665!2sM.S.T%20College%20Mandalay%20Campus-1!5e0!3m2!1sen!2smm!4v1769763275907!5m2!1sen!2smm',
-    details: [
-      { icon: 'fas fa-car', text: 'Ample Parking Space' },
-      { icon: 'fas fa-utensils', text: 'Cafeteria Available' },
-      { icon: 'fas fa-book', text: 'Digital Library' },
-    ],
-    active: false
-  },
-  {
-    id: 'university-campus-1',
-    name: 'MST University Campus - 1',
-    address: 'M.S.T University (Campus 1)',
-    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1ec8817795cc3%3A0xb06372cdad1a36f!2sM.S.T%20University%20(Campus%201)!5e0!3m2!1sen!2smm!4v1769763193823!5m2!1sen!2smm',
-    details: [
-      { icon: 'fas fa-graduation-cap', text: 'Main Academic Block' },
-      { icon: 'fas fa-flask', text: 'Advanced Labs' },
-      { icon: 'fas fa-dumbbell', text: 'Sports Complex' },
-    ],
-    active: false
-  },
-  {
-    id: 'university-campus-2',
-    name: 'MST University Campus - 2',
-    address: 'M.S.T University (Campus 2)',
-    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.877007908295!2d96.15591277461431!3d16.782793619941796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1ed1a1f15fb4f%3A0x2c3fd7b20068780!2sM.S.T%20University%20(Campus%202)!5e0!3m2!1sen!2smm!4v1769762853925!5m2!1sen!2smm',
-    details: [
-      { icon: 'fas fa-laptop-house', text: 'Hostel Facilities' },
-      { icon: 'fas fa-heartbeat', text: 'Medical Center' },
-      { icon: 'fas fa-tree', text: 'Green Campus Area' },
-    ],
-    active: false
-  },
-];
-
 
 function Contact() {
-  const [activeCampus, setActiveCampus] = useState(locationList[0]);
+  const [activeCampus, setActiveCampus] = useState(null);
   const { contactInfo, contactInfoLoading, contactInfoError } = useContactInfo();
   const { FAQ, FAQLoading, FAQErr } = useFAQ();
   const [showAllFAQs, setShowAllFAQs] = useState(false);
@@ -98,6 +47,13 @@ function Contact() {
     });
   };
 
+  const headQuarter = contactInfo?.find(c => c.HQ);
+
+  useEffect(() => {
+    if (contactInfo?.length > 0) {
+      setActiveCampus(headQuarter || contactInfo[0]);
+    }
+  }, [contactInfo, headQuarter]);
 
 
   if(contactInfoLoading || FAQLoading) return <Loading/>;
@@ -107,7 +63,7 @@ function Contact() {
   return (
     <div className="min-h-screen">
 
-      <img src={library} alt="" className='w-full h-full fixed -z-10' />
+      <img src={library} alt="" className='w-full h-full fixed -z-10  object-cover' />
       
       {/* hero section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-300 to-[var(--gray-text)] overflow-hidden">
@@ -116,70 +72,6 @@ function Contact() {
         <div className="absolute inset-x-0 bottom-0 h-[45%] sm:h-[65%] bg-[var(--primary-dark)] rounded-t-[120%]"></div>
         <div className="absolute inset-x-0 bottom-0 h-[40%] sm:h-[55%] bg-[var(--accent-yellow)] rounded-t-[120%] opacity-90"></div>
         <div className="absolute inset-x-0 bottom-0 h-[35%] sm:h-[45%] bg-white rounded-t-[120%]"></div>
-
-        {/* Diamond Pattern - Positioned above the waves but below content */}
-        <div className="absolute inset-0">
-          {/* Top Left Cluster - Above the waves */}
-          <div className="absolute top-10 left-10 opacity-20">
-            <img src={diamond2} alt="diamond" className="w-12 h-12" />
-          </div>
-          <div className="absolute top-32 left-24 opacity-25">
-            <img src={diamond2} alt="diamond" className="w-8 h-8" />
-          </div>
-          
-          {/* Top Right Cluster - Above the waves */}
-          <div className="absolute top-12 right-16 opacity-25">
-            <img src={diamond2} alt="diamond" className="w-16 h-16" />
-          </div>
-          <div className="absolute top-40 right-32 opacity-30">
-            <img src={diamond2} alt="diamond" className="w-10 h-10" />
-          </div>
-          
-          {/* Middle Diamonds - Positioned between waves */}
-          <div className="absolute top-2/3 left-20 opacity-15">
-            <img src={diamond2} alt="diamond" className="w-16 h-16" />
-          </div>
-          <div className="absolute top-3/4 right-24 opacity-20">
-            <img src={diamond2} alt="diamond" className="w-12 h-12" />
-          </div>
-          
-          {/* Lower Diamonds - On top of the colored waves */}
-          <div className="absolute bottom-48 left-1/4 opacity-30">
-            <img src={diamond2} alt="diamond" className="w-10 h-10" />
-          </div>
-          <div className="absolute bottom-40 right-1/4 opacity-25">
-            <img src={diamond2} alt="diamond" className="w-8 h-8" />
-          </div>
-          
-          {/* Diamonds on the yellow wave */}
-          <div className="absolute bottom-32 left-32 opacity-40">
-            <img src={diamond2} alt="diamond" className="w-14 h-14" />
-          </div>
-          <div className="absolute bottom-28 right-40 opacity-35">
-            <img src={diamond2} alt="diamond" className="w-8 h-8" />
-          </div>
-          
-          {/* Diamonds on the white wave (top wave) */}
-          <div className="absolute bottom-24 left-48 opacity-50">
-            <img src={diamond2} alt="diamond" className="w-6 h-6" />
-          </div>
-          <div className="absolute bottom-20 right-1/3 opacity-50">
-            <img src={diamond2} alt="diamond" className="w-10 h-10" />
-          </div>
-          
-          {/* Center Large Diamond - Positioned above all waves */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10">
-            <img src={diamond2} alt="diamond" className="w-64 h-64 md:w-96 md:h-96" />
-          </div>
-          
-          {/* Additional scattered diamonds in middle area */}
-          <div className="absolute top-1/2 left-16 opacity-15">
-            <img src={diamond2} alt="diamond" className="w-10 h-10" />
-          </div>
-          <div className="absolute top-1/2 right-20 opacity-15">
-            <img src={diamond2} alt="diamond" className="w-12 h-12" />
-          </div>
-        </div>
 
         {/* Content Container */}
         <div className="relative z-20 max-w-5xl mx-auto py-5 px-6 lg:px-12 text-center bg-white/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-2xl">
@@ -195,7 +87,7 @@ function Contact() {
           {/* Heading */}
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[var(--primary-dark)] leading-tight">
             Get in
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-dark)] to-[var(--accent-yellow)]">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-t from-[var(--primary-dark)] to-[var(--accent-yellow)]">
               Touch With Us
             </span>
           </h1>
@@ -351,13 +243,13 @@ function Contact() {
                     ) : (
                       <div className="space-y-8">
                         <div className="flex items-start p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
-                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[var(--primary-dark)] to-cyan-500 rounded-lg flex items-center justify-center">
                             <i className="fas fa-map-marker-alt text-white text-xl"></i>
                           </div>
                           <div className="ml-6">
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Visit Our Campus</h3>
                             <p className="text-gray-600 mb-2">
-                              {contactInfo?.mst_college_contact?.headquarters?.address}
+                              {headQuarter?.address}
                             </p>
                             <a href="#location" className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
                               Get Directions <i className="fas fa-arrow-right ml-2"></i>
@@ -371,7 +263,7 @@ function Contact() {
                           </div>
                           <div className="ml-6">
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
-                            {contactInfo?.mst_college_contact?.headquarters?.phone?.map((phone, index) => (
+                            {headQuarter?.phone?.map((phone, index) => (
                               <li key={index} className="flex items-center gap-3">
                                 <span className="text-[#B8B8CC]">{phone}</span>
                               </li>
@@ -391,13 +283,15 @@ function Contact() {
                             <div className="space-y-2">
                               <div>
                                 <p className="text-blue-600 hover:text-blue-800 block">
-                                  {contactInfo?.mst_college_contact?.headquarters?.email}
+                                  {headQuarter?.email}
                                 </p>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
+
+                      
                     )
                   }
 
@@ -439,13 +333,13 @@ function Contact() {
                     {/* Map Display */}
                     <div className="relative w-full h-[300px] lg:h-auto lg:col-span-2">
                       <iframe
-                        key={activeCampus.id}
+                        key={activeCampus?.id}
                         className="absolute inset-0 w-full h-full border-0"
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         title="Campus Location Map"
-                        src={activeCampus.mapUrl}
+                        src={activeCampus?.mapUrl}
                       />
                     </div>
 
@@ -453,8 +347,8 @@ function Contact() {
                     <div className="p-6 bg-gradient-to-b from-[var(--primary-dark)] to-[var(--secondary-dark)] text-white overflow-y-auto">
                       <h3 className="text-2xl font-bold mb-6">Our Campus Locations</h3>
                       <div className="space-y-4">
-                        {locationList.map((campus) => {
-                          const isActive = activeCampus.id === campus.id;
+                        {contactInfo?.map((campus) => {
+                          const isActive = activeCampus?.id === campus?.id;
 
                           return (
                             <div
@@ -468,7 +362,7 @@ function Contact() {
                               {/* Accordion Header */}
                               <button
                                 onClick={() => setActiveCampus(campus)}
-                                className="w-full p-4 text-left flex justify-between items-center hover:bg-white/5 transition"
+                                className="w-full p-4 text-left flex justify-between items-center"
                               >
                                 <div className="flex items-center">
                                   <div
@@ -506,14 +400,16 @@ function Contact() {
                                 }`}
                               >
                                 <div className="overflow-hidden px-4 pb-4">
-                                  <ul className="space-y-3 mt-2">
-                                    {campus.details.map((detail, index) => (
-                                      <li key={index} className="flex items-center text-sm">
-                                        <i className={`${detail.icon} mr-3 text-cyan-300 w-5`}></i>
-                                        <span className="text-gray-200">{detail.text}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
+                                  <div className="space-y-3 mt-2">
+                                    <div className="flex items-center text-sm">
+                                      <i className="fas fa-phone mr-3 text-cyan-300 w-5"></i>
+                                      <span className="text-gray-200">{campus.phone.join(', ')}</span>
+                                    </div>
+                                    <div className="flex items-center text-sm">
+                                      <i className="fas fa-envelope mr-3 text-cyan-300 w-5"></i>
+                                      <span className="text-gray-200">{campus.email}</span>
+                                    </div>
+                                  </div>
 
                                   <a
                                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -543,11 +439,11 @@ function Contact() {
                           </li>
                           <li className="flex items-center text-sm">
                             <i className="fas fa-phone mr-3 text-green-300 w-5"></i>
-                            Contact: +95 1 234 567
+                            Contact: {headQuarter?.phone?.[0] || '+95 1 234 567'}
                           </li>
                           <li className="flex items-center text-sm">
                             <i className="fas fa-envelope mr-3 text-green-300 w-5"></i>
-                            Email: info@mstinstitute.net
+                            Email: {headQuarter?.email || 'info@mstinstitute.net'}
                           </li>
                         </ul>
                       </div>
@@ -588,17 +484,21 @@ function Contact() {
           {/* FAQ Section */}
           <div className="mt-16">
 
-            <div className="border-b border-gray-300 mb-8">
-              <h2 className="text-3xl font-bold text-center text-gray-900 mb-5">
+            <div className="border-b border-gray-300 mb-8 pb-4">
+              <h2 className="text-3xl font-bold text-center text-gray-900 mb-3">
                 Frequently Asked Questions
               </h2>
+              
+              <p className="text-center text-gray-600 max-w-2xl mx-auto">
+                Find answers to common questions about M.S.T.
+              </p>
             </div>
            
             <div className="grid md:grid-cols-2 gap-8">
               {FAQ?.slice(0, showAllFAQs ? FAQ.length : 4).map((faq, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-start">
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-b from-cyan-500 to-[var(--primary-dark)] rounded-lg flex items-center justify-center">
                       <i className="fas fa-question text-white text-sm"></i>
                     </div>
                     <div className="ml-4">

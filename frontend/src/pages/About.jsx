@@ -30,12 +30,6 @@ function About() {
   const { timeLine, timeLineLoading, timeLineErr } = useTimeLine();
 
 
-  // const leadership = lecturers?.filter((lecturer) =>
-  //   lecturer.positions?.some((p) =>
-  //     ["Principal", "Vice Principal"].includes(p)
-  //   )
-  // );
-
   const findAward = (id) => {
     const award = awards?.find((award) => award._id === id);
 

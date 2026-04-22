@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const FAQContext = createContext();
 
@@ -13,6 +13,8 @@ const fetchFAQ = async () => {
 
 export const FAQProvider = ({ children }) => {
 
+  const queryClient = useQueryClient();
+
   const {
     data: FAQ,
     isPending: FAQLoading,
@@ -22,8 +24,15 @@ export const FAQProvider = ({ children }) => {
     queryFn: fetchFAQ,
   });
 
+
+  // Add refresh function
+  const refreshFAQ = () => {
+    queryClient.invalidateQueries({ queryKey: ["faq"] });
+  };
+
+
   return (
-    <FAQContext.Provider value={{ FAQ, FAQLoading, FAQErr }}>
+    <FAQContext.Provider value={{ FAQ, FAQLoading, FAQErr, refreshFAQ }}>
       {children}
     </FAQContext.Provider>
   );

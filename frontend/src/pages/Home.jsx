@@ -14,6 +14,8 @@ function Home() {
 
     const { partners, partnerLoading, partnerError } = usePartner();
 
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+
     if(partnerLoading) return <Loading/>;
 
     // if(partnerError) return <NotFound/>;
@@ -55,7 +57,6 @@ function Home() {
         <div className="w-full h-full relative z-10 px-4 flex justify-between items-end transition-transform duration-300 ease-in-out">
             <div className="lg:py-20 py-5 transition-all duration-300 ease-in-out">
                 <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white animate-drop-in transition-all duration-300 ease-in-out space-x-3">
-                    {/* Shaping Future IT Professionals in <span className="border-b-3"><span className="text-[var(--accent-yellow)]">M</span>.<span className="text-[var(--primary-dark)]">S</span>.<span>T</span> </span>  */}
                     <span className="text-[var(--accent-yellow)]">MYANMAR </span> <span className="text-[var(--primary-dark)]">SKILL </span> <span>TECHNOLOGY</span>
                 </h2>
                 <p className="text-[var(--accent-yellow)] mb-3 text-lg font-bold">Your Success Our Destination</p>
@@ -207,19 +208,19 @@ function Home() {
         </section>
 
         {/* Our Partners */}
-        <section className=" py-16 px-6 ">
+        <section className={`py-16 px-6  ${partners?.length === 0 ? `hidden` : ``}`}>
         <div className="max-w-6xl mx-auto">
 
             {/* Section Header */}
             <div className="text-center text-white mb-12">
             <h2 className="text-4xl font-bold mb-4 text-shadow-lg">
-                {partners?.partnersSection?.title}
+                Our Partners
             </h2>
             <p className="text-lg opacity-90">
-                {partners?.partnersSection?.subtitle}
+                We collaborate with industry-leading technology providers to deliver exceptional solutions
             </p>
             <p className="mt-3 max-w-2xl mx-auto opacity-75">
-                {partners?.partnersSection?.description}
+                Through our strategic partnerships, we bring you the best-in-class technologies and expertise
             </p>
             </div>
 
@@ -235,14 +236,15 @@ function Home() {
 
             {/* Partners Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {partners?.partnersSection?.partners?.map((partner) => (
+
+            {Array.isArray(partners) && partners.map((partner) => (
                 <div
-                key={partner.id}
+                key={partner._id}
                 className="bg-white rounded-2xl p-6 shadow-lg hover:-translate-y-2 transition duration-300"
                 >
                 <div className="flex justify-center mb-4">
                     <img
-                    src={partner.logo}
+                    src={`${BASE_URL} ${partner.logo}`}
                     alt={partner.name}
                     className="h-16 object-contain"
                     />

@@ -21,22 +21,21 @@ function Faculty() {
   if (facultyLoading || lecturerLoading) return <Loading/>;
   // if (facultyError || lecturerError) return <NotFound/>;
 
-  const faculty = facultyList?.faculty;
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // Dynamic Statistics
-  const totalCourses = faculty?.courses?.length || 0;
+  const totalCourses = facultyList?.length || 0;
   const totalLecturers = lecturers?.length || 0;
 
   const totalCareerPaths =
-    faculty?.courses?.reduce(
+    facultyList?.reduce(
       (sum, course) => sum + (course.career_paths?.length || 0),
       0
     ) || 0;
 
   const totalLevels =
-    faculty?.courses?.reduce(
+    facultyList?.reduce(
       (sum, course) => sum + (course.levels?.length || 0),
       0
     ) || 0;
@@ -69,7 +68,6 @@ function Faculty() {
             <div className="max-w-2xl lg:max-w-3xl">
               {/* Subtle Badge */}
               <div className="inline-flex items-center gap-3 lg:mt-10 mb-6 lg:mb-8">
-                <div className="w-10 h-0.5 bg-yellow-500"></div>
                 <span className="text-yellow-400 font-medium tracking-widest uppercase text-sm">
                   Excellence in Education
                 </span>
@@ -87,19 +85,7 @@ function Faculty() {
                 World-class educators, researchers, and industry leaders dedicated to shaping the future of academia and innovation.
               </p>
 
-              {/* CTA Buttons - Responsive */}
-              {/* <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <a href="#faculty" className="group relative px-6 sm:px-8 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl active:scale-95">
-                  <span className="text-sm sm:text-base">Explore Faculty Profiles</span>
-                  <svg className="inline-block ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
-                <button className="px-6 sm:px-8 py-3 bg-transparent border-2 border-white/40 text-white font-semibold rounded-lg hover:bg-white/10 hover:border-white/60 transition-all duration-300 active:scale-95 text-sm sm:text-base">
-                  View Departments
-                </button>
-              </div> */}
-
+             
               {/* Stats Section - Responsive Grid */}
               <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 ">
                 {[
@@ -125,7 +111,7 @@ function Faculty() {
       </section>
 
       {/* Lecturer Grid */}
-      <section className="py-16 bg-gray-50">
+      <section className={`py-16 bg-gray-50 ${lecturers?.length == 0 ? `hidden` : ``}`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12 pb-8 border-b border-[var(--accent-yellow)]">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--primary-dark)]">
@@ -140,76 +126,91 @@ function Faculty() {
             {lecturers?.map((lecturer, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center flex flex-col items-center border border-gray-200"
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden text-center flex flex-col items-center border border-gray-200"
               >
                 {
                   // console.log(lecturer)
                 }
-                <img
-                  src={`${BASE_URL}${lecturer.profileImageURL}`}
-                  alt={lecturer.name}
-                  className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-[var(--primary-dark)]"
-                />
+
+                <div className=" w-full bg-gray-200 flex justify-center items-center p-6">
+                  <img
+                    src={`${BASE_URL}${lecturer.profileImageURL}`}
+                    alt={lecturer.name}
+                    className="w-32 h-32 rounded-full object-cover border-4 border-[var(--primary-dark)]"
+                  />
+                </div>
+
+                <div className="py-6 px-3 space-y-3 w-full">
 
                 <h3 className="text-xl font-semibold text-gray-800">
                   {lecturer.name}
                 </h3>
 
                 {/* Positions */}
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-500 mt-1 space-x-3">
                   {lecturer.position?.map((pos, i)=> (
-                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md border-b border-gray-300">
                       {pos}
                     </span>
                   ))}
                 </p>
 
                 {/* Degrees */}
-                <p className="text-xs text-gray-400 mt-1">
-                  {lecturer.degree?.map((deg,i)=> (
-                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
+                <div className="text-xs text-gray-400 mt-1 space-y-3 text-start">
+                  {lecturer.degree?.map((deg, i) => (
+                    <p
+                      key={i}
+                      className="text-md bg-gray-100 p-2 rounded-md border-b border-gray-300"
+                    >
+                      <span className="mr-3">
+                        <i className="fas fa-graduation-cap"></i>
+                      </span>
                       {deg}
-                    </span>
+                    </p>
                   ))}
-                </p>
+                </div>
 
                 {/* expertise */}
-                <div className="flex flex-wrap gap-2 justify-center mt-2">
+                <div className="space-y-3 text-start mt-2 text-gray-400 border-t pt-3 border-gray-300 w-full">
+                  <h3>Expertise</h3>
                   {lecturer?.expertise?.map((skill, i) => (
-                    <span key={i} className="text-xs bg-gray-100 px-2 py-1 rounded-md">
-                      {skill}
-                    </span>
+                    <p key={i} className="text-xs bg-gray-100 p-2 w-full rounded-md border-b border-gray-300">
+                      <span className="mr-3"><i className="far fa-star"></i> </span>{skill}
+                    </p>
                   ))}
+                </div>
+
                 </div>
               </div>
             ))}
           </div>
+
+          
         </div>
       </section>
 
       {/* Faculty section */}
-      <section id="faculty" className="min-h-screen py-16 lg:py-24 px-6">
+      <section id="faculty" className={`min-h-screen py-16 lg:py-24 px-6 ${facultyList?.length == 0 ? `hidden` : ``}`}>
       {/* Faculty Header */}
       <div className="max-w-6xl mx-auto text-center mb-12 border-b border-[var(--accent-yellow)] py-5">
         <h1 className="text-4xl font-bold text-[var(--primary-dark)]">
-          {faculty?.name}
+          Our Distinguished Faculty
         </h1>
         <p className="text-gray-600 mt-3 max-w-3xl mx-auto">
-          {faculty?.description}
+          M.S.T offers industry-focused programs and international certifications
         </p>
       </div>
 
       {/* Courses Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {faculty?.courses?.map((course) => (
+        {facultyList?.map((course) => (
           <div
-            key={course.id}
+            key={course._id}
             className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition duration-300 border border-gray-200"
           >
             <h2 className="text-xl font-bold text-indigo-600">
               {course.name}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">{course.type}</p>
 
             <div className="mt-4">
               <p className="text-sm text-gray-700">
