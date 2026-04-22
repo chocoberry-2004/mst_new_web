@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const timelineSchema = new mongoose.Schema(
   {
     year: {
-      type: String,
-      default: "2000",
+      type: Date,
+      default: Date.now,
     },
     title: {
       type: String,
