@@ -2,7 +2,7 @@
   "courses": [
     {
       "id": "C-002",
-      "name": "Web Development Foundation",
+      "name": "Web Development Foundation",   
       "type": "Professional Certificate",
       "level": "Beginner to Intermediate",
       "duration": "12 weeks",
