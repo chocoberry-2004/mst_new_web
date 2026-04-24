@@ -20,7 +20,14 @@ function Home() {
 
     // if(partnerError) return <NotFound/>;
 
-  return (
+    // Handle image error with fallback
+    const handleImageError = (e, partnerName) => {
+        e.target.onerror = null;
+        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(partnerName)}&background=FFC53A&color=000&size=128`;
+    };
+
+
+    return (
     <div className="">
         <section
         className="min-h-[80vh] bg-[#807F9A]  w-full flex items-end justify-center relative overflow-hidden transition-all duration-700 ease-in-out"
@@ -242,11 +249,12 @@ function Home() {
                 key={partner._id}
                 className="bg-white rounded-2xl p-6 shadow-lg hover:-translate-y-2 transition duration-300"
                 >
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-4 ">
                     <img
-                    src={`${BASE_URL}${partner.logo}`}
-                    alt={partner.name}
-                    className="h-16 object-contain"
+                        src={`${BASE_URL}${partner.logo}`}
+                        alt={partner.name}
+                        className={`h-16 object-contain  ${partner.logo ? `` : `rounded-full`}`}
+                        onError={(e) => handleImageError(e, partner.name)}
                     />
                 </div>
 
