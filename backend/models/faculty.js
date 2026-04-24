@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const facultySchema = new mongoose.Schema(
   {
-    id: String, // Matches "C-001", etc.
     name: {
       type: String,
       required: true,

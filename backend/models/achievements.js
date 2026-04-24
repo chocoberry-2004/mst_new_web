@@ -8,7 +8,7 @@ const achievementSchema = new mongoose.Schema(
     country: String,
     location: String,
     description: String,
-    certifications: [String],
+    date: Date,
     imageUrl: [{ type: String }],
     videoUrl: { type: String },
   },
