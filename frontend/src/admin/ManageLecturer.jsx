@@ -18,7 +18,6 @@ import LecturerDeleteModal from '../CRUD_Modals/Lecturer/LecturerDeleteModal';
 function ManageLecturer() {
   const { lecturers, lecturerLoading, lecturerError, refreshLecturers } = useLecturer();
 
-  console.log(lecturers);
 
   const [createLoading, setCreateLoading] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
@@ -402,9 +401,7 @@ function ManageLecturer() {
                 <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                      {
-                        console.log(lecturer.profileImageURL)
-                      }
+                     
                       {lecturer.profileImageURL ? (
                         
                         <img 
