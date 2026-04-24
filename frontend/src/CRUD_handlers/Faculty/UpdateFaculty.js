@@ -1,25 +1,30 @@
-export const updateFaculty = async (eventId) => {
+export const updateFaculty = async (id, facultyData) => {
   try {
-    const requestEvent = await fetch(
-      `${import.meta.env.VITE_API_URL}/events/${eventId}`,
+    const request = await fetch(
+      `${import.meta.env.VITE_API_URL}/faculties/${id}`,
       {
-        method: "DELETE",
+        method: "PUT",
         headers: {
-          "Accept": "application/json"
-        }
+          "Accept": "application/json",
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify(facultyData)
       }
     );
 
-    const eventResponse = await requestEvent.json();
+    const response = await request.json();
+
+    if (!request.ok) {
+      throw new Error(response.error || "Failed to update faculty");
+    }
 
     return {
       success: true,
-      event: eventResponse
+      faculty: response
     };
 
   } catch (error) {
-    console.error("Error deleting event:", error);
-
+    console.error("Error editing faculty:", error);
     return {
       success: false,
       message: error.message

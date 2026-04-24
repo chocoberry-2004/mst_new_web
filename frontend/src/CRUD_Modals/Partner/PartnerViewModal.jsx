@@ -15,6 +15,7 @@ function PartnerViewModal({
     )}&background=FFC53A&color=000&size=128`;
   };
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -49,7 +50,7 @@ function PartnerViewModal({
           <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
             <div className="w-20 h-20 bg-white rounded-lg p-2 flex items-center justify-center border border-gray-200">
               <img
-                src={selectedPartner.logo}
+                src={`${BASE_URL}${selectedPartner.logo}`}
                 alt={selectedPartner.name}
                 className="max-w-full max-h-full object-contain"
                 onError={handleImageError}

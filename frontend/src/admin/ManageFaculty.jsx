@@ -57,10 +57,14 @@ function ManageFaculty() {
   const handleCreateFaculty = async () => {
     setIsSubmitting(true);
     try {
-      await createFaculty(newFaculty);
-      await refetchFaculties();
-      setShowAddModal(false);
-      resetNewFacultyForm();
+      const result = await createFaculty(newFaculty);
+      if (result.success) {
+        await refetchFaculties();
+        setShowAddModal(false);
+        resetNewFacultyForm();
+      } else {
+        alert("Failed: " + result.message);
+      }
     } catch (error) {
       console.error('Error creating faculty:', error);
     } finally {
@@ -70,14 +74,19 @@ function ManageFaculty() {
 
   // Handle update faculty
   const handleUpdateFaculty = async () => {
-    if (!selectedFaculty?.id) return;
+    if (!selectedFaculty?._id) return; 
     
     setIsSubmitting(true);
     try {
-      await updateFaculty(selectedFaculty.id, selectedFaculty);
-      await refetchFaculties();
-      setShowEditModal(false);
-      setSelectedFaculty(null);
+      const result = await updateFaculty(selectedFaculty._id, selectedFaculty); 
+      
+      if (result.success) {
+        await refetchFaculties();
+        setShowEditModal(false);
+        setSelectedFaculty(null);
+      } else {
+        alert("Error: " + result.message);
+      }
     } catch (error) {
       console.error('Error updating faculty:', error);
     } finally {
@@ -87,14 +96,19 @@ function ManageFaculty() {
 
   // Handle delete faculty
   const handleDeleteFaculty = async () => {
-    if (!selectedFaculty?.id) return;
+    if (!selectedFaculty?._id) return;
     
     setIsSubmitting(true);
     try {
-      await deleteFaculty(selectedFaculty.id);
-      await refetchFaculties();
-      setShowDeleteModal(false);
-      setSelectedFaculty(null);
+      const result = await deleteFaculty(selectedFaculty._id);
+      
+      if (result.success) {
+        await refetchFaculties(); // Refresh the list
+        setShowDeleteModal(false); // Close modal
+        setSelectedFaculty(null);  // Clear selection
+      } else {
+        alert("Delete failed: " + result.message);
+      }
     } catch (error) {
       console.error('Error deleting faculty:', error);
     } finally {
@@ -247,17 +261,11 @@ function ManageFaculty() {
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold text-gray-900 text-lg">{course.name}</h3>
-                        <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
-                          {course._id}
-                        </span>
+                       
                       </div>
                       <p className="text-sm text-gray-500 mt-1">Duration: {course.duration}</p>
                     </div>
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      course.status === "active" ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
-                      {course.status}
-                    </span>
+                    
                   </div>
 
                   <p className="text-sm text-gray-600 mb-4 line-clamp-2">{course.overview}</p>
@@ -279,7 +287,7 @@ function ManageFaculty() {
                       </p>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-end gap-2">
+                  <div className="mt-4 mb-5 flex items-center justify-end gap-2">
                     <button 
                       onClick={() => { setSelectedFaculty(course); setShowViewModal(true); }}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
@@ -314,7 +322,6 @@ function ManageFaculty() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course Name</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Levels</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -324,20 +331,15 @@ function ManageFaculty() {
                     <td className="px-6 py-4">
                       <div>
                         <div className="font-medium text-gray-900">{course.name}</div>
-                        <div className="text-xs text-gray-500">{course.id}</div>
+                        <div className="text-xs text-gray-500">{course._id}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {course.levels?.join(", ")}
                     </td>
+                    
                     <td className="px-6 py-4 text-sm text-gray-600">{course.duration}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        course.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}>
-                        {course.status}
-                      </span>
-                    </td>
+                    
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-3">
                         <button onClick={() => { setSelectedFaculty(course); setShowViewModal(true); }} className="text-blue-600 hover:text-blue-800 cursor-pointer"><i className="fas fa-eye"></i></button>

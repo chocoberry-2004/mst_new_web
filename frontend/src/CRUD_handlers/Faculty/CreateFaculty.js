@@ -1,25 +1,28 @@
-export const createFaculty = async (eventId) => {
+export const createFaculty = async (facultyData) => {
   try {
-    const requestEvent = await fetch(
-      `${import.meta.env.VITE_API_URL}/events/${eventId}`,
+    const Request = await fetch(
+      `${import.meta.env.VITE_API_URL}/faculties`,
       {
-        method: "DELETE",
+        method: "POST",
         headers: {
-          "Accept": "application/json"
-        }
+          "Accept": "application/json",
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify(facultyData)
       }
     );
 
-    const eventResponse = await requestEvent.json();
+    const response = await Request.json();
+
+    if (!Request.ok) throw new Error(response.error || "Failed to create faculty");
 
     return {
       success: true,
-      event: eventResponse
+      faculty: response
     };
 
   } catch (error) {
-    console.error("Error deleting event:", error);
-
+    console.error("Error creating faculty:", error);
     return {
       success: false,
       message: error.message

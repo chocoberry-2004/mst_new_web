@@ -11,8 +11,6 @@ function FacultyEditModal({
 
     if (!show) return null;
 
-    // --- Helper Logic for Dynamic Arrays ---
-
     const addField = (field) => {
         setSelectedFaculty({
             ...selectedFaculty,

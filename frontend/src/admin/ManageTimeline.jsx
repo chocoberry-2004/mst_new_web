@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Loading from '../pages/Loading';
 import SearchNotFound from '../components/SearchNotFound';
 import logo from '../assets/images/mst_logo1.png';
 import { useTimeLine } from '../providers/TimeLineProvider';
 
 function ManageTimeline() {
-    const { timeLine, timeLineLoading, timeLineErr,refreshTimeLine } = useTimeLine();
+    const { timeLine, timeLineLoading, timeLineErr, refreshTimeLine } = useTimeLine();
     const [searchTerm, setSearchTerm] = useState('');
     const [viewMode, setViewMode] = useState('grid');
     const [selectedMilestone, setSelectedMilestone] = useState(null);
@@ -17,11 +17,16 @@ function ManageTimeline() {
 
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    // CREATE & UPDATE
+    // Helper to format ISO strings to YYYY-MM-DD for the date input
+    const formatForInput = (isoString) => {
+        if (!isoString) return '';
+        return isoString.split('T')[0]; 
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const method = editingMilestone ? 'PUT' : 'POST';
-        const url = editingMilestone ? `/api/timeline/${editingMilestone._id}` : '/api/timeline';
+        const url = editingMilestone ? `${apiUrl}/timeline/${editingMilestone._id}` : `${apiUrl}/timeline`;
 
         try {
             const res = await fetch(url, {
@@ -40,10 +45,9 @@ function ManageTimeline() {
         }
     };
 
-    // DELETE
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`/api/timeline/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${apiUrl}/timeline/${id}`, { method: 'DELETE' });
             if (res.ok && refreshTimeLine) refreshTimeLine();
         } catch (error) {
             console.error("Delete failed:", error);
@@ -52,13 +56,21 @@ function ManageTimeline() {
         setSelectedMilestone(null);
     };
 
-    // Filter FAQs based on search term
-    const filteredhistory = timeLine?.filter(history => {
-        const matchSearch = history.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        history.description.toLowerCase().includes(searchTerm.toLowerCase()) 
+    const filteredhistory = (timeLine || [])
+        .filter(history => {
+            if (!searchTerm) return true;
+            const term = searchTerm.toLowerCase();
+            const yearStr = new Date(history.year).getFullYear().toString();
+            
+            return (
+                history.title.toLowerCase().includes(term) ||
+                history.description.toLowerCase().includes(term) ||
+                yearStr.includes(term)
+            );
+        })
 
-        return matchSearch;
-    });
+        .sort((a, b) => new Date(b.year) - new Date(a.year)) 
+        // Result: 2026, 2010, 2000
 
     if (timeLineLoading) return <Loading />;
     if (timeLineErr) return <div className="text-red-500 p-4">Error loading timeline: {timeLineErr}</div>;
@@ -93,30 +105,15 @@ function ManageTimeline() {
                 </div>
             </div>
 
-            {/* Stats Card */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-sm text-gray-600">Total Milestones</p>
-                            <p className="text-2xl font-bold text-gray-900">{timeLine?.length || 0}</p>
-                        </div>
-                        <div className="bg-yellow-50 p-3 rounded-lg">
-                            <i className="fas fa-clock text-yellow-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             {/* Search */}
+            {/* Search */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex-1 relative">
                         <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input
                             type="text"
-                            placeholder="Search by title or description keywords..."
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] focus:border-transparent"
+                            placeholder="Search by title, description or year..."
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -125,23 +122,33 @@ function ManageTimeline() {
             </div>
 
             {/* Timeline List */}
-            {!timeLine || filteredhistory.length === 0 ? (
+            {filteredhistory.length === 0 ? (
                 <SearchNotFound searchType={"History"} />
             ) : (
                 <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 gap-4" : "space-y-4"}>
                     {filteredhistory.map((milestone) => (
                         <div key={milestone._id} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
-                            <div className="absolute top-0 right-0 bg-yellow-400 px-3 py-1 text-xs font-bold rounded-bl-lg">
-                                {milestone.year}
-                            </div>
                             
                             <div className="flex justify-between items-start mb-2">
                                 <h3 className="font-bold text-lg text-gray-800 pr-12">{milestone.title}</h3>
-                                <div className="flex gap-2">
+
+                                <div className="bg-gray-200 px-3 py-1 text-xs font-bold rounded-bl-lg text-[var(--primary-dark)]">
+                                    {new Date(milestone.year).toLocaleDateString()}
+                                </div>
+                            </div>
+
+                            <p className="text-gray-600 text-sm whitespace-pre-wrap">{milestone.description}</p>
+
+                            <div className="flex justify-end">
+                                <div className="flex gap-2 mb-5">
                                     <button 
                                         onClick={() => {
                                             setEditingMilestone(milestone);
-                                            setFormData({ year: milestone.year, title: milestone.title, description: milestone.description });
+                                            setFormData({ 
+                                                year: formatForInput(milestone.year), // FIX: Format for <input type="date">
+                                                title: milestone.title, 
+                                                description: milestone.description 
+                                            });
                                             setShowAddModal(true);
                                         }}
                                         className="text-blue-500 hover:text-blue-700 p-1 cursor-pointer"
@@ -159,7 +166,6 @@ function ManageTimeline() {
                                     </button>
                                 </div>
                             </div>
-                            <p className="text-gray-600 text-sm whitespace-pre-wrap">{milestone.description}</p>
                         </div>
                     ))}
                 </div>
@@ -177,22 +183,18 @@ function ManageTimeline() {
                                     <p className="text-sm text-gray-500">{editingMilestone ? 'Update Milestone' : 'Add New Milestone'}</p>
                                 </div>
                             </div>
-                            <button 
-                                onClick={() => setShowAddModal(false)} 
-                                className="text-gray-500 cursor-pointer w-10 h-10 bg-gray-100 border border-gray-200 rounded-full flex justify-center items-center hover:rotate-90 transition-all duration-300 ease-in-out">
-                                <i className="fas fa-times text-lg"></i>
+                            <button onClick={() => setShowAddModal(false)} className="text-gray-500 cursor-pointer w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center">
+                                <i className="fas fa-times"></i>
                             </button>
                         </div>
-
 
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
                             <div className="grid grid-cols-4 gap-4">
                                 <div className="col-span-1">
-                                    <label className="block text-sm font-medium mb-1">Year</label>
+                                    <label className="block text-sm font-medium mb-1">Date</label>
                                     <input 
-                                        type="text"
+                                        type="date"
                                         className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none"
-                                        placeholder="e.g. 2024"
                                         value={formData.year}
                                         onChange={e => setFormData({...formData, year: e.target.value})}
                                         required
@@ -222,7 +224,7 @@ function ManageTimeline() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4">
                                 <button type="button" onClick={() => setShowAddModal(false)} className="px-4 py-2 text-gray-600 cursor-pointer">Cancel</button>
-                                <button type="submit" className="px-6 py-2 bg-[#FFC53A] rounded-lg font-bold cursor-pointer hover:bg-yellow-500">
+                                <button type="submit" className="px-6 py-2 bg-[#FFC53A] rounded-lg font-bold hover:bg-yellow-500 cursor-pointer">
                                     {editingMilestone ? 'Update Milestone' : 'Save Milestone'}
                                 </button>
                             </div>
@@ -239,10 +241,12 @@ function ManageTimeline() {
                             <i className="fas fa-trash-alt text-2xl"></i>
                         </div>
                         <h2 className="text-xl font-bold text-gray-900 mb-2">Delete Milestone?</h2>
-                        <p className="text-gray-600 mb-6">Are you sure you want to remove the history for <b>{selectedMilestone?.year}</b>? This cannot be undone.</p>
+                        <p className="text-gray-600 mb-6">
+                            Are you sure you want to remove the history for <b>{new Date(selectedMilestone?.year).toLocaleDateString()}</b>?
+                        </p>
                         <div className="flex gap-3">
-                            <button onClick={() => setShowDeleteModal(false)} className="flex-1 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">Cancel</button>
-                            <button onClick={() => handleDelete(selectedMilestone._id)} className="flex-1 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer">Delete</button>
+                            <button onClick={() => setShowDeleteModal(false)} className="flex-1 py-2 border border-gray-200 rounded-lg cursor-pointer">Cancel</button>
+                            <button onClick={() => handleDelete(selectedMilestone._id)} className="flex-1 py-2 bg-red-600 text-white rounded-lg cursor-pointer">Delete</button>
                         </div>
                     </div>
                 </div>
