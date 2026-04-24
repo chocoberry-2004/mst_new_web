@@ -12,6 +12,7 @@ function ManageAchievement() {
   const [achievements, setAchievements] = useState([]);
 
   const placeholderImg = "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg";
+  const BASE_URL=import.meta.env.VITE_BASE_URL
 
   useEffect(() => {
     if (awards) {
@@ -19,7 +20,7 @@ function ManageAchievement() {
     }
   }, [awards]);
 
-  // console.log(awards);
+  console.log(awards);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All Categories');
@@ -164,7 +165,7 @@ function ManageAchievement() {
       if (achievement?.imageUrl[0]?.startsWith('http')) {
         return achievement.imageUrl;
       }
-      return `${import.meta.env.VITE_BASE_URL}${achievement.imageUrl}`;
+      return `${BASE_URL}${achievement.imageUrl}`;
     }
     return placeholderImg;
   };
@@ -308,7 +309,8 @@ function ManageAchievement() {
               <div className="h-48 overflow-hidden relative bg-gray-100">
                 <div className="flex justify-center items-center h-full">
                   <img 
-                    src={getImageUrl(achievement)} 
+                    // src={getImageUrl(achievement)} 
+                    src={`${BASE_URL}${achievement?.imageUrl}`}
                     alt={achievement.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -345,25 +347,13 @@ function ManageAchievement() {
 
                 <p className="text-sm text-gray-600 mb-4 line-clamp-3">{achievement.description}</p>
 
-                {achievement.metrics && Object.keys(achievement.metrics).length > 0 && (
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {Object.entries(achievement.metrics).slice(0, 3).map(([key, value]) => (
-                      <div key={key} className="bg-gray-50 rounded-lg px-3 py-2 flex-1 min-w-[80px]">
-                        <p className="text-xs text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
-                        <p className="text-sm font-semibold text-gray-900">
-                          {Array.isArray(value) ? value.length : value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+              
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100 mb-5">
                   <div className="flex items-center gap-1">
                     <i className="fas fa-building text-gray-400"></i>
                     <span className="text-sm text-gray-600">{achievement.organization}</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 ">
                     <button 
                       onClick={() => {
                         setSelectedAchievement(achievement);
@@ -411,7 +401,6 @@ function ManageAchievement() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Organization</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metrics</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -444,20 +433,7 @@ function ManageAchievement() {
                     <div className="text-xs text-gray-500">{achievement.country}</div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">{achievement.date}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-wrap gap-1">
-                      {achievement.metrics && Object.entries(achievement.metrics).slice(0, 2).map(([key, value]) => (
-                        <span key={key} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                          {key}: {Array.isArray(value) ? value.length : value}
-                        </span>
-                      ))}
-                      {achievement.metrics && Object.keys(achievement.metrics).length > 2 && (
-                        <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                          +{Object.keys(achievement.metrics).length - 2}
-                        </span>
-                      )}
-                    </div>
-                  </td>
+                 
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
                       <button 

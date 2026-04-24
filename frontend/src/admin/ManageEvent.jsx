@@ -500,7 +500,7 @@ function ManageEvent() {
                     <i className="fas fa-star text-gray-400"></i>
                     <span className="text-sm text-gray-600">{event.highlight ? 'Highlighted' : 'Regular'}</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mb-5">
                     <button 
                       onClick={() => {
                         setSelectedEvent(event);

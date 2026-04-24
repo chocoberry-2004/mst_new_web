@@ -76,47 +76,6 @@ function ViewAchievementModal({ isOpen, onClose, achievement, getCategoryColor, 
               <p className="text-gray-600">{achievement.description}</p>
             </div>
           )}
-
-          {/* How, Why, Impact */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {achievement.how && (
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm font-medium text-blue-700 mb-2">How Achieved</p>
-                <p className="text-sm text-gray-700">{achievement.how}</p>
-              </div>
-            )}
-            {achievement.why && (
-              <div className="p-4 bg-green-50 rounded-lg">
-                <p className="text-sm font-medium text-green-700 mb-2">Why Received</p>
-                <p className="text-sm text-gray-700">{achievement.why}</p>
-              </div>
-            )}
-            {achievement.impact && (
-              <div className="p-4 bg-purple-50 rounded-lg">
-                <p className="text-sm font-medium text-purple-700 mb-2">Impact</p>
-                <p className="text-sm text-gray-700">{achievement.impact}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Metrics */}
-          {achievement.metrics && Object.keys(achievement.metrics).length > 0 && (
-            <div className="p-4 border border-gray-200 rounded-lg">
-              <p className="text-sm font-medium text-gray-700 mb-3">Key Metrics</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(achievement.metrics).map(([key, value]) => (
-                  <div key={key} className="bg-gray-50 p-3 rounded-lg text-center">
-                    <p className="text-xs text-gray-500 capitalize mb-1">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
-                    </p>
-                    <p className="text-lg font-bold text-gray-900">
-                      {Array.isArray(value) ? value.join(', ') : value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
         
       </div>

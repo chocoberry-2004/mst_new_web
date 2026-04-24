@@ -25,7 +25,7 @@ function ManageFAQ() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const method = editingFaq ? 'PUT' : 'POST';
-        const url = editingFaq ? `${apiUrl}${editingFaq._id}` : `${apiUrl}`;
+        const url = editingFaq ? `${apiUrl}/faqs/${editingFaq._id}` : `${apiUrl}/faqs`;
 
         try {
             const res = await fetch(url, {
@@ -47,7 +47,7 @@ function ManageFAQ() {
     // Delete FAQ
     const handleDelete = async (id) => {
             try {
-                await fetch(`${apiUrl}${id}`, { method: 'DELETE' });
+                await fetch(`${apiUrl}/faqs/${id}`, { method: 'DELETE' });
                 refreshFAQ();
             } catch (error) {
                 console.error("Delete failed:", error);

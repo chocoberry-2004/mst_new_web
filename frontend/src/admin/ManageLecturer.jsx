@@ -472,10 +472,9 @@ function ManageLecturer() {
 
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-end gap-2">
+                  <div className="mt-4 mb-5 pt-4 border-t border-gray-100 flex items-center justify-end gap-2">
                     <button 
                       onClick={() => {
-                        // Convert single position/degree to arrays for editing
                         const editData = {
                           ...lecturer,
                           position: lecturer.position || [],

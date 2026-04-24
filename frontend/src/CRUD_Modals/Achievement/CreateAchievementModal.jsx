@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../../assets/images/mst_logo1.png';
 import { createAchievement } from '../../CRUD_handlers/Achievement/createAchievement';
 import { useCountry } from '../../providers/CountryProvider';
 
 function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
   const { countries, countryLoading, countryErr } = useCountry();
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     category: categories[0] || 'Academic Excellence',
@@ -12,18 +13,35 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
     country: '',
     location: '',
     date: '',
-    how: '',
-    why: '',
-    impact: '',
-    image: null,
+    imageUrl: null,
     description: ''
   });
 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    if (field === 'imageUrl') {
+      const file = value;
+      if (file) {
+        setFormData(prev => ({ ...prev, imageUrl: file }));
+        setPreviewUrl(URL.createObjectURL(file)); // Create local preview
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
   };
+
+  const removeImage = () => {
+    setFormData(prev => ({ ...prev, imageUrl: null }));
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [removeImage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,15 +58,9 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
       data.append("location", formData.location);
       data.append("date", formData.date);
       data.append("description", formData.description);
-      data.append("how", formData.how);
-      data.append("why", formData.why);
-      data.append("impact", formData.impact);
-
-      // optional fields
-      data.append("metrics", JSON.stringify(formData.metrics || {}));
-
-      if (formData.image) {
-        data.append("image", formData.image);
+    
+      if (formData.imageUrl) {
+        data.append("imageUrl", formData.imageUrl);
       }
 
       // call API
@@ -82,13 +94,12 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
       country: '',
       location: '',
       date: '',
-      how: '',
-      why: '',
-      impact: '',
-      metrics: {},
-      image: null, 
+      imageUrl: null, 
       description: ''
     });
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
     onClose();
   };
 
@@ -135,35 +146,114 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
                 placeholder="Enter achievement title"
               />
             </div>
+
             
-            <div>
+
+            {/* Image Upload & Preview Section */}
+            <div className="">
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Category <span className="text-red-500">*</span>
+                Achievement Image <span className="text-red-500">*</span>
               </label>
-              <select
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                value={formData.category}
-                onChange={(e) => handleChange('category', e.target.value)}
-              >
-                {categories?.map((category) => (
-                  <option key={category._id} value={category._id}>{category.name}</option>
-                ))}
-              </select>
+
+              <div className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#FFC53A] transition cursor-pointer group overflow-hidden bg-gray-50">
+                
+                {formData.imageUrl ? (
+                  <>
+                    {/* Image Preview */}
+                    <img
+                      src={previewUrl}
+                      alt="preview"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+
+                    <div className="absolute inset-0 bg-black/30 bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 pointer-events-none z-20" />
+                    
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents triggering the file input
+                        e.preventDefault();
+                        removeImage();
+                      }}
+                      className="absolute top-3 right-3 bg-red-500 text-white w-8 h-8 rounded-full cursor-pointer hover:bg-red-600 transition shadow-lg z-30 flex items-center justify-center"
+                    >
+                      <i className="fas fa-times text-sm"></i>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-4xl text-gray-400 group-hover:scale-110 group-hover:text-[#FFC53A] transition duration-300">
+                      <i className="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-2 font-medium px-4">
+                      Click or drag image to upload
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      PNG, JPG (Max 2MB)
+                    </p>
+                  </>
+                )}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleChange('imageUrl', e.target.files[0]);
+                    }
+                  }}
+                />
+              </div>
             </div>
+
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Organization <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                value={formData.organization}
-                onChange={(e) => handleChange('organization', e.target.value)}
-                placeholder="Organization name"
-              />
+            
+            <div className="grid gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
+                  value={formData.category}
+                  onChange={(e) => handleChange('category', e.target.value)}
+                >
+                  {categories?.map((category) => (
+                    <option key={category._id} value={category._id}>{category.name}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Organization <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
+                  value={formData.organization}
+                  onChange={(e) => handleChange('organization', e.target.value)}
+                  placeholder="Organization name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Location <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
+                  value={formData.location}
+                  onChange={(e) => handleChange('location', e.target.value)}
+                  placeholder="City/Location"
+                />
+              </div>
+
             </div>
             
             <div>
@@ -237,19 +327,7 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
             </div>
             
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Location <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                value={formData.location}
-                onChange={(e) => handleChange('location', e.target.value)}
-                placeholder="City/Location"
-              />
-            </div>
+           
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -263,20 +341,7 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
                 onChange={(e) => handleChange('date', e.target.value)}
               />
             </div>
-
-
-            <div className="">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Image URL
-              </label>
-              <input
-                type="file"
-                accept='image/*'
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                onChange={(e) => handleChange('image', e.target.files[0])}
-              />
-            </div>
-            
+           
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Description <span className="text-red-500">*</span>
@@ -290,46 +355,6 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
                 placeholder="Brief description of the achievement"
               ></textarea>
             </div>
-            
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                How Achieved
-              </label>
-              <textarea
-                rows="2"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                value={formData.how}
-                onChange={(e) => handleChange('how', e.target.value)}
-                placeholder="Describe how this achievement was accomplished"
-              ></textarea>
-            </div>
-            
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Why Received
-              </label>
-              <textarea
-                rows="2"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                value={formData.why}
-                onChange={(e) => handleChange('why', e.target.value)}
-                placeholder="Reason for receiving this achievement"
-              ></textarea>
-            </div>
-            
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Impact
-              </label>
-              <textarea
-                rows="2"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A]"
-                value={formData.impact}
-                onChange={(e) => handleChange('impact', e.target.value)}
-                placeholder="Impact of this achievement"
-              ></textarea>
-            </div>
-            
             
           </div>
           
