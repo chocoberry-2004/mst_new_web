@@ -4,11 +4,9 @@ import Achievement from "../models/achievements.js"
 export const createAchievement = async (req, res) => {
   try {
     const data = req.body;
-    
-    // Handle files if they exist
-    if (req.files) {
-      if (req.files.image) data.imageUrl = `uploads/${req.files.image[0].filename}`;
-      if (req.files.video) data.videoUrl = `uploads/${req.files.video[0].filename}`;
+
+    if (req.file) {
+      data.imageUrl = `/uploads/achievements/${req.file.filename}`;
     }
 
     const newAchievement = new Achievement(data);
@@ -44,8 +42,8 @@ export const getAchievementById = async (req, res) => {
 export const updateAchievement = async (req, res) => {
   try {
     const updated = await Achievement.findByIdAndUpdate(
-      req.params.id, 
-      req.body, 
+      req.params.id,
+      req.body,
       { new: true }
     );
     res.status(200).json(updated);
