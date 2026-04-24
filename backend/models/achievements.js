@@ -9,8 +9,7 @@ const achievementSchema = new mongoose.Schema(
     location: String,
     description: String,
     date: Date,
-    imageUrl: [{ type: String }],
-    videoUrl: { type: String },
+    imageUrl: [{ type: String, required: true }]
   },
   { timestamps: true },
 );

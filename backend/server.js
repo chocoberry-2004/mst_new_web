@@ -39,7 +39,7 @@ app.use(express.urlencoded());
 app.use(express.json());
 dotenv.config();
 
-const uploadDirs = ["uploads/events", "uploads/partners", "uploads/lecturers"];
+const uploadDirs = ["uploads/events", "uploads/partners", "uploads/lecturers", "uploads/achievements"];
 
 uploadDirs.forEach((dir) => {
   if (!fs.existsSync(dir)) {
