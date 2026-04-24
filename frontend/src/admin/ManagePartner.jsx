@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { usePartner } from '../providers/PartnerProvider';
 
 import SearchNotFound from '../components/SearchNotFound';
+import Loading from '../pages/Loading';
 
 // CRUD modals
 import PartnerCreateModal from '../CRUD_Modals/Partner/PartnerCreateModal';
@@ -18,9 +19,7 @@ import { deletePartner } from '../CRUD_handlers/Partner/deletePartner';
 function ManagePartner() {
   const { partners, partnerLoading, partnerError } = usePartner();
 
-  // console.log("i am partner", partners);
 
-  // Fix: Extract partners data correctly based on your API response
   const partnersData = Array.isArray(partners) ? partners : (partners?.partners || []);
   
 
@@ -72,15 +71,40 @@ function ManagePartner() {
 
   // Calculate statistics
   const totalPartners = localPartners.length;
- 
   const featuredPartners = localPartners.filter(p => p.featured).length;
+  const nonFeaturedPartners = totalPartners - featuredPartners;
+
+  const statsConfig = [
+    {
+      label: "Total Partners",
+      value: totalPartners,
+      icon: "fa-handshake",
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-600",
+      subtext: "Active ecosystem members"
+    },
+    {
+      label: "Featured Partners",
+      value: featuredPartners,
+      icon: "fa-star",
+      bgColor: "bg-orange-50",
+      textColor: "text-[#FFC53A]",
+      subtext: "Highlighting top providers"
+    },
+    {
+      label: "Standard Partners",
+      value: nonFeaturedPartners,
+      icon: "fa-users",
+      bgColor: "bg-gray-50",
+      textColor: "text-gray-400",
+      subtext: "General partnerships"
+    }
+  ];
 
   // Handle add partner
   const handleAddPartner = async () => {
     try {
-      console.log("Creating partner:", newPartner);
       const result = await createPartner(newPartner);
-      console.log("Create result:", result);
 
       if (result.success) {
         const addedPartner = result.partner;
@@ -149,8 +173,10 @@ function ManagePartner() {
     e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(partnerName)}&background=FFC53A&color=000&size=128`;
   };
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
  
-  if (partnerLoading) return <div>Loading...</div>;
+  if (partnerLoading) return <Loading/>;
   if (partnerError) return <div>Error loading partners: {partnerError.message || "Unknown error"}</div>;
 
   return (
@@ -180,55 +206,23 @@ function ManagePartner() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Partners</p>
-              <p className="text-2xl font-bold text-gray-900">{totalPartners}</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {statsConfig.map((stat, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">{stat.label}</p>
+                <p className={`text-2xl font-bold ${stat.label === 'Featured Partners' ? 'text-[#FFC53A]' : 'text-gray-900'}`}>
+                  {stat.value}
+                </p>
+              </div>
+              <div className={`${stat.bgColor} p-3 rounded-lg`}>
+                <i className={`fas ${stat.icon} ${stat.textColor} text-xl`}></i>
+              </div>
             </div>
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <i className="fas fa-handshake text-blue-600 text-xl"></i>
-            </div>
+            <p className="text-xs text-gray-500 mt-2">{stat.subtext}</p>
           </div>
-          {/* <p className="text-xs text-gray-500 mt-2">Across {stats.countries || 0} countries</p> */}
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Platinum Partners</p>
-              {/* <p className="text-2xl font-bold text-gray-900">{platinumPartners}</p> */}
-            </div>
-            <div className="bg-gray-100 p-3 rounded-lg">
-              <i className="fas fa-crown text-gray-600 text-xl"></i>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-2">Strategic partners</p>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Gold Partners</p>
-              {/* <p className="text-2xl font-bold text-yellow-600">{goldPartners}</p> */}
-            </div>
-            <div className="bg-yellow-50 p-3 rounded-lg">
-              <i className="fas fa-medal text-yellow-600 text-xl"></i>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-2">Certified partners</p>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Featured Partners</p>
-              <p className="text-2xl font-bold text-[#FFC53A]">{featuredPartners}</p>
-            </div>
-            <div className="bg-orange-50 p-3 rounded-lg">
-              <i className="fas fa-star text-[#FFC53A] text-xl"></i>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-2">Premium technology providers</p>
-        </div>
+        ))}
       </div>
 
       {/* Search and Filters */}
@@ -278,7 +272,7 @@ function ManagePartner() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-16 h-16 bg-gray-50 rounded-lg p-2 flex items-center justify-center border border-gray-200">
                       <img 
-                        src={partner.logo} 
+                        src={`${BASE_URL}${partner.logo}`} 
                         alt={partner.name}
                         className="max-w-full max-h-full object-contain"
                         onError={(e) => handleImageError(e, partner.name)}
@@ -304,18 +298,20 @@ function ManagePartner() {
 
                 
 
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                    {partner.url && partner.url !== "undefined" && (
-                      <a 
-                        href={partner.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                      >
-                        <i className="fas fa-external-link-alt text-xs"></i>
-                        Website
-                      </a>
-                    )}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100 mb-5">
+                    <div className="">
+                      {partner.url && partner.url !== "undefined" && (
+                        <a 
+                          href={partner.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                        >
+                          <i className="fas fa-external-link-alt text-xs"></i>
+                          Website
+                        </a>
+                      )}
+                    </div>
                     <div className="flex gap-2">
                       <button 
                         onClick={() => {

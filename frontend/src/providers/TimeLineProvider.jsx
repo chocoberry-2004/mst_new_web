@@ -6,7 +6,6 @@ const TimeLineContext = createContext();
 const fetchTimeLine = async () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const response = await fetch(`${apiUrl}/timeline/`);
-  // const response = await fetch("/js/timeline.json");
   if (!response.ok) throw new Error("Failed to fetch timeline data");
   return response.json();
 };

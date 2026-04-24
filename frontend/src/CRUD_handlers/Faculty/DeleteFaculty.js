@@ -1,7 +1,7 @@
-export const deleteFaculty = async (eventId) => {
+export const deleteFaculty = async (Id) => {
   try {
-    const requestEvent = await fetch(
-      `${import.meta.env.VITE_API_URL}/events/${eventId}`,
+    const Request = await fetch(
+      `${import.meta.env.VITE_API_URL}/faculties/${Id}`,
       {
         method: "DELETE",
         headers: {
@@ -10,15 +10,15 @@ export const deleteFaculty = async (eventId) => {
       }
     );
 
-    const eventResponse = await requestEvent.json();
+    const Response = await Request.json();
 
     return {
       success: true,
-      event: eventResponse
+      faculty: Response
     };
 
   } catch (error) {
-    console.error("Error deleting event:", error);
+    console.error("Error deleting faculty:", error);
 
     return {
       success: false,

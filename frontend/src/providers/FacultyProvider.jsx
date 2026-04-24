@@ -1,17 +1,20 @@
 import React, { createContext, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery,useQueryClient } from "@tanstack/react-query";
 
 const FacultyContext = createContext();
 
 const fetchFaculty = async () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  // const response = await fetch(`${apiUrl}/faculties/`);
-  const response = await fetch(`/js/faculty.json`);
+  const response = await fetch(`${apiUrl}/faculties/`);
+  // const response = await fetch(`/js/faculty.json`);
   if (!response.ok) throw new Error("Failed to fetch faculty data");
   return response.json();
 };
 
 export const FacultyProvider = ({ children }) => {
+
+  const queryClient = useQueryClient();
+  
   const {
     data: facultyList,
     isPending: facultyLoading,
@@ -21,10 +24,18 @@ export const FacultyProvider = ({ children }) => {
     queryFn: fetchFaculty,
   });
 
+  console.log(facultyList);
+
+  // Add refresh function
+  const refetchFaculties = () => {
+    queryClient.invalidateQueries({ queryKey: ["faculty"] });
+  };
+
+
 
   return (
     <FacultyContext.Provider
-      value={{ facultyList, facultyLoading, facultyError }}
+      value={{ facultyList, facultyLoading, facultyError,refetchFaculties }}
     >
       {children}
     </FacultyContext.Provider>

@@ -244,7 +244,7 @@ function Home() {
                 >
                 <div className="flex justify-center mb-4">
                     <img
-                    src={`${BASE_URL} ${partner.logo}`}
+                    src={`${BASE_URL}${partner.logo}`}
                     alt={partner.name}
                     className="h-16 object-contain"
                     />
@@ -258,16 +258,7 @@ function Home() {
                     {partner.description}
                 </p>
 
-                <div className="space-y-2">
-                    {partner.categories.map((cat, index) => (
-                    <p
-                        key={index}
-                        className="text-xs bg-gray-200 px-2 py-1 rounded-full border border-gray-300"
-                    >
-                        {cat}
-                    </p>
-                    ))}
-                </div>
+               
 
                 <div className="text-center mt-4">
                     <a

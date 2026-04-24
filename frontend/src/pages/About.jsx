@@ -1,7 +1,7 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useState } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 
 // images
 import tchal from '../assets/images/tchal.png';
@@ -28,7 +28,7 @@ function About() {
   const { lecturers, lecturerLoading, lecturerError } = useLecturer();
   const { awards, awardLoading, awardErr } = useAchievement();
   const { timeLine, timeLineLoading, timeLineErr } = useTimeLine();
-
+  // const [sortedTimeLine, setSortedTimeLine] = useState([]);
 
   const findAward = (id) => {
     const award = awards?.find((award) => award._id === id);
@@ -40,6 +40,13 @@ function About() {
   };
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+  console.log(timeLine);
+
+  const sortedTimeLine = useMemo(() => {
+    if (!timeLine) return [];
+    return [...timeLine].sort((a, b) => parseInt(b.year) - parseInt(a.year));
+  }, [timeLine]);
 
   if(awardLoading || timeLineLoading || lecturerLoading) return <Loading/>
 
@@ -270,61 +277,6 @@ function About() {
         </div>
       </section>   
 
-      {/* Leadership Team */}
-      {/* <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Our BOD/P ?
-              <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mt-2 mx-auto"></div>
-            </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              Visionary leaders guiding our institution towards excellence
-            </p>
-          </div>
-
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {leadership?.map((leader, index) => (
-              <div
-                key={index}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200"
-              >
-                <div className="h-30 bg-gray-100 relative">
-                  <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
-                    <div className="w-24 h-24 rounded-full bg-white p-1">
-                      <img
-                        src={leader.profileImage}
-                        alt={leader.name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-16 pb-8 px-6 text-center">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {leader.name}
-                  </h3>
-
-                  <p className="text-blue-600 font-semibold mb-3">
-                    {leader.positions?.join(", ")}
-                  </p>
-
-                  <p className="text-gray-600 mb-4">{leader.bio}</p>
-
-                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-700">
-                    <i className="fas fa-star mr-2 text-yellow-500"></i>
-                    {leader.expertise?.[0]}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section> */}
-
       {/* Timeline */}
       <section className="py-16 lg:py-24 bg-[var(--primary-dark)]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -341,11 +293,11 @@ function About() {
             
             {/* Timeline items */}
             <div className="space-y-12">
-              {timeLine?.map((milestone, index) => (
+              {sortedTimeLine?.map((milestone, index) => (
                 <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
                     <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:bg-gray-200">
-                      <div className="text-2xl font-bold text-blue-600 mb-2">{milestone.year}</div>
+                      <div className="text-2xl font-bold text-blue-600 mb-2">{new Date(milestone.year).toLocaleDateString()}</div>
                       <h3 className="text-xl font-semibold text-gray-900 mb-2">{milestone.title}</h3>
                       <p className="text-gray-600">{milestone.description}</p>
                     </div>
