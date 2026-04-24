@@ -58,6 +58,8 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
       data.append("location", formData.location);
       data.append("date", formData.date);
       data.append("description", formData.description);
+
+      console.log(formData.imageUrl);
     
       if (formData.imageUrl) {
         data.append("imageUrl", formData.imageUrl);
@@ -67,7 +69,7 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
       const result = await createAchievement(data);
 
       if (result.success) {
-        // console.log(formData);
+        console.log(formData);
         setLoading(false);
         onSave(result.achievement); // send back to parent
         handleClose();
