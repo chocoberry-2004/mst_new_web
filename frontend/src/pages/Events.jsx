@@ -60,12 +60,7 @@ function Events() {
 
     const eventList = Array.isArray(events) ? events : [];
 
-    // // Statistics
-    // const totalEvents = eventList.length;
-    // // const totalParticipants = eventList.reduce((sum, event) => sum + (event.participants || 0), 0);
-    // const totalSpeakers = eventList.reduce((sum, event) => sum + (event.speakers || 0), 0);
-    // const upcomingEvents = eventList.filter(event => event.status === "upcoming").length;
-
+   
     // Calculate statistics
     const totalEvents = eventList?.length || 0;
     const upcomingEvents = eventList?.filter(e => e.status === 'upcoming').length || 0;

@@ -24,7 +24,6 @@ export const FacultyProvider = ({ children }) => {
     queryFn: fetchFaculty,
   });
 
-  console.log(facultyList);
 
   // Add refresh function
   const refetchFaculties = () => {
