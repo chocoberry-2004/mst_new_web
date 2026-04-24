@@ -15,6 +15,11 @@ const facultySchema = new mongoose.Schema(
       type: String,
       default: "6 Months",
     },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: 'active'
+    },
     overview: {
       type: String,
     },
