@@ -7,6 +7,7 @@ import {
   deleteAchievement,
 } from "../controllers/achievementController.js";
 import { upload } from "../middlewares/upload.js";
+import achievementUpload from "../middlewares/achievementUpload.js";
 
 const router = express.Router();
 
@@ -16,10 +17,7 @@ router.get("/:id", getAchievementById);
 // Creating requires file upload handling
 router.post(
   "/",
-  upload.fields([
-    { name: "imageURL", maxCount: 5 },
-    { name: "videoURL", maxCount: 1 },
-  ]),
+  achievementUpload.single('imageUrl'),
   createAchievement,
 );
 
