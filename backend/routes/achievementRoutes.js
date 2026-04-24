@@ -21,7 +21,7 @@ router.post(
   createAchievement,
 );
 
-router.put("/:id", updateAchievement);
+router.put("/:id", achievementUpload.single('imageUrl'), updateAchievement);
 router.delete("/:id", deleteAchievement);
 
 export default router;
