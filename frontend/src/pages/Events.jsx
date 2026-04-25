@@ -16,6 +16,7 @@ import event3 from "../assets/images/event3.jpg";
 import event4 from "../assets/images/event4.jpg";
 import event5 from "../assets/images/event6.jpg";
 
+import EventViewModal from '../CRUD_Modals/Event/EventViewModal';
 
 
 function Events() {
@@ -27,6 +28,10 @@ function Events() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
+    const [showAllImage, setShowAllImage] = useState(false);
+
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const placeholderImg = "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
@@ -373,24 +378,33 @@ function Events() {
                                         {event.description}
                                     </p>
 
+                                   
 
-                                    <button
-                                        onClick={() => openApplicationForm("event")}
-                                        className={`w-full py-2.5 cursor-pointer rounded-lg font-medium transition-all duration-300 ${
-                                            event.registered
-                                                ? "bg-green-600 text-white"
-                                                : event.status === "upcoming"
-                                                ? "bg-blue-600 text-white hover:bg-blue-700"
-                                                : "bg-gray-400 text-white cursor-not-allowed"
-                                        }`}
-                                        disabled={event.status !== "upcoming" && !event.registered}
-                                    >
-                                        {event.registered
-                                            ? "Registered"
-                                            : event.status === "upcoming"
-                                            ? "Register Now"
-                                            : "View Details"}
-                                    </button>
+                                    <div className="p-6 pt-0 mt-auto">
+                                        <div className="grid grid-cols-2 gap-3">
+                                        
+                                        {/* Contact Button - Subtle/Secondary */}
+                                        <button 
+                                            onClick={() => openApplicationForm("event")}
+                                            className="flex items-center justify-center px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors duration-200 cursor-pointer"
+                                        >
+                                            <i className="fas fa-envelope mr-2"></i>
+                                            Contact
+                                        </button>
+
+                                        {/* View Detail Button - Highlighted/Primary */}
+                                        <button 
+                                            onClick={() => {
+                                                setShowViewModal(true)
+                                                setSelectedEvent(event);
+                                            }}
+                                            className="flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md hover:shadow-blue-200 transition-all duration-200 cursor-pointer"
+                                        >
+                                            <i className="fas fa-eye mr-2"></i>
+                                            Details
+                                        </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -495,33 +509,34 @@ function Events() {
 
                                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
-                                                <div className="flex flex-wrap items-center gap-4">
-
-
+                                                <div className="grid grid-cols-2 gap-3 mt-4 items-center">
+                                                    {/* Contact Button */}
                                                     <button
                                                         onClick={() => openApplicationForm("event")}
-                                                        className="inline-flex items-center gap-2 text-[#0B124E]
-                                                        px-6 py-2.5 rounded-full font-semibold
-                                                        bg-[var(--accent-yellow)]
-                                                        transition-all duration-300
-                                                        shadow-lg hover:shadow-2xl hover:scale-105
-                                                        hover:bg-yellow-400 cursor-pointer"
+                                                        className="inline-flex items-center justify-center gap-2 text-[#0B124E]
+                                                        px-4 py-2.5 rounded-xl font-semibold bg-[var(--accent-yellow)]
+                                                        transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]
+                                                        hover:bg-yellow-400 cursor-pointer text-sm"
                                                     >
-                                                        {highlightEvent.status === "upcoming" ? (
-                                                        <>
-                                                            <i className="fas fa-ticket-alt"></i>
-                                                            Register Now
-                                                        </>
-                                                        ) : (
-                                                        <>
-                                                            <i className="fas fa-eye"></i>
-                                                            View Details
-                                                        </>
-                                                        )}
+                                                        <i className="fas fa-envelope text-xs"></i>
+                                                        Contact
+                                                    </button>
+
+                                                    {/* Details Button */}
+                                                    <button 
+                                                        onClick={() => {
+                                                            setShowViewModal(true);
+                                                            setSelectedEvent(highlightEvent);
+                                                        }}
+                                                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 
+                                                        text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 
+                                                        hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md 
+                                                        hover:shadow-blue-200 transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                                                    >
+                                                        <i className="fas fa-eye text-xs"></i>
+                                                        Details
                                                     </button>
                                                 </div>
-
-                                               
                                             </div>
 
                                         </div>
@@ -551,13 +566,27 @@ function Events() {
                             </div>
                             
                             <div className="">
-                                <EventGallery/>
+                                <EventGallery showAll={showAllImage}/>
                             </div>
                             
                             <div className="text-center mt-8">
-                                <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 hover:border-blue-700 hover:text-blue-700 transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                                    View All Gallery <i className="fas fa-arrow-right ml-2"></i>
+                                <button 
+                                    onClick={() => {
+                                    if(showAllImage) {
+                                        setShowAllImage(false)
+                                    } else {
+                                        setShowAllImage(true)
+                                    }
+                                    }}
+                                    className="inline-flex items-center px-6 py-2 border-2 border-blue-600 text-blue-600 font-semibold rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer">
+                                {
+                                    showAllImage ? `Show Less ` : ` See All  `
+                                }
+                                <i className="fas fa-arrow-right ml-2"></i>
                                 </button>
+                                {/* <button className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 hover:border-blue-700 hover:text-blue-700 transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                                    View All Gallery <i className="fas fa-arrow-right ml-2"></i>
+                                </button> */}
                             </div>
                         </div>
                     )}
@@ -599,6 +628,13 @@ function Events() {
             </section>
             
             <ApplicationForm/>
+
+            <EventViewModal
+                show={showViewModal}
+                onClose={() => setShowViewModal(false)}
+                selectedEvent={selectedEvent}
+                BASE_URL={BASE_URL}
+            />
 
             
         </div>

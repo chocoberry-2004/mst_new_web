@@ -272,7 +272,7 @@ function ManagePartner() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-16 h-16 bg-gray-50 rounded-lg p-2 flex items-center justify-center border border-gray-200">
                       <img 
-                        src={`${BASE_URL}/${partner.logo}`} 
+                        src={`${BASE_URL}${partner.logo}`} 
                         alt={partner.name}
                         className="max-w-full max-h-full object-contain"
                         onError={(e) => handleImageError(e, partner.name)}
@@ -367,7 +367,7 @@ function ManagePartner() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gray-50 rounded-lg p-1 flex items-center justify-center border border-gray-200">
                           <img 
-                            src={partner.logo} 
+                            src={`${BASE_URL}${partner.logo}`} 
                             alt={partner.name}
                             className="max-w-full max-h-full object-contain"
                             onError={(e) => handleImageError(e, partner.name)}

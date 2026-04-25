@@ -14,18 +14,22 @@ function ManageAchievement() {
   const placeholderImg = "https://t4.ftcdn.net/jpg/06/57/37/01/360_F_657370150_pdNeG5pjI976ZasVbKN9VqH1rfoykdYU.jpg";
   const BASE_URL=import.meta.env.VITE_BASE_URL
 
+
   useEffect(() => {
     if (awards) {
-      setAchievements(awards);
+      const normalized = awards.map(a => ({
+        ...a,
+        year: a.date ? new Date(a.date).getFullYear() : null
+      }));
+      setAchievements(normalized);
     }
   }, [awards]);
 
-  console.log(awards);
+
   
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All Categories');
   const [filterCountry, setFilterCountry] = useState('All Countries');
-  const [filterYear, setFilterYear] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -33,7 +37,12 @@ function ManageAchievement() {
   const [selectedAchievement, setSelectedAchievement] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
 
-  const years = ['all', ...new Set(achievements.map(a => a.date))].sort();
+  const years = [
+    'all',
+    ...new Set(
+      achievements.map(a => new Date(a.date).getFullYear())
+    )
+  ].sort();
 
   const filteredAchievements = achievements.filter(achievement => {
     const matchesSearch = achievement.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -43,9 +52,8 @@ function ManageAchievement() {
     
     const matchesCategory = filterCategory === 'All Categories' || achievement.category === filterCategory;
     const matchesCountry = filterCountry === 'All Countries' || achievement.country === filterCountry;
-    const matchesYear = filterYear === 'all' || achievement.date === filterYear;
     
-    return matchesSearch && matchesCategory && matchesCountry && matchesYear;
+    return matchesSearch && matchesCategory && matchesCountry;
   });
 
   const totalAchievements = achievements.length;
@@ -65,9 +73,13 @@ function ManageAchievement() {
     }
   })  
 
+  const currentYear = new Date().getFullYear();
+
   const achievementsByYear = achievements.reduce((acc, curr) => {
+    
     if (curr.date) {
-      acc[curr.date] = (acc[curr.date] || 0) + 1;
+      const year = new Date(curr.date).getFullYear();
+      acc[year] = (acc[year] || 0) + 1;
     }
     return acc;
   }, {});
@@ -107,7 +119,6 @@ function ManageAchievement() {
         a._id === normalized._id ? normalized : a
       )
     );
-
     setShowEditModal(false);
     setSelectedAchievement(null);
   };
@@ -156,7 +167,7 @@ function ManageAchievement() {
 
   const categoriesWithoutAll = achievedCategory.filter(c => c !== 'All Categories');
 
-  const currentYear = new Date().getFullYear();
+  
 
   // Helper function to get image URL
   const getImageUrl = (achievement) => {
@@ -284,26 +295,14 @@ function ManageAchievement() {
               </select>
               <i className="fas fa-globe absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
-            <div className="relative">
-              <select
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] appearance-none bg-white cursor-pointer"
-                value={filterYear}
-                onChange={(e) => setFilterYear(e.target.value)}
-              >
-                <option value="all">All Years</option>
-                {years.filter(y => y !== 'all').map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-              <i className="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            </div>
+           
           </div>
         </div>
       </div>
 
       {/* Achievements Grid/List View */}
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAchievements.map(achievement => (
             <div key={achievement._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
               <div className="h-48 overflow-hidden relative bg-gray-100">
@@ -312,7 +311,7 @@ function ManageAchievement() {
                     // src={getImageUrl(achievement)} 
                     src={`${BASE_URL}${achievement?.imageUrl}`}
                     alt={achievement.title}
-                    className="w-full h-full object-cover"
+                    className="w-48 h-full object-cover"
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = placeholderImg;
@@ -322,7 +321,7 @@ function ManageAchievement() {
                 <div className="absolute top-3 right-3">
                   <span className={`px-3 py-1 text-xs font-medium rounded-full ${getCategoryColor(achievement.category)}`}>
                     <i className={`fas ${getCategoryIcon(achievement.category)} mr-1`}></i>
-                    {achievement.category}
+                    {achievement?.category}
                   </span>
                 </div>
               </div>
@@ -341,7 +340,7 @@ function ManageAchievement() {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <i className="fas fa-calendar w-5 text-gray-400"></i>
-                    <span>{achievement.date}</span>
+                    <span>{new Date(achievement.date).toLocaleDateString()}</span>
                   </div>
                 </div>
 
@@ -432,7 +431,7 @@ function ManageAchievement() {
                     <div className="text-sm text-gray-900">{achievement.location}</div>
                     <div className="text-xs text-gray-500">{achievement.country}</div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{achievement.date}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600"> {new Date(achievement.date).toLocaleDateString()}</td>
                  
                   <td className="px-6 py-4">
                     <div className="flex gap-2">

@@ -266,18 +266,21 @@ function Home() {
                     {partner.description}
                 </p>
 
-               
-
-                <div className="text-center mt-4">
-                    <a
-                    href={partner.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm font-medium text-blue-600 hover:underline block w-full p-2 bg-gray-200 border border-gray-300 rounded-full"
-                    >
-                    Visit Website
-                    </a>
-                </div>
+                {
+                    partner.url && (
+                        <div className="text-center mt-4">
+                            <a
+                            href={partner.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-sm font-medium text-blue-600 hover:underline block w-full p-2 bg-gray-200 border border-gray-300 rounded-full"
+                            >
+                            Visit Website
+                            </a>
+                        </div>
+                    )
+                }
+                
                 </div>
             ))}
             </div>

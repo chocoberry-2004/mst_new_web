@@ -3,10 +3,8 @@ import { useEventContext } from '../providers/EventProvider';
 import logo from '../assets/images/mst_logo1.png';
 
 
-function EventGallery() {
+function EventGallery({showAll}) {
     const { events, loading, error } = useEventContext();
-
-    console.log(events);
 
     const [isOpen, setIsOpen] = useState(false);
     const [currentEventIndex, setCurrentEventIndex] = useState(0);
@@ -87,30 +85,33 @@ function EventGallery() {
     <div>
         {/* Event thumbnails */}
         <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
-            {pastEvents.map((event, eventIndex) =>
-            event.imageURL?.map((img, imageIndex) => (
+
+            {pastEvents?.map((event, eventIndex) =>
+            (event?.imageURL || [])
+                .slice(0, showAll ? event.imageURL.length : 1)
+                .map((img, imageIndex) => (
                 <div
-                key={`${event._id}-${imageIndex}`}
-                className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer bg-gray-200 border border-gray-300"
-                onClick={() => openModal(eventIndex, imageIndex)}
+                    key={`${event._id}-${imageIndex}`}
+                    className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer bg-gray-200 border border-gray-300"
+                    onClick={() => openModal(eventIndex, imageIndex)}
                 >
-                <img
+                    <img
                     src={img ? `${BASE_URL}${img}` : placeholderImg}
                     alt={event.title}
                     onError={(e) => {
                         e.target.src = placeholderImg;
                     }}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
+                    />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                     <div className="text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="font-semibold">{event.title}</div>
-                    <div className="text-sm text-gray-300">{event.date}</div>
+                        <div className="font-semibold">{event.title}</div>
+                        <div className="text-sm text-gray-300">{event.date}</div>
+                    </div>
                     </div>
                 </div>
-                </div>
-            ))
+                ))
             )}
         </div>
 
