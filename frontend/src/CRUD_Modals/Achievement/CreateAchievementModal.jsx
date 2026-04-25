@@ -8,7 +8,7 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
-    category: categories[0] || 'Academic Excellence',
+    category: 'Academic Excellence',
     organization: '',
     country: '',
     location: '',
@@ -58,8 +58,6 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
       data.append("location", formData.location);
       data.append("date", formData.date);
       data.append("description", formData.description);
-
-      console.log(formData.imageUrl);
     
       if (formData.imageUrl) {
         data.append("imageUrl", formData.imageUrl);
@@ -91,7 +89,7 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
   const handleClose = () => {
     setFormData({
       title: '',
-      category: categories[0] || 'Academic Excellence',
+      category: 'Academic Excellence',
       organization: '',
       country: '',
       location: '',
@@ -199,6 +197,7 @@ function CreateAchievementModal({ isOpen, onClose, onSave, categories }) {
                 <input
                   type="file"
                   accept="image/*"
+                  required
                   className="absolute inset-0 opacity-0 cursor-pointer z-10"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {

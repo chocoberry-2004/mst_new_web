@@ -471,11 +471,11 @@ function Contact() {
               to support students in learning modern technologies and IT concepts.
             </p>
 
-            <NavLink to="/article">
+            {/* <NavLink to="/article">
               <button className="cursor-pointer px-6 py-3 rounded-lg bg-[var(--accent-yellow)] text-[var(--primary-dark)] font-semibold hover:scale-105 transition-all duration-300 shadow-lg">
                 Explore Articles
               </button>
-            </NavLink>
+            </NavLink> */}
           </div>
 
         </section>
