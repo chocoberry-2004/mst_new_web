@@ -1,22 +1,23 @@
 import Event from "../models/events.js";
 import fs from "fs";
 import path from "path";
+import { deleteFile } from "../utils/deleteFile.js";
 
-const deleteFile = (filePath) => {
-  if (!filePath) return;
+// const deleteFile = (filePath) => {
+//   if (!filePath) return;
 
-  const fullPath = path.join(
-    process.cwd(),
-    filePath.startsWith("/") ? filePath.slice(1) : filePath,
-  );
+//   const fullPath = path.join(
+//     process.cwd(),
+//     filePath.startsWith("/") ? filePath.slice(1) : filePath,
+//   );
 
-  if (fs.existsSync(fullPath)) {
-    fs.unlink(fullPath, (err) => {
-      if (err) console.log(`Error deleting file: ${fullPath}`, err);
-      else console.log(`Deleted file: ${fullPath}`);
-    });
-  }
-};
+//   if (fs.existsSync(fullPath)) {
+//     fs.unlink(fullPath, (err) => {
+//       if (err) console.log(`Error deleting file: ${fullPath}`, err);
+//       else console.log(`Deleted file: ${fullPath}`);
+//     });
+//   }
+// };
 
 // CREATE
 export const createEvent = async (req, res) => {

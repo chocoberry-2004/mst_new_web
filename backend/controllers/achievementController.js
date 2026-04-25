@@ -1,4 +1,5 @@
 import Achievement from "../models/achievements.js"
+import { deleteFile } from "../utils/deleteFile.js";
 
 // CREATE
 export const createAchievement = async (req, res) => {
@@ -41,19 +42,12 @@ export const getAchievementById = async (req, res) => {
 // UPDATE
 export const updateAchievement = async (req, res) => {
   try {
-    // const updated = await Achievement.findByIdAndUpdate(
-    //   req.params.id,
-    //   req.body,
-    //   { new: true }
-    // );
-    // res.status(200).json(updated);
-
     const data = { ...req.body }
     if (req.file) data.imageUrl = `/uploads/achievements/${req.file.filename}`
 
-    const updatedAchievement = Achievement.findByIdAndUpdate(req.params.id, data, { new: true })
+    const updatedAchievement = await Achievement.findByIdAndUpdate(req.params.id, data, { new: true })
 
-    if (!updatedAchievement) res.status(404).json({ message: "No achievement updated found!" })
+    if (!updatedAchievement) return res.status(404).json({ message: "No achievement updated found!" })
 
     res.status(200).json(updatedAchievement)
 
@@ -65,7 +59,13 @@ export const updateAchievement = async (req, res) => {
 // DELETE
 export const deleteAchievement = async (req, res) => {
   try {
-    await Achievement.findByIdAndDelete(req.params.id);
+    const achievement = await Achievement.findByIdAndDelete(req.params.id);
+    if (!achievement) return res.status(404).json({ message: "No achievement found to be deleted!" })
+
+    if (achievement.imageUrl) {
+      deleteFile(achievement.imageUrl)
+    }
+
     res.status(200).json({ message: "Achievement deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
