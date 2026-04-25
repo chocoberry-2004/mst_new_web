@@ -41,12 +41,22 @@ export const getAchievementById = async (req, res) => {
 // UPDATE
 export const updateAchievement = async (req, res) => {
   try {
-    const updated = await Achievement.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.status(200).json(updated);
+    // const updated = await Achievement.findByIdAndUpdate(
+    //   req.params.id,
+    //   req.body,
+    //   { new: true }
+    // );
+    // res.status(200).json(updated);
+
+    const data = { ...req.body }
+    if (req.file) data.imageUrl = `/uploads/achievements/${req.file.filename}`
+
+    const updatedAchievement = Achievement.findByIdAndUpdate(req.params.id, data, { new: true })
+
+    if (!updatedAchievement) res.status(404).json({ message: "No achievement updated found!" })
+
+    res.status(200).json(updatedAchievement)
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
