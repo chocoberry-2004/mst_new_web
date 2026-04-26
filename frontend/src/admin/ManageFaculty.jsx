@@ -171,8 +171,8 @@ function ManageFaculty() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Manage Faculty Departments</h1>
-          <p className="text-gray-600 mt-1">View and manage all faculty departments in the institution</p>
+          <h1 className="text-2xl font-bold text-gray-800">Manage Faculty Panel</h1>
+          <p className="text-gray-600 mt-1">View and manage all faculty in M.S.T</p>
         </div>
         <div className="flex gap-3">
           <button 

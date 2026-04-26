@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAchievement } from '../providers/AchievemetProvider';
 import Loading from '../pages/Loading';
+import SearchNotFound from '../components/SearchNotFound';
 
 import CreateAchievementModal from '../CRUD_Modals/Achievement/CreateAchievementModal';
 import ViewAchievementModal from '../CRUD_Modals/Achievement/ViewAchievementModal';
@@ -186,8 +187,8 @@ function ManageAchievement() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Manage Achievements</h1>
-          <p className="text-gray-600 mt-1">View and manage all institutional awards and recognitions</p>
+          <h1 className="text-2xl font-bold text-gray-800">Manage Achievements Panel</h1>
+          <p className="text-gray-600 mt-1">View and manage all institutional awards and recognitions in M.S.T</p>
         </div>
         <div className="flex gap-3">
           <button 
@@ -301,7 +302,11 @@ function ManageAchievement() {
       </div>
 
       {/* Achievements Grid/List View */}
-      {viewMode === 'grid' ? (
+
+      {
+        totalAchievements === 0 ? (
+          <SearchNotFound searchType={'Achievement'}/>
+        ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAchievements.map(achievement => (
             <div key={achievement._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">

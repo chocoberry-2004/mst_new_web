@@ -73,8 +73,8 @@ function ManageFAQ() {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Frequently Asked Questions</h1>
-                    <p className="text-gray-600 mt-1">Manage {FAQ?.length} FAQs</p>
+                    <h1 className="text-2xl font-bold text-gray-800">Manage FAQs Panel</h1>
+                    <p className="text-gray-600 mt-1">View and manage {FAQ?.length} FAQs by M.S.T audiences</p>
                 </div>
                 <div className="flex gap-3">
                     <button 

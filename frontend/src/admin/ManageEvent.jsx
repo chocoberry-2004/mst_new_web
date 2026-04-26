@@ -304,7 +304,7 @@ function ManageEvent() {
 
       // delete images
       formData.append(
-        "deleteImages",
+        "deletedImages",
         JSON.stringify(deletedImages)
       );
 
@@ -356,8 +356,8 @@ function ManageEvent() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Manage Events</h1>
-          <p className="text-gray-600 mt-1">View and manage all academic and departmental events</p>
+          <h1 className="text-2xl font-bold text-gray-800">Manage Events Panel</h1>
+          <p className="text-gray-600 mt-1">View and manage all events in M.S.T</p>
         </div>
         <div className="flex gap-3">
           <button 
@@ -649,6 +649,7 @@ function ManageEvent() {
         createLoading={createLoading}
         createErr={createErr}
         eventType={eventType}
+        BASE_URL={BASE_URL}
       />
 
       
@@ -671,6 +672,7 @@ function ManageEvent() {
         eventType={eventType}
         removeExistingImage={removeExistingImage}
         removeNewImage={removeNewImage}
+        BASE_URL={BASE_URL}
       />
       
 

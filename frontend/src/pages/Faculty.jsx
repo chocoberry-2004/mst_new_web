@@ -262,38 +262,59 @@ function Faculty() {
       </div>
       </section>
 
+
       {/* Hero Section */}
       <section 
-          className="w-full h-screen relative overflow-hidden"
-          style={{
-              backgroundImage: `url(${event_bg})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              position: 'relative',
-              zIndex: 1
-          }}
+        className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: `url(${event_bg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
-          {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-[var(--primary-dark)]/60"></div>
+        {/* Modern Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary-dark)]/80 via-[var(--primary-dark)]/60 to-[var(--primary-dark)]/80"></div>
+        
+        {/* Content Container */}
+        <div className="relative z-10 w-full max-w-5xl px-6 py-20 text-center text-white">
           
-          {/* Content */}
-          <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-                  Trusted by Over 6000+ Students
-              </h1>
-              <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-                  We have a fully qualified and very well educated teaching staff, 
-                  continuous student counseling, and a very effective and enthusiastic 
-                  student support staff.
-              </p>
-              
-              {/* Optional CTA Button */}
-              <NavLink to="/contact">
-                <button className="mt-8 px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                    Contact Us
-                </button>
-              </NavLink>
+          {/* Animated Badge (Optional but trendy) */}
+          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium tracking-wide uppercase bg-blue-600/20 border border-blue-400/30 rounded-full backdrop-blur-sm animate-fade-in">
+            Empowering Futures
+          </span>
+
+          {/* Main Headline */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+            Trusted by Over <span className="text-blue-400">6000+</span> Students
+          </h1>
+
+          {/* Subtext */}
+          <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Join a community supported by fully qualified educators, 
+            continuous counseling, and an enthusiastic support team dedicated to your success.
+          </p>
+          
+          {/* CTA Group */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <NavLink to="/contact">
+              <button className="cursor-pointer group relative px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all duration-300 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 transform hover:-translate-y-1">
+                Contact Us
+                <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">→</span>
+              </button>
+            </NavLink>
+            
+            {/* Secondary Action - Optional */}
+            <NavLink to="/course">
+              <button className="cursor-pointer  px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 rounded-xl font-bold transition-all duration-300">
+                View Courses
+              </button>
+            </NavLink>
           </div>
+
+        </div>
+
+        {/* Decorative bottom fade to blend with next section */}
+        <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-[var(--background-color)] to-transparent"></div>
       </section>
 
     <ApplicationForm/>
