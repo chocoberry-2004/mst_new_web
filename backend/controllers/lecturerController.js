@@ -1,4 +1,5 @@
 import Lecturer from "../models/lecturers.js";
+import { deleteFile } from "../utils/deleteFile.js"
 
 // CREATE - Add a new lecturer with a profile image
 export const createLecturer = async (req, res) => {
@@ -30,8 +31,11 @@ export const getLecturers = async (req, res) => {
 // UPDATE - Update lecturer details or image
 export const updateLecturer = async (req, res) => {
   try {
+    const lecturer = await Lecturer.findById(req.params.id)
+
     const data = { ...req.body };
     if (req.file) {
+      deleteFile(lecturer.profileImageURL)
       data.profileImageURL = `uploads/lecturers/${req.file.filename}`;
     }
 

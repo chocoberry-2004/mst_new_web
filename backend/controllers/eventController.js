@@ -90,6 +90,7 @@ export const updateEvent = async (req, res) => {
 
     // 2. Remove deleted images
     if (deletedImages) {
+      console.log(`Deleted images: ${deletedImages}`)
       const toDelete = Array.isArray(deletedImages)
         ? deletedImages
         : JSON.parse(deletedImages);

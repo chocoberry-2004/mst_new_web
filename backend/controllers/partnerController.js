@@ -1,4 +1,5 @@
 import Partner from "../models/partners.js";
+import { deleteFile } from "../utils/deleteFile.js";
 
 // CREATE - Add a new partner with logo upload
 export const createPartner = async (req, res) => {
@@ -36,8 +37,11 @@ export const getPartners = async (req, res) => {
 // UPDATE - Update partner info or logo
 export const updatePartner = async (req, res) => {
   try {
+    const partner = Partner.findById(req.params.id)
+
     const data = { ...req.body };
     if (req.file) {
+      deleteFile(partner.logo)
       data.logo = `/uploads/partners/${req.file.filename}`;
     }
 
