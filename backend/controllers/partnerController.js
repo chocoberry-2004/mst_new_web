@@ -37,7 +37,7 @@ export const getPartners = async (req, res) => {
 // UPDATE - Update partner info or logo
 export const updatePartner = async (req, res) => {
   try {
-    const partner = Partner.findById(req.params.id)
+    const partner = await Partner.findById(req.params.id)
 
     const data = { ...req.body };
     if (req.file) {
