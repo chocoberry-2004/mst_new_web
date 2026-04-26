@@ -42,8 +42,13 @@ export const getAchievementById = async (req, res) => {
 // UPDATE
 export const updateAchievement = async (req, res) => {
   try {
-    const data = { ...req.body }
-    if (req.file) data.imageUrl = `/uploads/achievements/${req.file.filename}`
+    const achievement = await Achievement.findById(req.params.id)
+
+    const data = req.body
+    if (req.file) {
+      deleteFile(achievement.imageUrl)
+      data.imageUrl = `/uploads/achievements/${req.file.filename}`
+    }
 
     const updatedAchievement = await Achievement.findByIdAndUpdate(req.params.id, data, { new: true })
 
