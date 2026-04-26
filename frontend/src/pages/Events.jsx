@@ -229,7 +229,7 @@ function Events() {
             </section>
 
             {/* Filter & Events Section */}
-            <section id="event-grid" className="scroll-mt-0 py-16 lg:py-24 bg-white">
+            <section id="event-grid" className={`scroll-mt-0 py-16 lg:py-24 bg-white ${events?.length === 0 ? `hidden` : ``}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Filter Tabs */}
                     <div className="mb-12">
@@ -554,7 +554,7 @@ function Events() {
                 </div>
             </section>
 
-            <section className='py-16 lg:py-24 bg-gray-100'>
+            <section className={`py-16 lg:py-24 bg-gray-100 ${pastEvents.length === 0? `hidden` : ``}`}>
                 {/* Past Events Gallery */}
                     {pastEvents.length > 0 && (
                         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>

@@ -27,6 +27,7 @@ export const registerUser = async (req, res, next) => {
         email: newUser.email
       }
     })
+    
   } catch (error) {
     res.status(500).json({
       error: `Error while creating user account: ${error.message}`

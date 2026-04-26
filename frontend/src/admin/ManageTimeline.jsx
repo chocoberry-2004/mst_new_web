@@ -80,8 +80,8 @@ function ManageTimeline() {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">M.S.T History Timeline</h1>
-                    <p className="text-gray-600 mt-1">Manage {timeLine?.length || 0} milestones</p>
+                    <h1 className="text-2xl font-bold text-gray-800">Manage M.S.T History Panel</h1>
+                    <p className="text-gray-600 mt-1">View and manage {timeLine?.length || 0} M.S.T History Timeline</p>
                 </div>
                 <div className="flex gap-3">
                     <button 

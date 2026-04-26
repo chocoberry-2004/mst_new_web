@@ -70,6 +70,10 @@ function AdminSidebar() {
             Dashboard
           </NavLink>
 
+          <NavLink to="users" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
+            Users
+          </NavLink>
+
           <NavLink to="lecturer" className={linkClass} onClick={() => setShowAdminSideBar(false)}>
             Lecturers
           </NavLink>

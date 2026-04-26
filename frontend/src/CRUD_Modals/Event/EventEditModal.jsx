@@ -13,10 +13,9 @@ function EventEditModal({
   eventType,
   removeExistingImage,
   removeNewImage,
+  BASE_URL
 }) { 
   if (!show || !selectedEvent) return null;
-
-  const BASE_URL = "http://localhost:8000";
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

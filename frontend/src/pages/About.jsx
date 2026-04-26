@@ -232,7 +232,7 @@ function About() {
       </section>
 
       {/* Achievements & Recognition */}
-      <section className="py-16 bg-white">
+      <section className={`py-16 bg-white ${awards?.length === 0 ? `hidden` : ``}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 border-b pb-5 border-gray-300">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -277,7 +277,7 @@ function About() {
       </section>   
 
       {/* Timeline */}
-      <section className="py-16 lg:py-24 bg-[var(--primary-dark)]/50">
+      <section className={`py-16 lg:py-24 bg-[var(--primary-dark)]/50 ${timeLine?.length === 0 ? `hidden` : ``}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
