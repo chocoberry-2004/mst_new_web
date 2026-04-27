@@ -264,7 +264,7 @@ function ManageLecturer() {
       const profilePreviewUrl = URL.createObjectURL(file);
       setProfilePreview(profilePreviewUrl);
       setProfileImage(file);
-      setNewLecturer({...newLecturer, profileImageURL: file.name});
+      setNewLecturer(prev => ({...prev, profileImageURL: file.name}));
     } else if(file) {
       setCreateErr("Please upload only image files");
     }
@@ -276,7 +276,28 @@ function ManageLecturer() {
     }
     setProfileImage(null);
     setProfilePreview(null);
-    setNewLecturer({...newLecturer, profileImageURL: ''});
+    setNewLecturer(prev => ({...prev, profileImageURL: ''}));
+  };
+
+
+  const handleOpenEditModal = (lecturer) => {
+    setSelectedLecturer(lecturer);
+    setNewLecturer({
+      ...lecturer,
+      position: lecturer.position || [],
+      degree: lecturer.degree || [],
+      expertise: lecturer.expertise || []
+    });
+
+    if (lecturer.profileImageURL) {
+      if (profilePreview) URL.revokeObjectURL(profilePreview);
+      setProfilePreview(`${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`);
+    } else {
+      if (profilePreview) URL.revokeObjectURL(profilePreview);
+      setProfilePreview(null);
+    }
+    setProfileImage(null);
+    setShowEditModal(true);
   };
 
   if(lecturerLoading) return <Loading/>;
@@ -397,10 +418,14 @@ function ManageLecturer() {
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredLecturers?.map((lecturer) => (
+           
               <div key={lecturer._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                 <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
+                      {
+                        console.log(lecturer?.profileImageURL)
+                      }
                      
                       {lecturer.profileImageURL ? (
                         
@@ -471,38 +496,7 @@ function ManageLecturer() {
 
                   <div className="mt-4 mb-5 pt-4 border-t border-gray-100 flex items-center justify-end gap-2">
                     <button 
-                      onClick={() => {
-                        const editData = {
-                          ...lecturer,
-                          position: lecturer.position || [],
-                          degree: lecturer.degree || [],
-                          expertise: lecturer.expertise || []
-                        };
-                        setSelectedLecturer(lecturer);
-                        setNewLecturer(editData);
-                        
-                        // Set profile preview for existing image
-                        if (lecturer.profileImageURL) {
-                          // Clean up existing preview if any
-                          if (profilePreview) {
-                            URL.revokeObjectURL(profilePreview);
-                          }
-                          // Set preview from existing image URL
-                          const imageUrl = `${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`;
-                          setProfilePreview(imageUrl);
-                          // Don't set profileImage here because it's not a new file
-                          setProfileImage(null);
-                        } else {
-                          // If no image, clear preview
-                          if (profilePreview) {
-                            URL.revokeObjectURL(profilePreview);
-                          }
-                          setProfilePreview(null);
-                          setProfileImage(null);
-                        }
-                        
-                        setShowEditModal(true);
-                      }}
+                      onClick={() => handleOpenEditModal(lecturer)}
                       className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors cursor-pointer"
                       title="Edit"
                     >
@@ -565,38 +559,7 @@ function ManageLecturer() {
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
                         <button 
-                          onClick={() => {
-                            const editData = {
-                              ...lecturer,
-                              position: lecturer.position || [],
-                              degree: lecturer.degree || [],
-                              expertise: lecturer.expertise || []
-                            };
-                            setSelectedLecturer(lecturer);
-                            setNewLecturer(editData);
-                            
-                            // Set profile preview for existing image
-                            if (lecturer.profileImageURL) {
-                              // Clean up existing preview if any
-                              if (profilePreview) {
-                                URL.revokeObjectURL(profilePreview);
-                              }
-                              // Set preview from existing image URL
-                              const imageUrl = `${import.meta.env.VITE_BASE_URL}${lecturer.profileImageURL}`;
-                              setProfilePreview(imageUrl);
-                              // Don't set profileImage here because it's not a new file
-                              setProfileImage(null);
-                            } else {
-                              // If no image, clear preview
-                              if (profilePreview) {
-                                URL.revokeObjectURL(profilePreview);
-                              }
-                              setProfilePreview(null);
-                              setProfileImage(null);
-                            }
-                            
-                            setShowEditModal(true);
-                          }}
+                          onClick={() => handleOpenEditModal(lecturer)}
                           className="text-green-600 hover:text-green-800 cursor-pointer"
                           title="Edit"
                         >

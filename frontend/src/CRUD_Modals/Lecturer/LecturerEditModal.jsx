@@ -16,6 +16,8 @@ function LecturerEditModal({
     profileImage
 }) {
 
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+
     // Initialize with arrays when modal opens (matching CreateModal pattern)
     useEffect(() => {
         if (show && selectedLecturer) {
@@ -151,7 +153,7 @@ function LecturerEditModal({
                                         Profile Image
                                     </label>
 
-                                    <div className="relative w-full h-full border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#FFC53A] transition cursor-pointer group overflow-hidden">
+                                    <div className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#FFC53A] transition cursor-pointer group overflow-hidden">
 
                                         {/* Preview (if image selected) */}
                                         {profilePreview ? (
@@ -159,7 +161,7 @@ function LecturerEditModal({
                                                 <img
                                                     src={profilePreview}
                                                     alt="preview"
-                                                    className="absolute inset-0 w-44 h-full object-cover"
+                                                    className="absolute inset-0 w-full h-full object-contain"
                                                 />
                                                 <button
                                                     type="button"
@@ -341,7 +343,6 @@ function LecturerEditModal({
                                     </div>
                                 </div>
                             </div>
-
                             
                         </div>
 
@@ -371,6 +372,7 @@ function LecturerEditModal({
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

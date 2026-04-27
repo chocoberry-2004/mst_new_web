@@ -102,7 +102,7 @@ function EventCreateModal({
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC53A] focus:border-transparent [color-scheme:light] cursor-pointer"
                     value={newEvent.date}
                     onChange={(e) => setNewEvent({...newEvent, date: e.target.value})}
-                    min={new Date().toISOString().split('T')[0]}
+                    // min={new Date().toISOString().split('en-CA')}
                   />
                   <p className="mt-1 text-xs text-gray-500">
                     Select a date for your event

@@ -269,6 +269,9 @@ function ManagePartner() {
               <div key={partner._id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                 {/* <div className={`h-2 ${getTierColor(partner.tier)}`}></div> */}
                 <div className="p-6">
+                  {
+                    console.log(partner)
+                  }
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-16 h-16 bg-gray-50 rounded-lg p-2 flex items-center justify-center border border-gray-200">
                       <img 
