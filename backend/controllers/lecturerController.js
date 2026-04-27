@@ -36,7 +36,7 @@ export const updateLecturer = async (req, res) => {
     const data = { ...req.body };
     if (req.file) {
       deleteFile(lecturer.profileImageURL)
-      data.profileImageURL = `uploads/lecturers/${req.file.filename}`;
+      data.profileImageURL = `/uploads/lecturers/${req.file.filename}`;
     }
 
     const updated = await Lecturer.findByIdAndUpdate(req.params.id, data, {
