@@ -165,7 +165,7 @@ function EditAchievementModal({ isOpen, onClose, onSave, achievement, categories
             </div>
 
             {/* Image Section */}
-            <div className="col-span-2 md:col-span-1">
+            <div className="">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Achievement Image <span className="text-red-500">*</span>
               </label>
