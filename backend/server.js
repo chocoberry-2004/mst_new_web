@@ -12,6 +12,7 @@ import faqRoutes from "./routes/faqRoutes.js";
 import lecturerRoutes from "./routes/lecturerRoutes.js";
 import timelineRoutes from "./routes/timelineRoutes.js";
 import partnerRoutes from "./routes/partnerRoutes.js";
+import userRoutes from "./routes/userRoutes.js"
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use("/api/faqs", faqRoutes);
 app.use("/api/partners", partnerRoutes);
 app.use("/api/lecturers", lecturerRoutes);
 app.use("/api/timeline", timelineRoutes);
+app.use("/api/users", userRoutes);
 
 app.use("/api/", publicRoutes);
 
