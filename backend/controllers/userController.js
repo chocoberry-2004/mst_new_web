@@ -61,7 +61,7 @@ const generateHashPassword = async (password) => {
   return hashedPassword
 }
 
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
   try {
     const { email, password } = { ...req.body }
     const user = await User.findOne({ emaill });
